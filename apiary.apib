@@ -6,59 +6,79 @@ HOST: http://lifebelt.apiblueprint.org/
 Polls is a simple API allowing consumers to view polls and vote in them.
 
 # Group Courses
+Resources related to courses.
+
+**Note:** Courses from past years are read-only.
 
 # All courses [/courses]
+Resouce which list or create courses.
+
 ## GET
+Get all courses.
+
 + Response 200
 
 ## POST
+Crate new course.
+
 + Response 200
 
 # Course by name [/courses/{name}]
-## GET
-+ Response 200
+Resource which handle course for given name.
 
-## POST
+## GET
+Get course for given name.
 + Response 200
 
 ## PUT
+Update existing course with name given.
 + Response 200
 
 ## DELETE
+Delete existing course with name given.
 + Response 200
 
 # Course by year [/courses/{name}/{year}]
+Resource which returns past courses for given name from selected year.
 ## GET
+Return course if exist
 + Response 200
 
 # Group Assignments
 
 # All assignments [/assignments]
+## GET
+Returns all assignments
++ Response 200
 
 # Course assignments [/assignments/{course}]
 ## GET
+Get all assignments for given course.
 + Response 200
 
 ## POST
+Create a new assignment for given course.
 + Response 200
 
 # Course assignments by year [/assignments/{course}/{year}]
 ## GET
+Returns all assignments for course from selected year
 + Response 200
 
 # Course assignment [/assignments/{course}/{id}]
 ## GET
-+ Response 200
-
-## POST
+Returns course assignment with given id
 + Response 200
 
 ## PUT
+Updates course assignment with given id
 + Response 200
 
 ## DELETE
+Delete course assignment with given id.
 + Response 200
 
 # Course assignment by year [/assignments/{course}/{year}/{id}]
 ## GET
+Returns course assignment with given id from selected year if exist
 + Response 200
