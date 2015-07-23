@@ -10,39 +10,71 @@ Resources related to courses.
 
 **Note:** Courses from past years are read-only.
 
-# All courses [/courses]
+## All courses [/courses]
 Resouce which list or create courses.
 
-## GET
+### GET
 Get all courses.
 
 + Response 200
 
-## POST
+### POST
 Crate new course.
 
++ name (string) - short name of course.
++ fullname (string) - full name of course.
++ url (string) - GitHub url for this course. Can be repository with help documents etc...
+
++ Request (application/json)
+
+            {
+                "name": "PO",
+                "fullname": "Програмно Осигуряване"
+                "url": "https://github.com/elsys/po-course/tree/master/2015"
+            }
+
 + Response 200
 
-# Course by name [/courses/{name}]
+## Course [/courses/{name}/{year}]
 Resource which handle course for given name.
 
-## GET
++ Parameters
+    + name (required, string, `po`) ... Courses name.
+    + year (optional, number, `2014`) ... Courses year. When this parameter appears,
+    **only GET is allowed**.
+
+### GET
 Get course for given name.
-+ Response 200
++ Response 200 (application/json)
 
-## PUT
+        {
+            "id": 123,
+            "name": "po",
+            "fullname": "Програмно осигуряване",
+            "year": 2015,
+            "url": "https://github.com/elsys/po-course/tree/master/2015"
+        }
+
+### PUT
 Update existing course with name given.
-+ Response 200
 
-## DELETE
++ name (string) - new short name of course.
++ fullname (string) - new full name of course.
++ url (string) - new GitHub url for this course. Can be repository with help documents etc...
+
++ Request (application/json)
+
+            {
+                "name": "PO",
+                "fullname": "Програмно Осигуряване"
+                "url": "https://github.com/elsys/po-course/tree/master/2015"
+            }
+
++ Response 201
+
+### DELETE
 Delete existing course with name given.
-+ Response 200
-
-# Course by year [/courses/{name}/{year}]
-Resource which returns past courses for given name from selected year.
-## GET
-Return course if exist
-+ Response 200
++ Response 204
 
 # Group Assignments
 
@@ -51,18 +83,21 @@ Return course if exist
 Returns all assignments
 + Response 200
 
-# Course assignments [/assignments/{course}]
+# Course assignments [/assignments/{course}/{year}/{id}]
+
++ Parameters
+    + course (required, string, `po`) ... Course name.
+    + year (optional, number, `2014`) ... Course year. When this parameter appears,
+    **only GET is allowed**
+    + id (optional, number, `1`) ... Assignment ID. For example can be homework counter.
+    can be combined with year parameter, but again - read-only.
+
 ## GET
 Get all assignments for given course.
 + Response 200
 
 ## POST
 Create a new assignment for given course.
-+ Response 200
-
-# Course assignments by year [/assignments/{course}/{year}]
-## GET
-Returns all assignments for course from selected year
 + Response 200
 
 # Course assignment [/assignments/{course}/{id}]
@@ -72,16 +107,11 @@ Returns course assignment with given id
 
 ## PUT
 Updates course assignment with given id
-+ Response 200
++ Response 201
 
 ## DELETE
 Delete course assignment with given id.
-+ Response 200
-
-# Course assignment by year [/assignments/{course}/{year}/{id}]
-## GET
-Returns course assignment with given id from selected year if exist
-+ Response 200
++ Response 204
 
 # Group Submission
 
