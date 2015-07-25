@@ -3,160 +3,130 @@ HOST: http://lifebelt.apiblueprint.org/
 
 # lifebelt
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+Lifebelt is teachers's lifebelt to simplify 
+publish, share and review homeworks and exams. Also helps students,
+giving them easy way to follow and be inform about new assignments, receiving
+instant review where is possible.
 
 # Group Courses
-Resources related to courses.
 
-**Note:** Courses from past years are read-only.
+# Courses [/courses]
 
-## All courses [/courses]
-Resouce which list or create courses.
-
-### GET
-Get all courses.
-
+## Get all courses [GET]
 + Response 200
 
-### POST
-Crate new course.
+## Create a new course [POST]
++ Response 201
 
-+ name (string) - short name of course.
-+ fullname (string) - full name of course.
-+ url (string) - GitHub url for this course. Can be repository with help documents etc...
+# Course [/courses/{course_id}]
 
-+ Request (application/json)
+## Get specific course by id [GET]
++ Response 200 (application/json)
+        
+        {
+            "id": 123,
+            "initials": "PO",
+            "fullname": "Програмно осигуряване",
+            "description": "Запознаване със структури от данни и езикът 'С'",
+            "year": 2016
+        }
 
-            {
-                "name": "PO",
-                "fullname": "Програмно Осигуряване"
-                "url": "https://github.com/elsys/po-course/tree/master/2015"
-            }
-
+## Edit existing course with given id [PUT]
 + Response 200
 
-## Course [/courses/{name}/{year}]
-Resource which handle course for given name.
+## Delete existing course by id [DELETE]
++ Response 204
 
-+ Parameters
-    + name (required, string, `po`) ... Courses name.
-    + year (optional, number, `2014`) ... Courses year. When this parameter appears,
-    **only GET is allowed**.
+# Group Course Assignments
 
-### GET
-Get course for given name.
+# Assignments [/courses/{course_id}/assignments]
+
+## Get all course assignments [GET]
++ Response 200
+
+## Create new course assignment [POST]
++ Response 201
+
+# Assignment [/courses/{course_id}/assignments/{ass_id}]
+
+## Get specific course assignment by id [GET]
++ Response 200 (application/json)
+        
+        {
+            "id": 123,
+            "name": "Програмно осигуряване",
+            "description": "Запознаване със структури от данни и езикът 'С'",
+            "type": "exam|homework",
+            "start": "2012-04-23T18:25:43.511Z",
+            "end": "2012-04-23T18:25:43.511Z"
+        }
+
+## Update existing course assignment [PUT]
++ Response 200
+
+## Delete existing course assignment [DELETE]
++ Response 204
+
+
+# Assignment submissions [/courses/{course_id}/assignments/{ass_id}/submissions]
+
+## Get all submissions for assignment [GET]
++ Response 200
+
+## Create a new submission for this assignment [POST]
++ Response 201
+
+# Assignment submission [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}]
+## Get a specific assignment submission by id [GET]
 + Response 200 (application/json)
 
         {
             "id": 123,
-            "name": "po",
-            "fullname": "Програмно осигуряване",
-            "year": 2015,
-            "url": "https://github.com/elsys/po-course/tree/master/2015"
+            "author": 42,
+            "date": "2012-04-23T18:25:43.511Z",
+            "description": "Some note to teachers"
         }
 
-### PUT
-Update existing course with name given.
+## Update existing assignment submission [PUT]
++ Response 200
 
-+ name (string) - new short name of course.
-+ fullname (string) - new full name of course.
-+ url (string) - new GitHub url for this course. Can be repository with help documents etc...
-
-+ Request (application/json)
-
-            {
-                "name": "PO",
-                "fullname": "Програмно Осигуряване"
-                "url": "https://github.com/elsys/po-course/tree/master/2015"
-            }
-
-+ Response 201
-
-### DELETE
-Delete existing course with name given.
+## Delete existing assignment submission [DELETE]
 + Response 204
 
-# Group Assignments
+# Submission reviews [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/reviews]
 
-# All assignments [/assignments]
-## GET
-Returns all assignments
+## Get all submission reviews [GET]
 + Response 200
 
-# Course assignments [/assignments/{course}/{year}/{id}]
-
-+ Parameters
-    + course (required, string, `po`) ... Course name.
-    + year (optional, number, `2014`) ... Course year. When this parameter appears,
-    **only GET is allowed**
-    + id (optional, number, `1`) ... Assignment ID. For example can be homework counter.
-    can be combined with year parameter, but again - read-only.
-
-## GET
-Get all assignments for given course.
-+ Response 200
-
-## POST
-Create a new assignment for given course.
-+ Response 200
-
-# Course assignment [/assignments/{course}/{id}]
-## GET
-Returns course assignment with given id
-+ Response 200
-
-## PUT
-Updates course assignment with given id
+## Create a new submission review [POST]
 + Response 201
 
-## DELETE
-Delete course assignment with given id.
+# Submission review [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/reviews/{review_id}]
+
+## Get specific submission review [GET]
++ Response 200
+
+## Update existing submission review [PUT]
++ Response 200
+
+## Delete existing submission review [DELETE]
 + Response 204
 
-# Group Submission
+# Group Course announcements
 
-# All submissions [/submissions]
-## GET
+# Announcements [/courses/{course_id}/announcements]
+## Get all course announcements [GET]
 + Response 200
 
-# Course submissions [/submissions/{course}]
-## GET
+## Create a new course announcement [POST]
++ Response 201
+
+# Announcement [/courses/{course_id}/announcements/{announce_id}]
+## Get specific course announcement [GET]
 + Response 200
 
-# Course user submissions [/submissions/{course}/{user}]
-## GET
+## Update existing course announcement [PUT]
 + Response 200
 
-# User submission for course assignment [/submissions/{course}/{user}/{assignment}]
-## GET
-+ Response 200
-
-## POST
-+ Response 200
-
-## PUT
-+ Response 200
-
-## DELETE
-+ Response 200
-
-# Course submissions for year [/submissions/{course}/{year}]
-## GET
-+ Response 200
-
-# Course user submissions for year [/submissions/{course}/{year}/{user}]
-## GET
-+ Response 200
-
-# User submission for course assignment by year [/submissions/{course}/{year}/{user}/{assignment}]
-## GET
-+ Response 200
-
-## POST
-+ Response 200
-
-## PUT
-+ Response 200
-
-## DELETE
-+ Response 200
+## Delete existing course announcement [DELETE]
++ Response 204
