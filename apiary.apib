@@ -130,3 +130,37 @@ instant review where is possible.
 
 ## Delete existing course announcement [DELETE]
 + Response 204
+
+# Group Course users
+
+# Course users [/courses/{course_id}/users]
+
+## Get all course users [GET]
++ Response 200
+
+## Add user to course [POST]
++ Response 201
+
+# Course user [/courses/{course_id}/users/{user_id}]
+
+## Get course user [GET]
++ Response 200 (application/json)
+
+        {
+            "id": 123,
+            "role": "student|teacher"
+            "fullname": "Asen Lekov",
+            "gitub": "L3K0V",
+            "email": "asenlekoff@gmail.com",
+            "details" : {
+                "grade": 10,
+                "class": "A",
+                "number": 5
+            }
+        }
+
+## Modify existing course user [PUT]
++ Response 200
+
+## Delete existing course user [DELETE]
++ Response 200
