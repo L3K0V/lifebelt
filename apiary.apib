@@ -72,6 +72,7 @@ instant review where is possible.
     + initials: PO (optional, string) - Course initials
     + fullname: Програмно осигуряване (optional, string) - Fully qualified name
     + description: Some course description... (optional, string) - Long text with course description. Can be markdown formated or urls.
+    + year: 2016 (optional, number) - Course active year
     
 + Response 200 (application/json)
 
@@ -93,7 +94,30 @@ instant review where is possible.
     + course_id: 42 (required, number) - Desired course id
 
 ## Get all course assignments [GET]
-+ Response 200
++ Response 200 (application/json)
+
+        [{
+            "id": 123,
+            "name": "Програмно осигуряване",
+            "description": "Запознаване със структури от данни и езикът 'С'",
+            "type": "exam",
+            "start": "2012-04-23T18:25:43.511Z",
+            "end": "2012-04-23T18:25:43.511Z"
+        },{
+            "id": 124,
+            "name": "Програмно осигуряване",
+            "description": "Запознаване със структури от данни и езикът 'С'",
+            "type": "homework",
+            "start": "2012-04-23T18:25:43.511Z",
+            "end": "2012-04-23T18:25:43.511Z"
+        },{
+            "id": 125,
+            "name": "Програмно осигуряване",
+            "description": "Запознаване със структури от данни и езикът 'С'",
+            "type": "exam",
+            "start": "2012-04-23T18:25:43.511Z",
+            "end": "2012-04-23T18:25:43.511Z"
+        }]
 
 ## Create new course assignment [POST]
 + Response 201
@@ -110,7 +134,12 @@ instant review where is possible.
             "id": 123,
             "name": "Програмно осигуряване",
             "description": "Запознаване със структури от данни и езикът 'С'",
-            "type": "exam|homework",
+            "type": "homework",
+            "targets": [
+                "A",  
+                "B",
+                "ALL"
+            ]
             "start": "2012-04-23T18:25:43.511Z",
             "end": "2012-04-23T18:25:43.511Z"
         }
@@ -146,7 +175,6 @@ instant review where is possible.
             "id": 123,
             "author": 42,
             "date": "2012-04-23T18:25:43.511Z",
-            "description": "Some note to teachers"
             "pullRequest": 1234,
             "files" : [
                 {
@@ -162,11 +190,15 @@ instant review where is possible.
             ]
         }
 
-## Update existing assignment submission [PUT]
-+ Response 200
-
 ## Delete existing assignment submission [DELETE]
 + Response 204
+
+# Submission files [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/files]
+## Get all files [GET]
++ Response 200
+
+## Attach new file [PUT]
++ Response 200
 
 # Submission reviews [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/reviews]
 + Parameters
@@ -188,6 +220,14 @@ instant review where is possible.
 
 ## Get specific submission review [GET]
 + Response 200
+        
+        {
+            "id": 42,
+            "author": 123,
+            "description": "бот връща gcc status, учителя пише коментар",
+            "points": 10,
+            "date": "2012-04-23T18:25:43.511Z" 
+        }
 
 ## Update existing submission review [PUT]
 + Response 200
@@ -214,6 +254,24 @@ instant review where is possible.
 ## Delete existing course announcement [DELETE]
 + Response 204
 
+# Annoncement comments [/courses/{course_id}/announcements/{announce_id}/comments]
+## Get all announcement comments [GET]
++ Response 200
+
+## Create new anouncement comment [POST]
++ Response 200
+
+# Announcement comment [/courses/{course_id}/announcements/{announce_id}/comments/{comment_id}]
+
+## Get specific comment 
++ Response 200
+
+## Update existing comment
++ Response 200
+
+## Delete existing comment
++ Response 200
+
 # Group Course users
 
 # Course users [/courses/{course_id}/users]
@@ -233,7 +291,7 @@ instant review where is possible.
             "id": 123,
             "role": "student|teacher"
             "fullname": "Asen Lekov",
-            "gitub": "L3K0V",
+            "github": "L3K0V",
             "email": "asenlekoff@gmail.com",
             "details" : {
                 "grade": 10,
@@ -247,3 +305,13 @@ instant review where is possible.
 
 ## Delete existing course user [DELETE]
 + Response 200
+
+# Group Users
+
+# Users [/users]
+## Get all users [GET]
++ Response 200
+
+## Create a new user [POST]
++ Response 200
+
