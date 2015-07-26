@@ -176,6 +176,8 @@ instant review where is possible.
             "author": 42,
             "date": "2012-04-23T18:25:43.511Z",
             "pullRequest": 1234,
+            "grade": 100,
+            "description": "Teache me master, how to create an pull request"
             "files" : [
                 {
                     "id": 1,
@@ -189,6 +191,9 @@ instant review where is possible.
                 }
             ]
         }
+        
+## Update submission grade or description [PUT]
++ Response 200
 
 ## Delete existing assignment submission [DELETE]
 + Response 204
@@ -259,7 +264,7 @@ instant review where is possible.
 + Response 200
 
 ## Create new anouncement comment [POST]
-+ Response 200
++ Response 201
 
 # Announcement comment [/courses/{course_id}/announcements/{announce_id}/comments/{comment_id}]
 
@@ -270,7 +275,7 @@ instant review where is possible.
 + Response 200
 
 ## Delete existing comment
-+ Response 200
++ Response 204
 
 # Group Course users
 
@@ -304,7 +309,7 @@ instant review where is possible.
 + Response 200
 
 ## Delete existing course user [DELETE]
-+ Response 200
++ Response 204
 
 # Group Users
 
@@ -313,5 +318,38 @@ instant review where is possible.
 + Response 200
 
 ## Create a new user [POST]
++ Response 201
+
+# User [/users/{user_id}]
+## Get specific user [GET]
 + Response 200
 
+## Edit specific user [PUT]
++ Response 200
+
+## Delete existing user [DELETE]
++ Response 204
+
+# Group Authentication
+
+# Login [/login]
+## POST
++ Response 201
+
+        {
+            "id": 123,
+            "role": "student|teacher"
+            "fullname": "Asen Lekov",
+            "github": "L3K0V",
+            "email": "asenlekoff@gmail.com",
+            "details" : {
+                "grade": 10,
+                "class": "A",
+                "number": 5
+            },
+            "token": "our litte secret here"
+        }
+
+# Logout [/logout]
+## POST
++ Response 204
