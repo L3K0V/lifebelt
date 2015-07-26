@@ -13,12 +13,48 @@ instant review where is possible.
 # Courses [/courses]
 
 ## Get all courses [GET]
-+ Response 200
++ Response 200 (application/json)
+        
+        [{
+            "id": 123,
+            "initials": "PO",
+            "fullname": "Програмно осигуряване",
+            "description": "Запознаване със структури от данни и езикът 'С'",
+            "year": 2016
+        },{
+            "id": 124,
+            "initials": "TP",
+            "fullname": "Технология на Програмирането",
+            "description": "Запознаване с технологията на и при програмирането",
+            "year": 2016
+        },{
+            "id": 125,
+            "initials": "OS",
+            "fullname": "Операционни Системи",
+            "description": "Описание за предмета 'Операционни Системи' ",
+            "year": 2016
+        }]
 
 ## Create a new course [POST]
-+ Response 201
++ Attributes (object)
+    + initials: PO (required, string) - Course initials
+    + fullname: Програмно осигуряване (required, string) - Fully qualified name
+    + description: Some course description... (optional, string) - Long text with course description. Can be markdown formated or urls.
+    + year: 2016 (required, number) - Course active year
+
++ Response 201 (application/json)
+        
+        {
+            "id": 123,
+            "initials": "PO",
+            "fullname": "Програмно осигуряване",
+            "description": "Запознаване със структури от данни и езикът 'С'",
+            "year": 2016
+        }
 
 # Course [/courses/{course_id}]
++ Parameters
+    + course_id: 42 (required, number) - Desired course id
 
 ## Get specific course by id [GET]
 + Response 200 (application/json)
@@ -32,7 +68,20 @@ instant review where is possible.
         }
 
 ## Edit existing course with given id [PUT]
-+ Response 200
++ Attributes
+    + initials: PO (optional, string) - Course initials
+    + fullname: Програмно осигуряване (optional, string) - Fully qualified name
+    + description: Some course description... (optional, string) - Long text with course description. Can be markdown formated or urls.
+    
++ Response 200 (application/json)
+
+        {
+            "id": 123,
+            "initials": "PO",
+            "fullname": "Програмно осигуряване",
+            "description": "Запознаване със структури от данни и езикът 'С'",
+            "year": 2016
+        }
 
 ## Delete existing course by id [DELETE]
 + Response 204
@@ -40,6 +89,8 @@ instant review where is possible.
 # Group Course Assignments
 
 # Assignments [/courses/{course_id}/assignments]
++ Parameters
+    + course_id: 42 (required, number) - Desired course id
 
 ## Get all course assignments [GET]
 + Response 200
@@ -48,6 +99,9 @@ instant review where is possible.
 + Response 201
 
 # Assignment [/courses/{course_id}/assignments/{ass_id}]
++ Parameters
+    + course_id: 42 (required, number) - Desired course id
+    + ass_id: 24 (required, number) - Assignment id you looking for
 
 ## Get specific course assignment by id [GET]
 + Response 200 (application/json)
@@ -69,6 +123,9 @@ instant review where is possible.
 
 
 # Assignment submissions [/courses/{course_id}/assignments/{ass_id}/submissions]
++ Parameters
+    + course_id: 42 (required, number) - Desired course id
+    + ass_id: 24 (required, number) - Assignment id you looking for
 
 ## Get all submissions for assignment [GET]
 + Response 200
@@ -77,6 +134,11 @@ instant review where is possible.
 + Response 201
 
 # Assignment submission [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}]
++ Parameters
+    + course_id: 42 (required, number) - Desired course id
+    + ass_id: 24 (required, number) - Assignment id you looking for
+    + sub_id: 1 (required, number) - Submission id    
+
 ## Get a specific assignment submission by id [GET]
 + Response 200 (application/json)
 
@@ -85,6 +147,19 @@ instant review where is possible.
             "author": 42,
             "date": "2012-04-23T18:25:43.511Z",
             "description": "Some note to teachers"
+            "pullRequest": 1234,
+            "files" : [
+                {
+                    "id": 1,
+                    "filename": "url to uploaded raw file",
+                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
+                },
+                {
+                    "id": 2,
+                    "filename": "url to uploaded raw file",
+                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
+                }
+            ]
         }
 
 ## Update existing assignment submission [PUT]
@@ -94,6 +169,10 @@ instant review where is possible.
 + Response 204
 
 # Submission reviews [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/reviews]
++ Parameters
+    + course_id: 42 (required, number) - Desired course id
+    + ass_id: 24 (required, number) - Assignment id you looking for
+    + sub_id: 1 (required, number) - Submission id    
 
 ## Get all submission reviews [GET]
 + Response 200
@@ -102,6 +181,10 @@ instant review where is possible.
 + Response 201
 
 # Submission review [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/reviews/{review_id}]
++ Parameters
+    + course_id: 42 (required, number) - Desired course id
+    + ass_id: 24 (required, number) - Assignment id you looking for
+    + sub_id: 1 (required, number) - Submission id    
 
 ## Get specific submission review [GET]
 + Response 200
