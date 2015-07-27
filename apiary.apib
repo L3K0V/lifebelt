@@ -3,7 +3,7 @@ HOST: http://lifebelt.apiblueprint.org/
 
 # lifebelt
 
-Lifebelt is teachers's lifebelt to simplify 
+Lifebelt is teachers's lifebelt to simplify
 publish, share and review homeworks and exams. Also helps students,
 giving them easy way to follow and be inform about new assignments, receiving
 instant review where is possible.
@@ -14,7 +14,7 @@ instant review where is possible.
 
 ## Get all courses [GET]
 + Response 200 (application/json)
-        
+
         [{
             "id": 123,
             "initials": "PO",
@@ -43,7 +43,7 @@ instant review where is possible.
     + year: 2016 (required, number) - Course active year
 
 + Response 201 (application/json)
-        
+
         {
             "id": 123,
             "initials": "PO",
@@ -58,7 +58,7 @@ instant review where is possible.
 
 ## Get specific course by id [GET]
 + Response 200 (application/json)
-        
+
         {
             "id": 123,
             "initials": "PO",
@@ -73,7 +73,7 @@ instant review where is possible.
     + fullname: Програмно осигуряване (optional, string) - Fully qualified name
     + description: Some course description... (optional, string) - Long text with course description. Can be markdown formated or urls.
     + year: 2016 (optional, number) - Course active year
-    
+
 + Response 200 (application/json)
 
         {
@@ -120,7 +120,29 @@ instant review where is possible.
         }]
 
 ## Create new course assignment [POST]
-+ Response 201
++ Attributes (object)
+    + name: `Homework 1` (required, string) - Assignment name
+    + description: `Short assignment description of assignemnt` (required, string)
+    + type: `homework` (required, string) - Homework or exam
+    + targets: `["A", "B", "ALL"]` (required, array[string]) - String list of targets
+    + start: `2012-04-23T18:25:43.511Z` (required, string) - Timestamp
+    + end: `2012-04-23T18:25:43.511Z` (required, string) - Timestamp
+
++ Response 201 (application/json)
+
+        {
+            "id": 123,
+            "name": "Програмно осигуряване",
+            "description": "Запознаване със структури от данни и езикът 'С'",
+            "type": "homework",
+            "targets": [
+                "A",
+                "B",
+                "ALL"
+            ],
+            "start": "2012-04-23T18:25:43.511Z",
+            "end": "2012-04-23T18:25:43.511Z"
+        }
 
 # Assignment [/courses/{course_id}/assignments/{ass_id}]
 + Parameters
@@ -129,23 +151,45 @@ instant review where is possible.
 
 ## Get specific course assignment by id [GET]
 + Response 200 (application/json)
-        
+
         {
             "id": 123,
             "name": "Програмно осигуряване",
             "description": "Запознаване със структури от данни и езикът 'С'",
             "type": "homework",
             "targets": [
-                "A",  
+                "A",
                 "B",
                 "ALL"
-            ]
+            ],
             "start": "2012-04-23T18:25:43.511Z",
             "end": "2012-04-23T18:25:43.511Z"
         }
 
 ## Update existing course assignment [PUT]
-+ Response 200
++ Attributes
+    + name: `Homework 1` (optional, string) - New assignment name
+    + description: `New short assignment description of assignemnt` (optional, string)
+    + type: `homework` (optional, string) - Change assignment type
+    + targets: `["A", "B", "ALL"]` (optional, array[string]) - String list of targets
+    + start: `2012-04-23T18:25:43.511Z` (optional, string) - Timestamp
+    + end: `2012-04-23T18:25:43.511Z` (optional, string) - Timestamp
+
++ Response 200 (application/json)
+
+        {
+            "id": 123,
+            "name": "Програмно осигуряване",
+            "description": "Запознаване със структури от данни и езикът 'С'",
+            "type": "homework",
+            "targets": [
+                "A",
+                "B",
+                "ALL"
+            ],
+            "start": "2012-04-23T18:25:43.511Z",
+            "end": "2012-04-23T18:25:43.511Z"
+        }
 
 ## Delete existing course assignment [DELETE]
 + Response 204
@@ -157,16 +201,95 @@ instant review where is possible.
     + ass_id: 24 (required, number) - Assignment id you looking for
 
 ## Get all submissions for assignment [GET]
-+ Response 200
++ Response 200 (application/json)
+
+        [{
+            {
+            "id": 123,
+            "author": 42,
+            "date": "2012-04-23T18:25:43.511Z",
+            "pullRequest": 1234,
+            "grade": 100,
+            "description": "Teache me master, how to create an pull request",
+            "files" : [
+                {
+                    "id": 1,
+                    "filename": "url to uploaded raw file",
+                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
+                },
+                {
+                    "id": 2,
+                    "filename": "url to uploaded raw file",
+                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
+                }
+            ]
+        },{
+            {
+            "id": 123,
+            "author": 42,
+            "date": "2012-04-23T18:25:43.511Z",
+            "pullRequest": 1234,
+            "grade": 100,
+            "description": "Teache me master, how to create an pull request",
+            "files" : [
+                {
+                    "id": 1,
+                    "filename": "url to uploaded raw file",
+                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
+                },
+                {
+                    "id": 2,
+                    "filename": "url to uploaded raw file",
+                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
+                }
+            ]
+        },{
+            {
+            "id": 123,
+            "author": 42,
+            "date": "2012-04-23T18:25:43.511Z",
+            "pullRequest": 1234,
+            "grade": 100,
+            "description": "Teache me master, how to create an pull request",
+            "files" : [
+                {
+                    "id": 1,
+                    "filename": "url to uploaded raw file",
+                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
+                },
+                {
+                    "id": 2,
+                    "filename": "url to uploaded raw file",
+                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
+                }
+            ]
+        }]
 
 ## Create a new submission for this assignment [POST]
-+ Response 201
++ Attributes (object)
+    + author: 42 (required, number) - Submission authors id
+    + pullRequest: 1234 (optional, number) - For GitHub hook
+    + grade: 100 (optional, number) - Submission grade, in POST maybe is unuseful
+    + description: `Some note to the teacher` (optional, string)
+    + files: `` (optional, array)
+
++ Response 201 (application/json)
+
+        {
+            "id": 123,
+            "author": 42,
+            "date": "2012-04-23T18:25:43.511Z",
+            "pullRequest": 1234,
+            "grade": 0,
+            "description": "Teache me master, how to create an pull request",
+            "files" : []
+        }
 
 # Assignment submission [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}]
 + Parameters
     + course_id: 42 (required, number) - Desired course id
     + ass_id: 24 (required, number) - Assignment id you looking for
-    + sub_id: 1 (required, number) - Submission id    
+    + sub_id: 1 (required, number) - Submission id
 
 ## Get a specific assignment submission by id [GET]
 + Response 200 (application/json)
@@ -177,7 +300,7 @@ instant review where is possible.
             "date": "2012-04-23T18:25:43.511Z",
             "pullRequest": 1234,
             "grade": 100,
-            "description": "Teache me master, how to create an pull request"
+            "description": "Teache me master, how to create an pull request",
             "files" : [
                 {
                     "id": 1,
@@ -191,16 +314,46 @@ instant review where is possible.
                 }
             ]
         }
-        
+
 ## Update submission grade or description [PUT]
-+ Response 200
++ Attributes
+    + grade: 100 (optional, number) - Submission grade
+    + description: `Update submission description` (optional, number)
+
++ Response 200 (application/json)
+
+        {
+            "id": 123,
+            "author": 42,
+            "date": "2012-04-23T18:25:43.511Z",
+            "pullRequest": 1234,
+            "grade": 100,
+            "description": "Teache me master, how to create an pull request",
+            "files" : [
+                {
+                    "id": 1,
+                    "filename": "url to uploaded raw file",
+                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
+                },
+                {
+                    "id": 2,
+                    "filename": "url to uploaded raw file",
+                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
+                }
+            ]
+        }
 
 ## Delete existing assignment submission [DELETE]
 + Response 204
 
 # Submission status [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/status]
 ## Get submission status [GET]
-+ Response 200
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "status": "FINISHED|INPROGRESS|ERROR"
+        }
 
 # Submission files [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/files]
 ## Get all files [GET]
@@ -213,32 +366,69 @@ instant review where is possible.
 + Parameters
     + course_id: 42 (required, number) - Desired course id
     + ass_id: 24 (required, number) - Assignment id you looking for
-    + sub_id: 1 (required, number) - Submission id    
+    + sub_id: 1 (required, number) - Submission id
 
 ## Get all submission reviews [GET]
-+ Response 200
++ Response 200 (application/json)
+
+        [{
+            "id": 42,
+            "author": 123,
+            "description": "бот връща gcc status, учителя пише коментар",
+            "points": 10,
+            "date": "2012-04-23T18:25:43.511Z"
+        },{
+            "id": 42,
+            "author": 124,
+            "description": "бот връща gcc status, учителя пише коментар",
+            "points": 10,
+            "date": "2012-04-23T18:25:43.511Z"
+        },{
+            "id": 42,
+            "author": 125,
+            "description": "бот връща gcc status, учителя пише коментар",
+            "points": 10,
+            "date": "2012-04-23T18:25:43.511Z"
+        }]
 
 ## Create a new submission review [POST]
-+ Response 201
++ Attributes (object)
+    + author: 123 (required, number) - id of review author
+    + description: `Some review description text goes here` (optional, string)
+    + points: 100 (required, number) - points for submission from this review
 
-# Submission review [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/reviews/{review_id}]
-+ Parameters
-    + course_id: 42 (required, number) - Desired course id
-    + ass_id: 24 (required, number) - Assignment id you looking for
-    + sub_id: 1 (required, number) - Submission id    
++ Response 201 (application/json)
 
-## Get specific submission review [GET]
-+ Response 200
-        
         {
             "id": 42,
             "author": 123,
             "description": "бот връща gcc status, учителя пише коментар",
             "points": 10,
-            "date": "2012-04-23T18:25:43.511Z" 
+            "date": "2012-04-23T18:25:43.511Z"
+        }
+
+# Submission review [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/reviews/{review_id}]
++ Parameters
+    + course_id: 42 (required, number) - Desired course id
+    + ass_id: 24 (required, number) - Assignment id you looking for
+    + sub_id: 1 (required, number) - Submission id
+
+## Get specific submission review [GET]
++ Response 200 (application/json)
+
+        {
+            "id": 42,
+            "author": 123,
+            "description": "бот връща gcc status, учителя пише коментар",
+            "points": 10,
+            "date": "2012-04-23T18:25:43.511Z"
         }
 
 ## Update existing submission review [PUT]
++ Attributes
+    + description: "Updated review description" (optional, string)
+    + points: 20 (optional, number) - Reviews points
+
 + Response 200
 
 ## Delete existing submission review [DELETE]
@@ -272,13 +462,13 @@ instant review where is possible.
 
 # Announcement comment [/courses/{course_id}/announcements/{announce_id}/comments/{comment_id}]
 
-## Get specific comment 
+## Get specific comment [GET]
 + Response 200
 
-## Update existing comment
+## Update existing comment [PUT]
 + Response 200
 
-## Delete existing comment
+## Delete existing comment [DELETE]
 + Response 204
 
 # Group Course users
@@ -286,7 +476,42 @@ instant review where is possible.
 # Course users [/courses/{course_id}/users]
 
 ## Get all course users [GET]
-+ Response 200
++ Response 200 (application/json)
+
+        [{
+            "id": 123,
+            "role": "student|teacher"
+            "fullname": "Asen Lekov",
+            "github": "L3K0V",
+            "email": "asenlekoff@gmail.com",
+            "details" : {
+                "grade": 10,
+                "class": "A",
+                "number": 5
+            }
+        },{
+            "id": 123,
+            "role": "student|teacher"
+            "fullname": "Asen Lekov",
+            "github": "L3K0V",
+            "email": "asenlekoff@gmail.com",
+            "details" : {
+                "grade": 10,
+                "class": "A",
+                "number": 5
+            }
+        },{
+            "id": 123,
+            "role": "student|teacher"
+            "fullname": "Asen Lekov",
+            "github": "L3K0V",
+            "email": "asenlekoff@gmail.com",
+            "details" : {
+                "grade": 10,
+                "class": "A",
+                "number": 5
+            }
+        }]
 
 ## Add user to course [POST]
 + Response 201
@@ -310,7 +535,20 @@ instant review where is possible.
         }
 
 ## Modify existing course user [PUT]
-+ Response 200
++ Response 200 (application/json)
+
+        {
+            "id": 123,
+            "role": "student|teacher"
+            "fullname": "Asen Lekov",
+            "github": "L3K0V",
+            "email": "asenlekoff@gmail.com",
+            "details" : {
+                "grade": 10,
+                "class": "A",
+                "number": 5
+            }
+        }
 
 ## Delete existing course user [DELETE]
 + Response 204
@@ -319,17 +557,91 @@ instant review where is possible.
 
 # Users [/users]
 ## Get all users [GET]
-+ Response 200
++ Response 200 (aplication/json)
+
+        [{
+        "id": 123,
+            "role": "student|teacher"
+            "fullname": "Asen Lekov",
+            "github": "L3K0V",
+            "email": "asenlekoff@gmail.com",
+            "details" : {
+                "grade": 10,
+                "class": "A",
+                "number": 5
+            }
+        },{
+            "id": 123,
+            "role": "student|teacher"
+            "fullname": "Asen Lekov",
+            "github": "L3K0V",
+            "email": "asenlekoff@gmail.com",
+            "details" : {
+                "grade": 10,
+                "class": "A",
+                "number": 5
+            }
+        },{
+            "id": 123,
+            "role": "student|teacher"
+            "fullname": "Asen Lekov",
+            "github": "L3K0V",
+            "email": "asenlekoff@gmail.com",
+            "details" : {
+                "grade": 10,
+                "class": "A",
+                "number": 5
+            }
+        }]
 
 ## Create a new user [POST]
-+ Response 201
++ Response 201 (application/json)
+
+        {
+            "id": 123,
+            "role": "student|teacher"
+            "fullname": "Asen Lekov",
+            "github": "L3K0V",
+            "email": "asenlekoff@gmail.com",
+            "details" : {
+                "grade": 10,
+                "class": "A",
+                "number": 5
+            }
+        }
 
 # User [/users/{user_id}]
 ## Get specific user [GET]
-+ Response 200
++ Response 200 (application/json)
+
+        {
+            "id": 123,
+            "role": "student|teacher"
+            "fullname": "Asen Lekov",
+            "github": "L3K0V",
+            "email": "asenlekoff@gmail.com",
+            "details" : {
+                "grade": 10,
+                "class": "A",
+                "number": 5
+            }
+        }
 
 ## Edit specific user [PUT]
-+ Response 200
++ Response 200 (application/json)
+
+        {
+            "id": 123,
+            "role": "student|teacher"
+            "fullname": "Asen Lekov",
+            "github": "L3K0V",
+            "email": "asenlekoff@gmail.com",
+            "details" : {
+                "grade": 10,
+                "class": "A",
+                "number": 5
+            }
+        }
 
 ## Delete existing user [DELETE]
 + Response 204
@@ -338,7 +650,7 @@ instant review where is possible.
 
 # Login [/login]
 ## POST
-+ Response 201
++ Response 201 (appication/json)
 
         {
             "id": 123,
