@@ -431,42 +431,156 @@ instant review where is possible.
 
 + Response 200
 
+        {
+            "id": 42,
+            "author": 123,
+            "description": "бот връща gcc status, учителя пише коментар",
+            "points": 10,
+            "date": "2012-04-23T18:25:43.511Z"
+        }
+
 ## Delete existing submission review [DELETE]
 + Response 204
 
 # Group Course announcements
 
 # Announcements [/courses/{course_id}/announcements]
++ Parameters
+    + course_id: 42 (required, number) - Desired course id
+
 ## Get all course announcements [GET]
 + Response 200
 
+        [{
+            "id": 12,
+            "author": 32,
+            "announce": "Announcement text",
+            "date": "2012-04-23T18:25:43.511Z"
+        },{
+            "id": 12,
+            "author": 32,
+            "announce": "Announcement text",
+            "date": "2012-04-23T18:25:43.511Z"
+        },{
+            "id": 12,
+            "author": 32,
+            "announce": "Announcement text",
+            "date": "2012-04-23T18:25:43.511Z"
+        }]
+
 ## Create a new course announcement [POST]
++ Attriutes
+    + author: 42 (required, number) - Author's id
+    + announcement: `announce text` (required, string)
+
 + Response 201
 
+        {
+            "id": 12,
+            "author": 32,
+            "announcement": "Announcement text",
+            "date": "2012-04-23T18:25:43.511Z"
+        }
+
 # Announcement [/courses/{course_id}/announcements/{announce_id}]
++ Parameters
+    + course_id: 42 (required, number) - Desired course id
+    + announce_id: 24 (required, number) - Announcement you looking for
+
 ## Get specific course announcement [GET]
 + Response 200
 
+        {
+            "id": 12,
+            "author": 32,
+            "announcement": "Announcement text",
+            "date": "2012-04-23T18:25:43.511Z"
+        }
+
 ## Update existing course announcement [PUT]
++ Attriutes
+    + author: 42 (required, number) - Author's id
+    + announcement: `announce text` (required, string)
+
 + Response 200
+
+        {
+            "id": 12,
+            "author": 32,
+            "announcement": "Announcement text",
+            "date": "2012-04-23T18:25:43.511Z"
+        }
 
 ## Delete existing course announcement [DELETE]
 + Response 204
 
 # Annoncement comments [/courses/{course_id}/announcements/{announce_id}/comments]
++ Parameters
+    + course_id: 42 (required, number) - Desired course id
+    + announce_id: 24 (required, number) - Announcement you looking for
+
 ## Get all announcement comments [GET]
 + Response 200
 
+        [{
+            "id": 1,
+            "author": 42,
+            "comment": "Comment itself",
+            "date": "2012-04-23T18:25:43.511Z"
+        },{
+            "id": 1,
+            "author": 42,
+            "comment": "Comment itself",
+            "date": "2012-04-23T18:25:43.511Z"
+        },{
+            "id": 1,
+            "author": 42,
+            "comment": "Comment itself",
+            "date": "2012-04-23T18:25:43.511Z"
+        }]
+
 ## Create new anouncement comment [POST]
++ Attriutes
+    + author: 42 (required, number) - Author's id
+    + comment: `comment text` (required, string)
+
 + Response 201
 
+        {
+            "id": 1,
+            "author": 42,
+            "comment": "Comment itself",
+            "date": "2012-04-23T18:25:43.511Z"
+        }
+
 # Announcement comment [/courses/{course_id}/announcements/{announce_id}/comments/{comment_id}]
++ Parameters
+    + course_id: 42 (required, number) - Desired course id
+    + announce_id: 24 (required, number) - Announcement you looking for
+    + comment_id: 44 (required, number) - Announcement comment by id
 
 ## Get specific comment [GET]
 + Response 200
 
+        {
+            "id": 1,
+            "author": 42,
+            "comment": "Comment itself",
+            "date": "2012-04-23T18:25:43.511Z"
+        }
+
 ## Update existing comment [PUT]
++ Attriutes
+    + comment: `comment text` (required, string)
+
 + Response 200
+
+        {
+            "id": 1,
+            "author": 42,
+            "comment": "Comment itself",
+            "date": "2012-04-23T18:25:43.511Z"
+        }
 
 ## Delete existing comment [DELETE]
 + Response 204
@@ -474,6 +588,8 @@ instant review where is possible.
 # Group Course users
 
 # Course users [/courses/{course_id}/users]
++ Parameters
+    + course_id: 42 (required, number) - Desired course id
 
 ## Get all course users [GET]
 + Response 200 (application/json)
@@ -514,9 +630,32 @@ instant review where is possible.
         }]
 
 ## Add user to course [POST]
++ Attributes
+    + role: `student` (required, string) - User role. Can be student or teacher
+    + fullname: `Asen Lekov` (required, string)
+    + github: `L3K0V` (required, string) - Github username for this user
+    + email: `asenlekoff@gmail.com` (required, string) - User's email
+    + details: `` (optional, object) - Student's details
+
 + Response 201
 
+        {
+            "id": 123,
+            "role": "student|teacher"
+            "fullname": "Asen Lekov",
+            "github": "L3K0V",
+            "email": "asenlekoff@gmail.com",
+            "details" : {
+                "grade": 10,
+                "class": "A",
+                "number": 5
+            }
+        }
+
 # Course user [/courses/{course_id}/users/{user_id}]
++ Parameters
+    + course_id: 42 (required, number) - Desired course id
+    + user_id: 24 (required, number) - User you looking for
 
 ## Get course user [GET]
 + Response 200 (application/json)
@@ -535,6 +674,12 @@ instant review where is possible.
         }
 
 ## Modify existing course user [PUT]
++ Attributes
+    + fullname: `Asen Lekov` (optional, string)
+    + github: `L3K0V` (optional, string) - Github username for this user
+    + email: `asenlekoff@gmail.com` (optional, string) - User's email
+    + details: `` (optional, object) - Student's details
+
 + Response 200 (application/json)
 
         {
@@ -595,6 +740,13 @@ instant review where is possible.
         }]
 
 ## Create a new user [POST]
++ Attributes
+    + role: `student` (required, string) - User role. Can be student or teacher
+    + fullname: `Asen Lekov` (required, string)
+    + github: `L3K0V` (required, string) - Github username for this user
+    + email: `asenlekoff@gmail.com` (required, string) - User's email
+    + details: `` (optional, object) - Student's details
+
 + Response 201 (application/json)
 
         {
@@ -611,6 +763,9 @@ instant review where is possible.
         }
 
 # User [/users/{user_id}]
++ Parameters
+    + user_id: 42 (required, number) - Desired user id
+
 ## Get specific user [GET]
 + Response 200 (application/json)
 
