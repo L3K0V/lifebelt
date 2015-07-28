@@ -8,7 +8,7 @@ GITHUB_CLIENT_SECRET  = "your client secret goes here"
 CELERY_BROKER_URL = "sqla+sqlite:///celerydb.sqlite"
 
 # http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html#sqlite
-SQLITE_FILE = "sqlite:////tmp/lifebelt.sqlite"
+SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/lifebelt.sqlite"
 
 SECRET_KEY = "our little secret goes here"
 SESSION_SALT = "session salt goes here"

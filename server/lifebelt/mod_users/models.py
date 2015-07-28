@@ -1,8 +1,12 @@
-from app import db
-from app import app
+from lifebelt import db
+from lifebelt import app
+from lifebelt import login_serializer
+
+from flask.ext.login import UserMixin
 
 
-class Base(db.Model):
+class Base(db.Model, UserMixin):
+
     __abstract__ = True
 
     id = db.Column(db.Integer, primary_key=True)
@@ -11,15 +15,19 @@ class Base(db.Model):
 class User(Base):
     __tablename__ = 'user'
 
-    github = db.Column(db.String(48), index=True, unique=True, nullable=False)
-    github_token = db.Column(db.String(256), nullable=False)
-    email = db.Column(db.String(64), index=True, unique=True, nullable=False)
-    firstname = db.Column(db.String(32), nullable=False)
-    lastname = db.Column(db.String(32), nullable=False)
-    role = db.Column(db.String(16), nullable=False)
-    student_grade = db.Column(db.Integer, nullable=True)
-    student_class = db.Column(db.String(8), nullable=True)
-    student_number = db.Column(db.Integer, nullable=True)
+    github = db.Column(db.String(48), index=True, unique=True)
+    github_token = db.Column(db.String(256))
+    email = db.Column(db.String(64), index=True, unique=True)
+    firstname = db.Column(db.String(32))
+    lastname = db.Column(db.String(32))
+    role = db.Column(db.String(16))
+    student_grade = db.Column(db.Integer)
+    student_class = db.Column(db.String(8))
+    student_number = db.Column(db.Integer)
+
+    def get_auth_token(self):
+        data = [str(self.id), self.github_token]
+        return login_serializer.dumps(data)
 
     def to_json(self):
         result = {
