@@ -1,0 +1,24 @@
+import os
+
+GITHUB_CLIENT_ID      = "your client id goes here"
+GITHUB_CLIENT_SECRET  = "your client secret goes here"
+
+# https://celery.readthedocs.org/en/latest/getting-started/brokers/sqlalchemy.html
+CELERY_BROKER_URL = "sqla+sqlite:///celerydb.sqlite"
+
+# http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html#sqlite
+SQLITE_FILE = "sqlite:////tmp/lifebelt.sqlite"
+
+SECRET_KEY = "our little secret goes here"
+DEBUG = true
+
+# Define the application directory
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+DATA_DIR = os.path.join(BASE_DIR, 'appdata')
+DATABASE_CONNECT_OPTIONS = {}
+
+# Application threads. A common general assumption is
+# using 2 per available processor cores - to handle
+# incoming requests using one and performing background
+# operations using the other.
+THREADS_PER_PAGE = 4

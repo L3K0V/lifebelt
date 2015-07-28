@@ -1,9 +1,15 @@
 server {
     listen 80;
+    listen 443 ssl;
+    charset utf-8;
     server_name server_domain_or_IP;
+
+    ssl_certificate /etc/nginx/certs/server.pem;
+    ssl_certificate_key /etc/nginx/certs/server.key;
 
     location / {
         include uwsgi_params;
         uwsgi_pass unix:/home/user/myproject/myproject.sock;
+        uwsgi_param UWSGI_SCHEME $scheme;
     }
 }
