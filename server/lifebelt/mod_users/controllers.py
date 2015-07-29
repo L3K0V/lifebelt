@@ -49,6 +49,15 @@ def authorized(access_token):
         db.session.commit()
 
     login_user(user)
+
+    github_user = github.get('user')
+    user.github = github_user['login']
+    user.avatar_url = github_user['avatar_url']
+    user.fullname = github_user['name']
+    user.email = github_user['email']
+
+    db.session.commit()
+
     data = user.to_json()
     data['token'] = user.get_auth_token()
 
@@ -57,7 +66,7 @@ def authorized(access_token):
 
 @github.access_token_getter
 def token_getter():
-    if current_user is not None:
+    if current_user.is_authenticated():
         return current_user.github_token
 
 

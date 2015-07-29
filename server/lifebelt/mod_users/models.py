@@ -17,9 +17,9 @@ class User(Base):
 
     github = db.Column(db.String(48), index=True, unique=True)
     github_token = db.Column(db.String(256))
+    avatar_url = db.Column(db.String(256))
     email = db.Column(db.String(64), index=True, unique=True)
-    firstname = db.Column(db.String(32))
-    lastname = db.Column(db.String(32))
+    fullname = db.Column(db.String(64))
     role = db.Column(db.String(16))
     student_grade = db.Column(db.Integer)
     student_class = db.Column(db.String(8))
@@ -33,9 +33,9 @@ class User(Base):
         result = {
             'id': self.id,
             'role': self.role,
-            'firstname': self.firstname,
-            'lastname': self.lastname,
+            'fullname': self.fullname,
             'github': self.github,
+            'avatar_url': self.avatar_url,
             'email': self.email,
             'details': {
                 'grade': self.student_grade,
