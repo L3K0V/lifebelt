@@ -1,35 +1,25 @@
 'use strict';
+angular.module('lifebeltApp', [
+	'ngAnimate',
+	'ngCookies',
+	'ngResource',
+	'ngRoute',
+	'ngSanitize',
+	'ngTouch',
+	'ui.router',
+	'restangular',
+])
+.config(function($urlRouterProvider, $stateProvider) {
+	$stateProvider.state("home", {
+		url: "/",
+		views: {
+			"": {
+				templateUrl: 'scripts/frame/frame.html',
+				controller: 'MDLLoaderCtrl as mdlLoaderCtrl'
+			}
+		}
+	});
 
-/**
- * @ngdoc overview
- * @name webappApp
- * @description
- * # webappApp
- *
- * Main module of the application.
- */
-angular
-  .module('webappApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch'
-  ])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-  });
+	$urlRouterProvider.when('', '/');
+	$urlRouterProvider.otherwise("/404");
+});
