@@ -3,7 +3,7 @@ from flask import render_template, session, request, redirect, url_for, abort, j
 
 from flask.ext.github import GitHub
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.login import LoginManager, login_required, logout_user, current_user
+from flask.ext.login import LoginManager, login_required, logout_user, current_user, login_user
 
 from itsdangerous import URLSafeTimedSerializer
 
@@ -49,6 +49,12 @@ def index():
     return "<h1 style='color:blue'>Hello There!</h1>"
 
 
+@app.route('/me', methods=['GET'])
+@login_required
+def my_profile():
+    return jsonify(current_user.to_json()), 200
+
+
 @app.route('/login')
 def login():
     if session.get('user_id', None) is None:
@@ -78,6 +84,7 @@ def authorized(access_token):
         db.session.add(user)
         db.session.commit()
 
+    login_user(user)
     data = user.to_json()
     data['token'] = user.get_auth_token()
 
