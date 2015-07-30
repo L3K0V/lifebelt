@@ -5,6 +5,8 @@ from flask.ext.github import GitHub
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 
+from .decorators import requires_roles
+
 from itsdangerous import URLSafeTimedSerializer
 
 app = Flask(__name__)
@@ -18,7 +20,6 @@ login.init_app(app)
 login.session_protection = "strong"
 login_serializer = URLSafeTimedSerializer(app.secret_key, salt=app.config['SESSION_SALT'])
 
-
 from lifebelt.mod_users.models import User
 from lifebelt.mod_users.controllers import mod_users as users_mod
 
@@ -30,6 +31,18 @@ db.create_all()
 @app.route('/', methods=['GET'])
 def index():
     return "<h1 style='color:blue'>Hello There!</h1>"
+
+
+@app.route('/admin')
+@requires_roles('admin')
+def test_admin():
+    return "<h1 style='color:red'>Hello ADMIN!</h1>"
+
+
+@app.route('/teacher')
+@requires_roles('admin', 'teacher')
+def test_teacher():
+    return "<h1 style='color:red'>Hello TEACHER!</h1>"
 
 
 @app.errorhandler(401)

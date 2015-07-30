@@ -8,6 +8,7 @@ from flask import jsonify, url_for
 from flask.ext.login import current_user
 from flask.ext.login import login_user, logout_user, login_required
 
+from sqlalchemy import func
 
 mod_users = Blueprint('users', __name__, url_prefix='/users')
 login_manager = login
@@ -45,6 +46,10 @@ def authorized(access_token):
     if user is None:
         user = User()
         user.github_token = access_token
+
+        if db.session.query(func.count(User.id)).scalar() == 0:
+            user.role = 'admin'
+
         db.session.add(user)
         db.session.commit()
 
