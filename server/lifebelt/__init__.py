@@ -2,7 +2,7 @@ from flask import Flask
 from flask import render_template
 
 from flask.ext.github import GitHub
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.mongoengine import MongoEngine, MongoEngineSessionInterface
 from flask.ext.login import LoginManager, login_required
 
 from .decorators import requires_roles
@@ -13,7 +13,9 @@ app = Flask(__name__)
 app.config.from_object('config')
 
 github = GitHub(app)
-db = SQLAlchemy(app)
+db = MongoEngine(app)
+
+app.session_interface = MongoEngineSessionInterface(db)
 
 login = LoginManager()
 login.init_app(app)
@@ -22,12 +24,10 @@ login_serializer = URLSafeTimedSerializer(app.secret_key, salt=app.config['SESSI
 
 from lifebelt.mod_users.models import User
 from lifebelt.mod_users.controllers import mod_users as users_mod
-from lifebelt.mod_courses.controllers import mod_courses as courses_mod
+# from lifebelt.mod_courses.controllers import mod_courses as courses_mod
 
 app.register_blueprint(users_mod)
-app.register_blueprint(courses_mod)
-
-db.create_all()
+# app.register_blueprint(courses_mod)
 
 
 @app.route('/', methods=['GET'])

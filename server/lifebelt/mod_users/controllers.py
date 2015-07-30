@@ -4,9 +4,11 @@ from lifebelt import login, login_serializer
 from lifebelt.mod_users.models import User
 
 from flask import Blueprint, request
-from flask import jsonify, url_for
+from flask import url_for
 from flask.ext.login import current_user
 from flask.ext.login import login_user, logout_user, login_required
+
+from bson.json_util import loads, dumps
 
 from sqlalchemy import func
 
@@ -23,7 +25,6 @@ def login():
 
 
 @app.route('/logout', methods=['POST', 'GET'])
-@login_required
 def logout():
     logout_user()
     return '', 204
@@ -32,7 +33,7 @@ def logout():
 @app.route('/me', methods=['GET'])
 @login_required
 def my_profile():
-    return jsonify(current_user.to_json()), 200
+    return current_user.to_json(), 200
 
 
 @app.route('/github/callback')
@@ -42,16 +43,14 @@ def authorized(access_token):
     if access_token is None:
         return redirect(next_url), 202
 
-    user = User.query.filter_by(github_token=access_token).first()
+    user = User.objects(github_token=access_token).first()
     if user is None:
         user = User()
         user.github_token = access_token
 
-        if db.session.query(func.count(User.id)).scalar() == 0:
+        if len(User.objects) == 0:
             user.role = 'admin'
-
-        db.session.add(user)
-        db.session.commit()
+        user.save()
 
     login_user(user)
 
@@ -61,12 +60,14 @@ def authorized(access_token):
     user.fullname = github_user['name']
     user.email = github_user['email']
 
-    db.session.commit()
+    user.save()
 
-    data = user.to_json()
-    data['token'] = user.get_auth_token()
+    print(user.get_auth_token())
 
-    return jsonify(data), 201
+    json = loads(user.to_json())
+    json['token'] = user.get_auth_token()
+
+    return dumps(json)
 
 
 @github.access_token_getter
@@ -77,7 +78,7 @@ def token_getter():
 
 @login_manager.user_loader
 def load_user(userid):
-    return User.query.get(userid)
+    return User.objects.get_or_404(id=userid)
 
 
 @login_manager.request_loader
@@ -89,7 +90,7 @@ def load_user(request):
     if token is not None:
         max_age = app.config["REMEMBER_COOKIE_DURATION"].total_seconds()
         data = login_serializer.loads(token, max_age=max_age)
-        user = User.query.get(data[0])
+        user = User.objects.get_or_404(id=data[0])
         if user and user.github_token == data[1]:
             return user
     return None
