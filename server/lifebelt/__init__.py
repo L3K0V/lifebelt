@@ -3,7 +3,7 @@ from flask import render_template
 
 from flask.ext.github import GitHub
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.login import LoginManager
+from flask.ext.login import LoginManager, login_required
 
 from .decorators import requires_roles
 
@@ -22,8 +22,10 @@ login_serializer = URLSafeTimedSerializer(app.secret_key, salt=app.config['SESSI
 
 from lifebelt.mod_users.models import User
 from lifebelt.mod_users.controllers import mod_users as users_mod
+from lifebelt.mod_courses.controllers import mod_courses as courses_mod
 
 app.register_blueprint(users_mod)
+app.register_blueprint(courses_mod)
 
 db.create_all()
 
@@ -34,12 +36,14 @@ def index():
 
 
 @app.route('/admin')
+@login_required
 @requires_roles('admin')
 def test_admin():
     return "<h1 style='color:red'>Hello ADMIN!</h1>"
 
 
 @app.route('/teacher')
+@login_required
 @requires_roles('admin', 'teacher')
 def test_teacher():
     return "<h1 style='color:red'>Hello TEACHER!</h1>"
