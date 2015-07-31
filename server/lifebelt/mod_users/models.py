@@ -7,10 +7,10 @@ from flask.ext.login import UserMixin
 
 class User(UserMixin, db.Document):
 
-    github = db.StringField(max_length=32)
-    github_token = db.StringField(max_length=256)
+    github = db.StringField(max_length=32, unique=True)
+    github_token = db.StringField(max_length=256, unique=True)
     avatar_url = db.URLField(max_length=256)
-    email = db.EmailField()
+    email = db.EmailField(unique=True)
     fullname = db.StringField(max_length=64)
     role = db.StringField(max_length=16)
     student_grade = db.IntField(min_value=8, max_value=12)
