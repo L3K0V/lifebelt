@@ -1,16 +1,13 @@
-from lifebelt import app, db, github
-from lifebelt import login, login_serializer
+from lifebelt import app, db, github, login, login_serializer
 
 from lifebelt.mod_users.models import User
 
-from flask import Blueprint, request
-from flask import url_for
-from flask.ext.login import current_user
-from flask.ext.login import login_user, logout_user, login_required
+from flask import Blueprint, request, url_for
+from flask.ext.login import login_user, logout_user, login_required, current_user
 
 from bson.json_util import loads, dumps
 
-from sqlalchemy import func
+from datetime import datetime
 
 mod_users = Blueprint('users', __name__, url_prefix='/users')
 login_manager = login
@@ -39,7 +36,7 @@ def my_profile():
 @app.route('/github/callback')
 @github.authorized_handler
 def authorized(access_token):
-    next_url = request.args.get('next') or request.referrer or url_for('index')
+    next_url = request.args.get('next') or request.referrer or url_for('.index')
     if access_token is None:
         return redirect(next_url), 202
 
@@ -158,6 +155,7 @@ def edit_user(user_id):
     if s_number:
         user.update(details__number=s_number)
 
+    user.update(date_modified=datetime.now)
     user.reload()
 
     return user.to_json(), 200

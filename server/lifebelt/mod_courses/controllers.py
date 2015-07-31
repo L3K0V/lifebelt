@@ -1,13 +1,10 @@
-from lifebelt import app, db
-from lifebelt import login
+from lifebelt import db, login
 
 from lifebelt.mod_courses.models import Course
 from lifebelt.mod_users.models import User
 
 from flask import Blueprint, request
-from flask import url_for
-from flask.ext.login import current_user
-from flask.ext.login import login_user, login_required
+from flask.ext.login import current_user, login_required
 
 from datetime import datetime
 
@@ -79,6 +76,7 @@ def edit_course(course_id):
         if year:
             toEdit.update(year=year)
 
+        toEdit.update(date_modified=datetime.now)
         toEdit.reload()
 
         return toEdit.to_json(), 200

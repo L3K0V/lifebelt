@@ -1,8 +1,9 @@
 from lifebelt import db
-from lifebelt import app
 from lifebelt import login_serializer
 
 from flask.ext.login import UserMixin
+
+from datetime import datetime
 
 
 class User(UserMixin, db.Document):
@@ -15,6 +16,7 @@ class User(UserMixin, db.Document):
     role = db.StringField(max_length=16)
     details = db.DictField()
     courses = db.ListField(db.ReferenceField("Course"))
+    date_modified = db.DateTimeField(default=datetime.now)
 
     def is_authenticated(self):
         return True

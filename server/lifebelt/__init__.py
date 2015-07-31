@@ -1,13 +1,12 @@
-from flask import Flask
-from flask import render_template
+from flask import Flask, render_template
 
 from flask.ext.github import GitHub
 from flask.ext.mongoengine import MongoEngine, MongoEngineSessionInterface
 from flask.ext.login import LoginManager, login_required
 
-from .decorators import requires_roles
-
 from itsdangerous import URLSafeTimedSerializer
+
+from .decorators import requires_roles
 
 app = Flask(__name__)
 app.config.from_object('config')
