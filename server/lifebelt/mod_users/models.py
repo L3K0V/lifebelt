@@ -13,9 +13,8 @@ class User(UserMixin, db.Document):
     email = db.EmailField(unique=True)
     fullname = db.StringField(max_length=64)
     role = db.StringField(max_length=16)
-    student_grade = db.IntField(min_value=8, max_value=12)
-    student_class = db.StringField(max_length=3)
-    student_number = db.IntField(min_value=1, max_value=42)
+    details = db.DictField()
+    courses = db.ListField(db.ReferenceField("Course"))
 
     def is_authenticated(self):
         return True

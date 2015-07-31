@@ -40,9 +40,13 @@ def create_course():
     if year:
         toCreate.year = year
 
-    toCreate.teachers = [User.objects.get(id=current_user.id)]
+    toCreate.users = [{
+        'user': current_user.id,
+        'role': 'teacher'
+    }]
 
     toCreate.save()
+    User.objects(id=current_user.id).update_one(push__courses=toCreate)
 
     return toCreate.to_json(), 200
 
@@ -89,7 +93,12 @@ def delete_course(course_id):
 
 @mod_courses.route('/<course_id>/users', methods=['GET'])
 def get_course_users(course_id):
-    pass
+    res = Course.objects.get_or_404(id=course_id)
+    return User.objects(courses__in=[res]).to_json()
+
+    # Query all courses for user
+    # res = User.objects.get_or_404(id=course_id)
+    # return Course.objects(users__user__in=[res.id]).to_json()
 
 
 @mod_courses.route('/<course_id>/users', methods=['POST'])

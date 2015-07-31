@@ -9,5 +9,4 @@ class Course(db.Document):
     fullname = db.StringField(max_length=64)
     description = db.StringField(max_length=2048)
     year = db.IntField(min_value=2015)
-    students = db.ListField(db.ReferenceField(User))
-    teachers = db.ListField(db.ReferenceField(User))
+    users = db.ListField(db.DictField())
