@@ -98,14 +98,72 @@ def load_user(request):
 
 @mod_users.route('', methods=['GET'])
 def get_all_users():
-    pass
+    return User.objects.all().to_json()
 
 
 @mod_users.route('', methods=['POST'])
 def create_user():
-    pass
+    github = request.json.get('github')
+    fullname = request.json.get('fullname')
+    email = request.json.get('email')
+    role = request.json.get('role') or 'student'
+    s_grade = request.json.get('grade')
+    s_class = request.json.get('class')
+    s_number = request.json.get('number')
+
+    user = User()
+    user.github = github
+    user.fullname = fullname
+    user.email = email
+    user.role = role
+    user.details = {
+        'class': s_class,
+        'grade': s_grade,
+        'number': s_number
+    }
+
+    user.save()
+    return user.to_json(), 200
 
 
-@mod_users.route('<int:id>', methods=['GET', 'PUT', 'DELETE'])
-def user(id):
-    pass
+@mod_users.route('/<user_id>', methods=['GET'])
+def get_user(user_id):
+    return User.objects.get_or_404(id=user_id).to_json()
+
+
+@mod_users.route('/<user_id>', methods=['PUT'])
+def edit_user(user_id):
+    github = request.json.get('github')
+    fullname = request.json.get('fullname')
+    email = request.json.get('email')
+    role = request.json.get('role') or 'student'
+    s_grade = request.json.get('grade')
+    s_class = request.json.get('class')
+    s_number = request.json.get('number')
+
+    user = User.objects.get_or_404(id=user_id)
+
+    if github:
+        user.update(github=github)
+    if fullname:
+        user.update(fullname=fullname)
+    if email:
+        user.update(email=email)
+    if role:
+        user.update(role=role)
+    if s_grade:
+        user.update(details__grade=s_grade)
+    if s_class:
+        user.update(details__class=s_class)
+    if s_number:
+        user.update(details__number=s_number)
+
+    user.reload()
+
+    return user.to_json(), 200
+
+
+@mod_users.route('/<user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    User.objects.get_or_404(id=user_id).delete()
+    return '', 204

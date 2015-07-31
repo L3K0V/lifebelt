@@ -9,6 +9,8 @@ from flask import url_for
 from flask.ext.login import current_user
 from flask.ext.login import login_user, login_required
 
+from datetime import datetime
+
 from ..decorators import requires_roles
 
 mod_courses = Blueprint('courses', __name__, url_prefix='/courses')
@@ -27,7 +29,7 @@ def create_course():
     initials = request.json.get('initials')
     fullname = request.json.get('fullname')
     description = request.json.get('description')
-    year = request.json.get('year')
+    year = request.json.get('year') or datetime.now().year
 
     toCreate = Course()
 
@@ -37,9 +39,8 @@ def create_course():
         toCreate.fullname = fullname
     if description:
         toCreate.description = description
-    if year:
-        toCreate.year = year
 
+    toCreate.year = year
     toCreate.users = [{
         'user': current_user.id,
         'role': 'teacher'
