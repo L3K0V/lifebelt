@@ -4,15 +4,15 @@ angular.module("lifebeltApp").config(function($stateProvider) {
 	$stateProvider.state("home", {
 		url: "/",
 		views: {
-			"": {
-				templateUrl: "scripts/frame/frame.html",
-				controller: "MDLLoaderCtrl as mdlLoaderCtrl"
-			},
-			"drawer@home": {
+			"drawer": {
 				templateUrl: "scripts/home/drawer.html"
 			},
-			"header@home": {
-				templateUrl: "scripts/home/header.html"
+			"header": {
+				templateUrl: "scripts/home/header.html",
+				controller: "HomeHeaderCtrl as homeHeaderCtrl"
+			},
+			"content": {
+				templateUrl: "scripts/home/content.html"
 			}
 		}
 	});

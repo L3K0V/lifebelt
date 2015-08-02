@@ -9,7 +9,7 @@
 	
 	<!-- build:css(.) styles/vendor.css -->
 	<!-- bower:css -->
-	<link rel="stylesheet" href="bower_components/material-design-lite/material.min.css" />
+	<link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
 	<!-- endbower -->
 	<!-- endbuild -->
 
@@ -31,14 +31,18 @@
 	}
 	</style>
 </head>
-<body data-ng-app="lifebeltApp">
+<body layout="row" data-ng-app="lifebeltApp">
 	<!--[if lte IE 8]>
 	  <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 	<![endif]-->
 
 	<!-- Add your site or application content here -->
 
-	<div data-ui-view=""></div>
+	<md-sidenav md-component-id="sidenav-left" class="md-sidenav-left md-whiteframe-z2" md-is-locked-open="$mdMedia('gt-sm')" data-ui-view="drawer"></md-sidenav>
+	<div flex layout="column" tabindex="-1" role="main" class="md-whiteframe-z2">
+		<md-toolbar class="md-tall" data-ui-view="header"></md-toolbar>
+		<md-content layout-padding data-ui-view="content"></md-content>
+	</div>
 
 	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 	 <!-- <script>
@@ -60,17 +64,18 @@
 	<script src="bower_components/angular-route/angular-route.js"></script>
 	<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 	<script src="bower_components/angular-touch/angular-touch.js"></script>
-	<script src="bower_components/material-design-lite/material.min.js"></script>
 	<script src="bower_components/ui-router/release/angular-ui-router.js"></script>
 	<script src="bower_components/lodash/lodash.js"></script>
 	<script src="bower_components/restangular/dist/restangular.js"></script>
+	<script src="bower_components/angular-aria/angular-aria.js"></script>
+	<script src="bower_components/angular-material/angular-material.js"></script>
 	<!-- endbower -->
 	<!-- endbuild -->
 
 	<!-- build:js({.tmp,app}) scripts/scripts.js -->
 	<script src="scripts/app.js"></script>
-	<script src="scripts/frame/MDLLoaderCtrl.js"></script>
 	<script src="scripts/home/homeConfig.js"></script>
+	<script src="scripts/home/homeHeaderCtrl.js"></script>
 	<!-- endbuild -->
 </body>
 </html>

@@ -29,10 +29,11 @@ module.exports = function(config) {
       "app/bower_components/angular-route/angular-route.js",
       "app/bower_components/angular-sanitize/angular-sanitize.js",
       "app/bower_components/angular-touch/angular-touch.js",
-      "app/bower_components/material-design-lite/material.min.js",
       "app/bower_components/ui-router/release/angular-ui-router.js",
       "app/bower_components/lodash/lodash.js",
       "app/bower_components/restangular/dist/restangular.js",
+      "app/bower_components/angular-aria/angular-aria.js",
+      "app/bower_components/angular-material/angular-material.js",
       "app/bower_components/angular-mocks/angular-mocks.js",
       // endbower
       "app/scripts/**/*.js",
