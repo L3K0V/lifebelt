@@ -1,5 +1,7 @@
 from lifebelt import db, login
 
+from lifebelt.mod_courses.models import Course
+
 from flask import Blueprint
 
 mod_announcements = Blueprint('announcements', __name__, url_prefix='/courses')

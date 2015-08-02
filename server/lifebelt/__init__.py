@@ -24,9 +24,11 @@ login_serializer = URLSafeTimedSerializer(app.secret_key, salt=app.config['SESSI
 from lifebelt.mod_users.models import User
 from lifebelt.mod_users.controllers import mod_users as users_mod
 from lifebelt.mod_courses.controllers import mod_courses as courses_mod
+from lifebelt.mod_assignments.controllers import mod_assignments as assignments_mod
 
 app.register_blueprint(users_mod)
 app.register_blueprint(courses_mod)
+app.register_blueprint(assignments_mod)
 
 
 @app.route('/', methods=['GET'])

@@ -1,5 +1,8 @@
 from lifebelt import db, login
 
+from lifebelt.mod_courses.models import Course
+from lifebelt.mod_assignments.models import Assignment
+
 from flask import Blueprint
 
 mod_assignments = Blueprint('assignments', __name__, url_prefix='/courses')
@@ -76,7 +79,7 @@ def attach_submission_file(course_id, ass_id, sub_id):
 
 
 @mod_assignments.route('/<course_id>/assignemnts/<ass_id>/submissions/<sub_id>/status', methods=['GET'])
-def get_submission_files(course_id, ass_id, sub_id):
+def get_submission_status(course_id, ass_id, sub_id):
     pass
 
 

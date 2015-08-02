@@ -1,6 +1,7 @@
 from lifebelt import db
 
 from lifebelt.mod_users.models import User
+from lifebelt.mod_assignments.models import Assignment
 
 from datetime import datetime
 
@@ -12,3 +13,5 @@ class Course(db.Document):
     year = db.IntField(min_value=2015)
     users = db.ListField(db.DictField())
     date_modified = db.DateTimeField(default=datetime.now)
+
+    assignments = db.EmbeddedDocumentListField(Assignment)
