@@ -3,43 +3,49 @@ from lifebelt import db, login
 from lifebelt.mod_courses.models import Course
 from lifebelt.mod_assignments.models import Assignment
 
-from flask import Blueprint
+from flask import g
+from flask import Blueprint, request
+
+from bson.json_util import loads, dumps
 
 mod_assignments = Blueprint('assignments', __name__, url_prefix='/courses')
 
 
-@mod_assignments.url_defaults
-def add_resources(endpoint, values):
-    pass  # http://flask.pocoo.org/docs/0.10/patterns/urlprocessors/
-
-
-@mod_assignments.url_value_preprocessor
-def pull_resources(endpoint, values):
-    pass  # http://flask.pocoo.org/docs/0.10/patterns/urlprocessors/
-
-
 @mod_assignments.route('/<course_id>/assignments', methods=['GET'])
 def get_all_course_assignments(course_id):
-    pass
+    c = Course.objects.get_or_404(id=course_id)
+    json = loads(c.to_json())
+    return dumps(json['assignments'])
 
 
-@mod_assignments.route('/<course_id>/assignemnts', methods=['POST'])
+@mod_assignments.route('/<course_id>/assignments', methods=['POST'])
 def create_new_course_assignemnt(course_id):
+    name = request.json.get('name')
+    description = request.json.get('description')
+    type = request.json.get('type')
+
+    ass = Assignment()
+    ass.name = name
+    ass.description = description
+    ass.type = type
+
+    Course.objects.get_or_404(id=course_id).update_one(push__assignments=ass)
+
+    return ass.to_json()
+
+
+@mod_assignments.route('/<course_id>/assignments/<int:ass_index>', methods=['GET'])
+def get_course_assignment_by_index(course_id, ass_index):
+    return Course.objects.get_or_404(id=course_id).assignments[ass_index].to_json()
+
+
+@mod_assignments.route('/<course_id>/assignemnts/<ass_index>', methods=['PUT'])
+def edit_curse_assignemnt_by_index(course_id, ass_id):
     pass
 
 
-@mod_assignments.route('/<course_id>/assignemnts/<ass_id>', methods=['GET'])
-def get_course_assignment(course_id, ass_id):
-    pass
-
-
-@mod_assignments.route('/<course_id>/assignemnts/<ass_id>', methods=['PUT'])
-def edit_curse_assignemnt(course_id, ass_id):
-    pass
-
-
-@mod_assignments.route('/<course_id>/assignemnts/<ass_id>', methods=['DELETE'])
-def delete_course_assignment(course_id, ass_id):
+@mod_assignments.route('/<course_id>/assignemnts/<ass_index>', methods=['DELETE'])
+def delete_course_assignment_by_index(course_id, ass_id):
     pass
 
 
