@@ -5,7 +5,8 @@ angular.module("lifebeltApp").config(function($stateProvider) {
 		url: "/",
 		views: {
 			"drawer": {
-				templateUrl: "scripts/home/drawer.html"
+				templateUrl: "scripts/home/drawer.html",
+				controller: "HomeDrawerCtrl as homeDrawerCtrl"
 			},
 			"header": {
 				templateUrl: "scripts/home/header.html",

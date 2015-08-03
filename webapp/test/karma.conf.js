@@ -34,6 +34,7 @@ module.exports = function(config) {
       "app/bower_components/restangular/dist/restangular.js",
       "app/bower_components/angular-aria/angular-aria.js",
       "app/bower_components/angular-material/angular-material.js",
+      "app/bower_components/satellizer/satellizer.js",
       "app/bower_components/angular-mocks/angular-mocks.js",
       // endbower
       "app/scripts/**/*.js",
