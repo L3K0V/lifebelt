@@ -28,23 +28,23 @@ def create_course():
     description = request.json.get('description')
     year = request.json.get('year') or datetime.now().year
 
-    toCreate = Course()
+    c = Course()
 
     if initials:
-        toCreate.initials = initials
+        c.initials = initials
     if fullname:
-        toCreate.fullname = fullname
+        c.fullname = fullname
     if description:
-        toCreate.description = description
+        c.description = description
 
-    toCreate.year = year
-    toCreate.users = [{
+    c.year = year
+    c.users = [{
         'user': current_user.id,
         'role': 'teacher'
     }]
 
-    toCreate.save()
-    User.objects(id=current_user.id).update_one(push__courses=toCreate)
+    c.save()
+    User.objects(id=current_user.id).update_one(push__courses=c)
 
     return toCreate.to_json(), 200
 
@@ -65,21 +65,20 @@ def edit_course(course_id):
         description = request.json.get('description')
         year = request.json.get('year')
 
-        toEdit = Course.objects.get_or_404(id=course_id)
+        c = Course.objects.get_or_404(id=course_id)
 
         if initials:
-            toEdit.update(initials=initials)
+            c.update(initials=initials)
         if fullname:
-            toEdit.update(fullname=fullname)
+            c.update(fullname=fullname)
         if description:
-            toEdit.update(description=description)
+            c.update(description=description)
         if year:
-            toEdit.update(year=year)
+            c.update(year=year)
 
-        toEdit.update(date_modified=datetime.now)
-        toEdit.reload()
+        c.reload()
 
-        return toEdit.to_json(), 200
+        return c.to_json(), 200
 
 
 @mod_courses.route('/<course_id>', methods=['DELETE'])

@@ -155,7 +155,6 @@ def edit_user(user_id):
     if s_number:
         user.update(details__number=s_number)
 
-    user.update(date_modified=datetime.now)
     user.reload()
 
     return user.to_json(), 200

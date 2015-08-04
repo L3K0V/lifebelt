@@ -16,7 +16,15 @@ class User(UserMixin, db.Document):
     role = db.StringField(max_length=16)
     details = db.DictField()
     courses = db.ListField(db.ReferenceField("Course"))
+
+    date_created = db.DateTimeField()
     date_modified = db.DateTimeField(default=datetime.now)
+
+    def save(self, *args, **kwargs):
+        if not self.creation_date:
+            self.creation_date = datetime.now()
+        self.modified_date = datetime.now()
+        return super(Course, self).save(*args, **kwargs)
 
     def is_authenticated(self):
         return True

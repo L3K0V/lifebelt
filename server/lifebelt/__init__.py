@@ -1,9 +1,10 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, session
 
 from flask.ext.github import GitHub
 from flask.ext.mongoengine import MongoEngine, MongoEngineSessionInterface
 from flask.ext.login import LoginManager, login_required
 
+from uuid import uuid4
 from itsdangerous import URLSafeTimedSerializer
 
 from .decorators import requires_roles
@@ -48,6 +49,20 @@ def test_admin():
 @requires_roles('admin', 'teacher')
 def test_teacher():
     return "<h1 style='color:red'>Hello TEACHER!</h1>"
+
+
+@app.before_request
+def _csrf_protect():
+    if request.method == 'POST' or request.method == 'PUT' or request.method == 'DELETE':
+        csrf_token = session.pop('_csrf_token', None)
+        if not csrf_token or csrf_token != request.json.get('_csrf_token'):
+            abort(400)
+
+
+def generate_csrf_token():
+    if '_csrf_token' not in session:
+        session['_csrf_token'] = str(uuid4())
+    return session['_csrf_token']
 
 
 @app.errorhandler(401)
