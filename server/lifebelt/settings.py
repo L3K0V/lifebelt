@@ -37,6 +37,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'lifebelt.apps.core.users',
+    'lifebelt.apps.core.courses'
 )
 
 MIDDLEWARE_CLASSES = (
