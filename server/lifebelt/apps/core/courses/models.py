@@ -30,3 +30,29 @@ class Assignment(models.Model):
     target = models.CharField(max_length=16)
 
     course = models.ForeignKey(Course)
+
+
+class AssignmentSubmission(models.Model):
+    assignment = models.ForeignKey(Assignment)
+    author = models.ForeignKey(Member)
+
+    submitted_on = models.DateTimeField(auto_now_add=True)
+    pull_request = models.PositiveSmallIntegerField()
+    grade = models.PositiveSmallIntegerField()
+    description = models.CharField(max_length=256)
+
+
+class SubmissionFile(models.Model):
+    submission = models.ForeignKey(AssignmentSubmission)
+
+    file = models.FileField()
+    sha = models.CharField(max_length=1024)
+
+
+class SubmissionReview(models.Model):
+    submission = models.ForeignKey(AssignmentSubmission)
+    author = models.ForeignKey(Member)
+
+    description = models.TextField()
+    points = models.PositiveSmallIntegerField()
+    reviewed_on = models.DateTimeField(auto_now_add=True)
