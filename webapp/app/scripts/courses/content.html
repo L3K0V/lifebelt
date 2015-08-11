@@ -1,18 +1,10 @@
-<md-card>
+<md-card data-ng-repeat="course in coursesContentCtrl.courses">
 	<md-card-content>
-		<h2>Card headline</h2>
-		<p>Card content</p>
+		<h2>{{ course.fullname }}</h2>
+		<p>{{ course.description }}</p>
 	</md-card-content>
-	<md-card-footer>Card footer</md-card-footer>
 	<div class="md-actions" layout="row" layout-align="end center">
 		<md-button>Action 1</md-button>
 		<md-button>Action 2</md-button>
 	</div>
 </md-card>
-
-<p>Home page content:</p>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent pharetra lorem et tristique interdum. Morbi mauris turpis, lobortis in ipsum nec, ultricies auctor diam. Vivamus volutpat tempus egestas. Etiam a nisl blandit, pulvinar velit in, placerat mauris. Quisque fringilla, lectus eget aliquam tempor, tellus dolor vehicula sapien, quis porta felis magna eget ligula. Vestibulum auctor erat at sapien ornare, vitae facilisis justo bibendum. Sed ornare ornare commodo. Suspendisse auctor iaculis lectus eu malesuada. Nam imperdiet, odio auctor pellentesque vestibulum, metus diam fringilla lacus, eget semper ipsum sem vitae sapien. Nullam convallis, arcu et sodales hendrerit, nisl leo rhoncus metus, at gravida ipsum neque sit amet mauris.</p>
-<p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam in dignissim elit. Suspendisse ac lacus ultrices, maximus diam in, finibus lacus. Nullam ut gravida nisi, non tempor tellus. Duis feugiat porta ultrices. Maecenas ac lectus lectus. Vestibulum porttitor convallis lacus, nec viverra eros fermentum id. Proin ac erat ut ex molestie eleifend vitae quis urna.</p>
-<p>Nulla quis convallis tellus. In nisl metus, auctor eget est ut, malesuada rhoncus massa. In elementum eleifend mattis. Donec finibus imperdiet mi vel faucibus. Nunc eget felis ac purus posuere volutpat vitae quis sem. Duis vitae lacus fringilla, molestie sapien eget, auctor enim. Nunc pharetra neque eget augue scelerisque, vel imperdiet neque egestas. Fusce eget odio hendrerit, pretium lectus sit amet, vulputate dui. Duis porttitor consequat arcu, eget ultrices quam porttitor eu.</p>
-<p>Mauris sollicitudin felis at dignissim suscipit. Pellentesque sem diam, scelerisque in faucibus hendrerit, pellentesque nec turpis. Ut venenatis non dolor ut tempor. Duis vehicula elit fringilla, commodo enim ut, vestibulum erat. Integer at libero mauris. Curabitur at magna at quam suscipit bibendum. Nam aliquam aliquam mi. Duis ac lorem ex. Aenean tempor nibh nec turpis interdum, a efficitur leo placerat. Sed viverra magna quis sodales scelerisque. Nullam eu est eu urna accumsan porttitor. Morbi euismod mi et ante euismod aliquam. Morbi hendrerit mollis mauris quis facilisis. Aliquam non egestas elit.</p>
-<p>Aenean mattis lorem at libero dictum, sed molestie est suscipit. Duis feugiat, justo nec elementum rutrum, nunc ipsum auctor nisi, sed sollicitudin leo mi vel lorem. Integer consequat augue eget est tempor, in porta magna sodales. In interdum orci lectus, sed facilisis metus venenatis quis. Nam malesuada felis libero, id ultrices felis interdum quis. Integer ornare eros libero, quis dapibus diam hendrerit ac. Nulla ornare urna est, quis efficitur enim vehicula nec. Phasellus mi nisl, interdum sed aliquet sed, feugiat a augue. Cras pellentesque porta placerat. Cras vel dui in dui aliquet mattis.</p>

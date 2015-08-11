@@ -5,7 +5,6 @@ angular.module("lifebeltApp").controller("CoursesDrawerCtrl", function(LoginServ
 
 	function initState() {
 		LoginService.login().then(function(user) {
-			console.log(user);
 			controller.user = user;
 		});
 	}
