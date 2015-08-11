@@ -11,9 +11,11 @@ angular.module("lifebeltApp", [
 	"ngMaterial",
 	"satellizer"
 ])
-.config(function($urlRouterProvider, $mdThemingProvider, $authProvider) {
+.config(function($urlRouterProvider, $mdThemingProvider, $authProvider, RestangularProvider) {
 	$urlRouterProvider.when("", "/");
 	$urlRouterProvider.otherwise("/404");
+
+	RestangularProvider.setBaseUrl("http://private-c4ed34-lifebelt.apiary-mock.com");
 
 	$mdThemingProvider.theme("default").primaryPalette("indigo").accentPalette("pink");
 

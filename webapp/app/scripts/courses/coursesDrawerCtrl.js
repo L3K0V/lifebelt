@@ -1,12 +1,13 @@
-angular.module("lifebeltApp").controller("CoursesDrawerCtrl", function() {
+angular.module("lifebeltApp").controller("CoursesDrawerCtrl", function(LoginService) {
 	"use strict";
 
 	var controller = this;
 
 	function initState() {
-		// dummy data
-		controller.username = "John Doe";
-		controller.avatarUrl = "";
+		LoginService.login().then(function(user) {
+			console.log(user);
+			controller.user = user;
+		});
 	}
 
 	initState();
