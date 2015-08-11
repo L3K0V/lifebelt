@@ -1,12 +1,23 @@
-<md-toolbar class="md-whiteframe-z1">
+<md-toolbar data-ng-show="coursesDrawerCtrl.user"class="md-whiteframe-z1">
 	<div class="md-toolbar-tools">
-		<h5>{{ coursesDrawerCtrl.username }}</h5>
+		<span flex></span>
+	</div>
+	<div class="md-toolbar-tools">
+		<img class="user-avatar" data-ng-src="{{ coursesDrawerCtrl.user.avatar_url }}" alt="{{ coursesDrawerCtrl.user.fullname }}"/>&nbsp;&nbsp;&nbsp;<h5>{{ coursesDrawerCtrl.user.fullname }}</h5>
 	</div>
 </md-toolbar>
 <md-list>
 	<md-list-item class="md-ink-ripple">
-		<md-button class="md-no-style">My courses</md-button>
-		<md-button class="md-no-style">My courses</md-button>
-		<md-button class="md-no-style">My courses</md-button>
+		<md-button class="md-no-style">My courses 1</md-button>
 	</md-list-item>
+		<md-list-item class="md-ink-ripple">
+		<md-button class="md-no-style">My courses 2</md-button>
+	</md-list-item>
+		<md-list-item class="md-ink-ripple">
+		<md-button class="md-no-style">My courses 3</md-button>
+	</md-list-item>
+		<md-list-item class="md-ink-ripple">
+		<md-button class="md-no-style">My courses 4</md-button>
+	</md-list-item>
+
 </md-list>
