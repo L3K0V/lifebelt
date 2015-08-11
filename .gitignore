@@ -47,8 +47,14 @@ coverage.xml
 *.mo
 *.pot
 
-# Django stuff:
+# Created by https://www.gitignore.io
+
+### Django ###
 *.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
 
 # Sphinx documentation
 docs/_build/
