@@ -29,7 +29,7 @@ class Assignment(models.Model):
     end = models.DateTimeField()
     target = models.CharField(max_length=16)
 
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course, related_name='assignments')
 
 
 class AssignmentSubmission(models.Model):
