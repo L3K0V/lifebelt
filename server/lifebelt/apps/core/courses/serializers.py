@@ -6,6 +6,7 @@ from lifebelt.apps.core.courses.models import Course, Membership, Assignment, As
 class CourseSerializer(serializers.HyperlinkedModelSerializer):
     members = serializers.HyperlinkedRelatedField(
         many=True,
+        read_only=False,
         queryset=Membership.objects.all().order_by('-id'),
         view_name='membership-detail'
     )
@@ -19,13 +20,13 @@ class CourseSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Course
-        fields = ('initials', 'full_name', 'description', 'year', 'members', 'assignments', 'created_date', 'modified_date')
+        fields = ('id', 'initials', 'full_name', 'description', 'year', 'members', 'assignments', 'created_date', 'modified_date')
 
 
 class AssignmentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Assignment
-        fields = ('name', 'description', 'assignemnt_type', 'start', 'end', 'target')
+        fields = ('id', 'name', 'description', 'assignemnt_type', 'start', 'end', 'target')
 
 
 class AssignmentSubmissionSerializer(serializers.HyperlinkedModelSerializer):

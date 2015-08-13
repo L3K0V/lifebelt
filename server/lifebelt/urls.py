@@ -16,20 +16,24 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from rest_framework import routers
+from rest_framework_nested import routers
 from lifebelt.apps.core.courses.views import CourseViewSet, AssignmentViewSet,\
     AssignmentSubmissionViewSet, SubmissionFileViewSet
 from lifebelt.apps.core.users.views import MemberViewSet
 
-router = routers.DefaultRouter()
-router.register(r'courses', CourseViewSet)
-router.register(r'assignments', AssignmentViewSet)
-router.register(r'submissions', AssignmentSubmissionViewSet)
-router.register(r'files', SubmissionFileViewSet)
-router.register(r'members', MemberViewSet)
+router = routers.SimpleRouter()
+router.register(r'courses', CourseViewSet, base_name='courses')
+router.register(r'members', MemberViewSet, base_name='members')
+
+courses_router = routers.NestedSimpleRouter(router, r'courses', lookup='course')
+courses_router.register(r'assignments', AssignmentViewSet)
+
+assignments_router = routers.NestedSimpleRouter(courses_router, r'assignments', lookup='assignment')
+assignments_router.register(r'submissions', AssignmentSubmissionViewSet, base_name='submissions')
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include(router.urls)),
-
+    url(r'^', include(courses_router.urls)),
+    url(r'^', include(assignments_router.urls))
 ]
