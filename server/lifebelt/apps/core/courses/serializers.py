@@ -1,6 +1,14 @@
 from rest_framework import serializers
 
 from lifebelt.apps.core.courses.models import Course, Membership, Assignment, AssignmentSubmission, SubmissionFile
+from lifebelt.apps.core.users.serializers import MemberSerializer
+
+
+class MembershipSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        member = MemberSerializer
+        model = Membership
+        fields = ('member', 'role')
 
 
 class CourseSerializer(serializers.HyperlinkedModelSerializer):

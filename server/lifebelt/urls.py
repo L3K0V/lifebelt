@@ -18,7 +18,7 @@ from django.contrib import admin
 
 from rest_framework_nested import routers
 from lifebelt.apps.core.courses.views import CourseViewSet, AssignmentViewSet,\
-    AssignmentSubmissionViewSet, SubmissionFileViewSet
+    AssignmentSubmissionViewSet, SubmissionFileViewSet, MembershipViewSet
 from lifebelt.apps.core.users.views import MemberViewSet
 
 router = routers.SimpleRouter()
@@ -27,6 +27,7 @@ router.register(r'members', MemberViewSet, base_name='members')
 
 courses_router = routers.NestedSimpleRouter(router, r'courses', lookup='course')
 courses_router.register(r'assignments', AssignmentViewSet)
+courses_router.register(r'memberships', MembershipViewSet)
 
 assignments_router = routers.NestedSimpleRouter(courses_router, r'assignments', lookup='assignment')
 assignments_router.register(r'submissions', AssignmentSubmissionViewSet, base_name='submissions')
