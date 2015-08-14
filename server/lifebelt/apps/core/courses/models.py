@@ -9,7 +9,7 @@ class Course(models.Model):
     description = models.TextField()
     year = models.PositiveSmallIntegerField()
 
-    members = models.ManyToManyField(Member, through='Membership')
+    members = models.ManyToManyField(Member, through='Membership', related_name="memberships")
 
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
