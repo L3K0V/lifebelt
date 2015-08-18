@@ -13,6 +13,12 @@ class MemberSerializer(serializers.HyperlinkedModelSerializer):
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
 
+    courses = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='courses-detail'
+    )
+
     class Meta:
         model = Member
         fields = ('id', 'first_name', 'last_name', 'email', 'role', 'courses', 'github', 'github_token', 'avatar_url')
