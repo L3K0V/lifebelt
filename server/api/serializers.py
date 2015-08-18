@@ -5,6 +5,7 @@ from rest_framework import serializers
 from api.models import Member
 from api.models import Course
 from api.models import Membership
+from api.models import CourseAssignment
 
 
 class MemberSerializer(serializers.HyperlinkedModelSerializer):
@@ -89,3 +90,16 @@ class MembershipSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Membership
         fields = ('id', 'course', 'member', 'role')
+
+
+class CourseAssignmentSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = CourseAssignment
+        fields = ('id', 'name', 'description', 'assignment_type', 'start', 'end', 'target')
+
+    def create(self, validated_data):
+        course = Course.objects.get(pk=self.context.get('course_pk'))
+
+        assignment = CourseAssignment.objects.create(course=course, **validated_data)
+
+        return assignment

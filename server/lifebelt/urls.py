@@ -5,6 +5,7 @@ from rest_framework_nested import routers
 from api.views import MemberViewSet
 from api.views import CourseViewSet
 from api.views import MembershipViewSet
+from api.views import CourseAssignmentViewSet
 
 
 router = routers.SimpleRouter()
@@ -13,6 +14,7 @@ router.register(r'courses', CourseViewSet, base_name='courses')
 
 courses_router = routers.NestedSimpleRouter(router, r'courses', lookup='course')
 courses_router.register(r'memberships', MembershipViewSet, base_name='memberships')
+courses_router.register(r'assignments', CourseAssignmentViewSet, base_name='assignments')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

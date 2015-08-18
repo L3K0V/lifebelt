@@ -65,7 +65,7 @@ class CourseAssignment(models.Model):
 
     name = models.CharField(max_length=48)
     description = models.TextField()
-    assignemnt_type = models.CharField(max_length=1, choices=ASSIGNMENT_TYPE, default=HOMEWORK)
+    assignment_type = models.CharField(max_length=1, choices=ASSIGNMENT_TYPE, default=HOMEWORK)
     start = models.DateTimeField(auto_now_add=True)
     end = models.DateTimeField()
     target = models.CharField(max_length=3, choices=ASSIGNMENT_TARGET, default=ALL)
