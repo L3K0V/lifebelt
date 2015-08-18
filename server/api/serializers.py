@@ -6,6 +6,7 @@ from api.models import Member
 from api.models import Course
 from api.models import Membership
 from api.models import CourseAssignment
+from api.models import AssignmentSubmission
 
 
 class MemberSerializer(serializers.HyperlinkedModelSerializer):
@@ -103,3 +104,17 @@ class CourseAssignmentSerializer(serializers.HyperlinkedModelSerializer):
         assignment = CourseAssignment.objects.create(course=course, **validated_data)
 
         return assignment
+
+
+class AssignmentSubmissionSerializer(serializers.HyperlinkedModelSerializer):
+        class Meta:
+            model = AssignmentSubmission
+            fields = ('id', 'submitted_on', 'pull_request', 'grade', 'description')
+
+        def create(self, validated_data):
+            assignment = CourseAssignment.objects.get(pk=self.context.get('assignment_pk'))
+            author = Member.objects.get(pk=1)
+
+            submission = AssignmentSubmission.objects.create(assignment=assignment, author=author, **validated_data)
+
+            return submission

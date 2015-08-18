@@ -16,6 +16,9 @@ from api.models import Membership
 from api.serializers import CourseAssignmentSerializer
 from api.models import CourseAssignment
 
+from api.serializers import AssignmentSubmissionSerializer
+from api.models import AssignmentSubmission
+
 
 class MemberViewSet(viewsets.ModelViewSet):
     queryset = Member.objects.all().order_by('-id')
@@ -81,3 +84,26 @@ class CourseAssignmentViewSet(viewsets.ModelViewSet):
         assignment = get_object_or_404(queryset, pk=pk)
         serializer = CourseAssignmentSerializer(assignment, context={'request': request})
         return response.Response(serializer.data)
+
+
+class AssignmentSubmissionViewSet(viewsets.ModelViewSet):
+    serializer_class = AssignmentSubmissionSerializer
+
+    def list(self, request, course_pk=None, assignment_pk=None):
+        queryset = AssignmentSubmission.objects.filter(assignment__course=course_pk, assignment=assignment_pk)
+        serializer = AssignmentSubmissionSerializer(queryset, many=True)
+        return response.Response(serializer.data)
+
+    def retrieve(self, request, pk=None, course_pk=None, assignment_pk=None):
+        queryset = AssignmentSubmission.objects.filter(pk=pk, assignment__course=course_pk, assignment=assignment_pk)
+        submission = get_object_or_404(queryset, pk=pk)
+        serializer = AssignmentSubmissionSerializer(submission)
+        return response.Response(serializer.data)
+
+    def create(self, request, course_pk=None, assignment_pk=None):
+        context = {'request': request, 'course_pk': course_pk, 'assignment_pk': assignment_pk}
+        serializer = AssignmentSubmissionSerializer(context=context, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

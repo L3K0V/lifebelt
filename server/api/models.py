@@ -78,9 +78,9 @@ class AssignmentSubmission(models.Model):
     author = models.ForeignKey(Member)
 
     submitted_on = models.DateTimeField(auto_now_add=True)
-    pull_request = models.PositiveSmallIntegerField()
-    grade = models.PositiveSmallIntegerField()
-    description = models.CharField(max_length=256)
+    pull_request = models.PositiveSmallIntegerField(blank=True, null=True)
+    grade = models.PositiveSmallIntegerField(default=0)
+    description = models.CharField(max_length=256, blank=True)
 
 
 class SubmissionReview(models.Model):
