@@ -15,11 +15,10 @@ class MemberSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Member
-        fields = ('id', 'first_name', 'last_name', 'email', 'role', 'github', 'github_token', 'avatar_url')
+        fields = ('id', 'first_name', 'last_name', 'email', 'role', 'courses', 'github', 'github_token', 'avatar_url')
         lookup_field = 'github'
 
     def update(self, instance, validated_data):
-        # user = User.objects.get(pk = instance.user.pk);
         user = instance.user
         user.username = validated_data.get('user.email', user.email)
         user.email = validated_data.get('user.email', user.email)
