@@ -4,6 +4,8 @@ from rest_framework import viewsets
 from rest_framework import response
 from rest_framework import status
 
+from rest_framework.parsers import FormParser, MultiPartParser
+
 from api.serializers import MemberSerializer
 from api.models import Member
 
@@ -18,6 +20,9 @@ from api.models import CourseAssignment
 
 from api.serializers import AssignmentSubmissionSerializer
 from api.models import AssignmentSubmission
+
+from api.serializers import SubmissionFileSerializer
+from api.models import SubmissionFile
 
 
 class MemberViewSet(viewsets.ModelViewSet):
@@ -103,6 +108,30 @@ class AssignmentSubmissionViewSet(viewsets.ModelViewSet):
     def create(self, request, course_pk=None, assignment_pk=None):
         context = {'request': request, 'course_pk': course_pk, 'assignment_pk': assignment_pk}
         serializer = AssignmentSubmissionSerializer(context=context, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class SubmissionFileUploadViewSet(viewsets.ModelViewSet):
+    serializer_class = SubmissionFileSerializer
+    parser_classes = (MultiPartParser, FormParser,)
+
+    def list(self, request, pk=None, course_pk=None, assignment_pk=None, submission_pk=None):
+        queryset = SubmissionFile.objects.filter(submission=submission_pk)
+        serializer = SubmissionFileSerializer(queryset, many=True)
+        return response.Response(serializer.data)
+
+    def retrieve(self, request, pk=None, course_pk=None, assignment_pk=None, submission_pk=None):
+        queryset = SubmissionFile.objects.filter(pk=pk, submission=submission_pk)
+        submission = get_object_or_404(queryset, pk=pk)
+        serializer = SubmissionFileSerializer(submission)
+        return response.Response(serializer.data)
+
+    def create(self, request, pk=None, course_pk=None, assignment_pk=None, submission_pk=None):
+        context = {'request': request, 'course_pk': course_pk, 'assignment_pk': assignment_pk, 'submission_pk': submission_pk}
+        serializer = SubmissionFileSerializer(context=context, data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)

@@ -2,11 +2,14 @@ from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
+import hashlib
+
 from api.models import Member
 from api.models import Course
 from api.models import Membership
 from api.models import CourseAssignment
 from api.models import AssignmentSubmission
+from api.models import SubmissionFile
 
 
 class MemberSerializer(serializers.HyperlinkedModelSerializer):
@@ -118,3 +121,18 @@ class AssignmentSubmissionSerializer(serializers.HyperlinkedModelSerializer):
             submission = AssignmentSubmission.objects.create(assignment=assignment, author=author, **validated_data)
 
             return submission
+
+
+class SubmissionFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubmissionFile
+        read_only_fields = ('id', 'uploaded_on')
+        fields = ('id', 'file', 'sha', 'uploaded_on')
+
+    def create(self, validated_data):
+        submission = AssignmentSubmission.objects.get(pk=self.context.get('submission_pk'))
+        upload_file = self.context.get('request').data.get('file')
+
+        upload = SubmissionFile.objects.create(submission=submission, file=upload_file)
+
+        return upload

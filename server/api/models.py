@@ -97,6 +97,7 @@ class SubmissionFile(models.Model):
 
     file = models.FileField()
     sha = models.CharField(max_length=1024)
+    uploaded_on = models.DateTimeField(auto_now_add=True)
 
 
 class ReviewComment():
