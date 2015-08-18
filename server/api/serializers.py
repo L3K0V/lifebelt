@@ -9,6 +9,7 @@ from api.models import Course
 from api.models import Membership
 from api.models import CourseAssignment
 from api.models import AssignmentSubmission
+from api.models import SubmissionReview
 from api.models import SubmissionFile
 
 
@@ -27,7 +28,6 @@ class MemberSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Member
         fields = ('id', 'first_name', 'last_name', 'email', 'role', 'courses', 'github', 'github_token', 'avatar_url')
-        lookup_field = 'github'
 
     def update(self, instance, validated_data):
         user = instance.user
@@ -88,8 +88,8 @@ class MembershipCreateSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class MembershipSerializer(serializers.HyperlinkedModelSerializer):
-    course = CourseSerializer()
-    member = MemberSerializer()
+    course = CourseSerializer(read_only=True)
+    member = MemberSerializer(read_only=True)
 
     class Meta:
         model = Membership
@@ -109,21 +109,7 @@ class CourseAssignmentSerializer(serializers.HyperlinkedModelSerializer):
         return assignment
 
 
-class AssignmentSubmissionSerializer(serializers.HyperlinkedModelSerializer):
-        class Meta:
-            model = AssignmentSubmission
-            fields = ('id', 'submitted_on', 'pull_request', 'grade', 'description')
-
-        def create(self, validated_data):
-            assignment = CourseAssignment.objects.get(pk=self.context.get('assignment_pk'))
-            author = Member.objects.get(pk=1)
-
-            submission = AssignmentSubmission.objects.create(assignment=assignment, author=author, **validated_data)
-
-            return submission
-
-
-class SubmissionFileSerializer(serializers.ModelSerializer):
+class SubmissionFileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SubmissionFile
         read_only_fields = ('id', 'uploaded_on')
@@ -136,3 +122,40 @@ class SubmissionFileSerializer(serializers.ModelSerializer):
         upload = SubmissionFile.objects.create(submission=submission, file=upload_file)
 
         return upload
+
+
+class SubmissionReviewSerializer(serializers.HyperlinkedModelSerializer):
+
+    author = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = SubmissionReview
+        fields = ('id', 'author', 'description', 'points', 'reviewed_on')
+
+    def create(self, validated_data):
+        submission = AssignmentSubmission.objects.get(pk=self.context.get('submission_pk'))
+        author = Member.objects.get(pk=1)
+
+        review = SubmissionReview.objects.create(submission=submission, author=author, **validated_data)
+
+        return review
+
+
+class AssignmentSubmissionSerializer(serializers.ModelSerializer):
+        files = SubmissionFileSerializer(many=True, read_only=True)
+        reviews = SubmissionReviewSerializer(many=True, read_only=True)
+        grade = serializers.IntegerField(min_value=0, max_value=100)
+
+        author = serializers.PrimaryKeyRelatedField(read_only=True)
+
+        class Meta:
+            model = AssignmentSubmission
+            fields = ('id', 'author', 'description', 'pull_request', 'files', 'reviews', 'grade', 'submitted_on')
+
+        def create(self, validated_data):
+            assignment = CourseAssignment.objects.get(pk=self.context.get('assignment_pk'))
+            author = Member.objects.get(pk=1)
+
+            submission = AssignmentSubmission.objects.create(assignment=assignment, author=author, **validated_data)
+
+            return submission

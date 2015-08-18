@@ -4,52 +4,83 @@ HOST: http://lifebelt.apiblueprint.org/
 # lifebelt
 
 Lifebelt is teachers's lifebelt to simplify
-publish, share and review homeworks and exams. Also helps students,
-giving them easy way to follow and be inform about new assignments, receiving
-instant review where is possible.
+publish, share and review homework and exam assignments. Also helps students,
+giving them easy way to follow and be inform about new tasks, receiving
+instant review whenever is possible.
 
 # Group Courses
 
-# Courses [/courses]
+# Courses [/courses/]
 
 ## Get all courses [GET]
 + Response 200 (application/json)
 
         [{
-            "id": 123,
+            "id": 1,
             "initials": "PO",
-            "fullname": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "year": 2016
+            "full_name": "Програмно Осигуряване",
+            "description": "Кратко описание",
+            "year": 2016,
+            "members": [
+                "http://127.0.0.1:8000/members/1/",
+                "http://127.0.0.1:8000/members/2/",
+                "http://127.0.0.1:8000/members/5/"
+            ],
+            "date_created": "2015-08-18T16:20:11.850570Z",
+            "date_modified": "2015-08-18T16:20:11.850632Z"
         },{
-            "id": 124,
-            "initials": "TP",
-            "fullname": "Технология на Програмирането",
-            "description": "Запознаване с технологията на и при програмирането",
-            "year": 2016
+            "id": 2,
+            "initials": "PO",
+            "full_name": "Програмно Осигуряване",
+            "description": "Кратко описание",
+            "year": 2016,
+            "members": [
+                "http://127.0.0.1:8000/members/1/",
+                "http://127.0.0.1:8000/members/2/",
+                "http://127.0.0.1:8000/members/5/"
+            ],
+            "date_created": "2015-08-18T16:20:11.850570Z",
+            "date_modified": "2015-08-18T16:20:11.850632Z"
         },{
-            "id": 125,
-            "initials": "OS",
-            "fullname": "Операционни Системи",
-            "description": "Описание за предмета 'Операционни Системи' ",
-            "year": 2016
+            "id": 3,
+            "initials": "PO",
+            "full_name": "Програмно Осигуряване",
+            "description": "Кратко описание",
+            "year": 2016,
+            "members": [
+                "http://127.0.0.1:8000/members/1/",
+                "http://127.0.0.1:8000/members/2/",
+                "http://127.0.0.1:8000/members/5/"
+            ],
+            "date_created": "2015-08-18T16:20:11.850570Z",
+            "date_modified": "2015-08-18T16:20:11.850632Z"
         }]
 
 ## Create a new course [POST]
 + Attributes (object)
     + initials: PO (required, string) - Course initials
-    + fullname: Програмно осигуряване (required, string) - Fully qualified name
-    + description: Some course description... (optional, string) - Long text with course description. Can be markdown formated or urls.
+    + full_name: Програмно осигуряване (required, string) - Fully qualified name
+    + description: Some course description... (optional, string) - Long text with course description. Can be markdown formatted or urls.
     + year: 2016 (required, number) - Course active year
+    + members (array[member]) - A collection of members precipitating in this course.
+    + date_created (date) - Course creation date
+    + date_modified (date) - Date of last modification
 
 + Response 201 (application/json)
 
         {
-            "id": 123,
+            "id": 3,
             "initials": "PO",
-            "fullname": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "year": 2016
+            "full_name": "Програмно Осигуряване",
+            "description": "Кратко описание",
+            "year": 2016,
+            "members": [
+                "http://127.0.0.1:8000/members/1/",
+                "http://127.0.0.1:8000/members/2/",
+                "http://127.0.0.1:8000/members/5/"
+            ],
+            "date_created": "2015-08-18T16:20:11.850570Z",
+            "date_modified": "2015-08-18T16:20:11.850632Z"
         }
 
 # Course [/courses/{course_id}]
@@ -60,28 +91,42 @@ instant review where is possible.
 + Response 200 (application/json)
 
         {
-            "id": 123,
+            "id": 3,
             "initials": "PO",
-            "fullname": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "year": 2016
+            "full_name": "Програмно Осигуряване",
+            "description": "Кратко описание",
+            "year": 2016,
+            "members": [
+                "http://127.0.0.1:8000/members/1/",
+                "http://127.0.0.1:8000/members/2/",
+                "http://127.0.0.1:8000/members/5/"
+            ],
+            "date_created": "2015-08-18T16:20:11.850570Z",
+            "date_modified": "2015-08-18T16:20:11.850632Z"
         }
 
 ## Edit existing course with given id [PUT]
 + Attributes
     + initials: PO (optional, string) - Course initials
-    + fullname: Програмно осигуряване (optional, string) - Fully qualified name
-    + description: Some course description... (optional, string) - Long text with course description. Can be markdown formated or urls.
+    + full_name: Програмно осигуряване (optional, string) - Fully qualified name
+    + description: Some course description... (optional, string) - Long text with course description. Can be markdown formatted or urls.
     + year: 2016 (optional, number) - Course active year
 
 + Response 200 (application/json)
 
         {
-            "id": 123,
+            "id": 3,
             "initials": "PO",
-            "fullname": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "year": 2016
+            "full_name": "Програмно Осигуряване",
+            "description": "Кратко описание",
+            "year": 2016,
+            "members": [
+                "http://127.0.0.1:8000/members/1/",
+                "http://127.0.0.1:8000/members/2/",
+                "http://127.0.0.1:8000/members/5/"
+            ],
+            "date_created": "2015-08-18T16:20:11.850570Z",
+            "date_modified": "2015-08-18T16:20:11.850632Z"
         }
 
 ## Delete existing course by id [DELETE]
@@ -97,51 +142,42 @@ instant review where is possible.
 + Response 200 (application/json)
 
         [{
-            "id": 123,
-            "name": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "type": "exam",
-            "start": "2012-04-23T18:25:43.511Z",
-            "end": "2012-04-23T18:25:43.511Z"
+            "id": 1,
+            "name": "Домашно 1",
+            "description": "Кратко описание",
+            "assignment_type": "H",
+            "start": "2015-08-18T16:20:43.848111Z",
+            "end": "2015-08-25T23:59:00Z",
+            "target": "ALL"
         },{
-            "id": 124,
-            "name": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "type": "homework",
-            "start": "2012-04-23T18:25:43.511Z",
-            "end": "2012-04-23T18:25:43.511Z"
-        },{
-            "id": 125,
-            "name": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "type": "exam",
-            "start": "2012-04-23T18:25:43.511Z",
-            "end": "2012-04-23T18:25:43.511Z"
+            "id": 2,
+            "name": "Домашно 2",
+            "description": "Яко текст",
+            "assignment_type": "H",
+            "start": "2015-08-18T21:00:49.737016Z",
+            "end": "2015-08-19T23:59:00Z",
+            "target": "A"
         }]
 
 ## Create new course assignment [POST]
 + Attributes (object)
     + name: `Homework 1` (required, string) - Assignment name
     + description: `Short assignment description of assignemnt` (required, string)
-    + type: `homework` (required, string) - Homework or exam
-    + targets: `["A", "B", "ALL"]` (required, array[string]) - String list of targets
+    + assignment_type: `H` (required, string) - Homework or Exam or Practice
+    + targets: `A` (required, string) - Assignment target
     + start: `2012-04-23T18:25:43.511Z` (required, string) - Timestamp
     + end: `2012-04-23T18:25:43.511Z` (required, string) - Timestamp
 
 + Response 201 (application/json)
 
         {
-            "id": 123,
-            "name": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "type": "homework",
-            "targets": [
-                "A",
-                "B",
-                "ALL"
-            ],
-            "start": "2012-04-23T18:25:43.511Z",
-            "end": "2012-04-23T18:25:43.511Z"
+            "id": 1,
+            "name": "Домашно 1",
+            "description": "Кратко описание",
+            "assignment_type": "H",
+            "start": "2015-08-18T16:20:43.848111Z",
+            "end": "2015-08-25T23:59:00Z",
+            "target": "ALL"
         }
 
 # Assignment [/courses/{course_id}/assignments/{ass_id}]
@@ -153,42 +189,34 @@ instant review where is possible.
 + Response 200 (application/json)
 
         {
-            "id": 123,
-            "name": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "type": "homework",
-            "targets": [
-                "A",
-                "B",
-                "ALL"
-            ],
-            "start": "2012-04-23T18:25:43.511Z",
-            "end": "2012-04-23T18:25:43.511Z"
+            "id": 1,
+            "name": "Домашно 1",
+            "description": "Кратко описание",
+            "assignment_type": "H",
+            "start": "2015-08-18T16:20:43.848111Z",
+            "end": "2015-08-25T23:59:00Z",
+            "target": "ALL"
         }
 
 ## Update existing course assignment [PUT]
 + Attributes
-    + name: `Homework 1` (optional, string) - New assignment name
-    + description: `New short assignment description of assignemnt` (optional, string)
-    + type: `homework` (optional, string) - Change assignment type
-    + targets: `["A", "B", "ALL"]` (optional, array[string]) - String list of targets
-    + start: `2012-04-23T18:25:43.511Z` (optional, string) - Timestamp
-    + end: `2012-04-23T18:25:43.511Z` (optional, string) - Timestamp
+    + name: `Homework 1` (required, string) - Assignment name
+    + description: `Short assignment description of assignemnt` (required, string)
+    + assignment_type: `H` (required, string) - Homework or Exam or Practice
+    + targets: `A` (required, string) - Assignment target
+    + start: `2012-04-23T18:25:43.511Z` (required, string) - Timestamp
+    + end: `2012-04-23T18:25:43.511Z` (required, string) - Timestamp
 
 + Response 200 (application/json)
 
         {
-            "id": 123,
-            "name": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "type": "homework",
-            "targets": [
-                "A",
-                "B",
-                "ALL"
-            ],
-            "start": "2012-04-23T18:25:43.511Z",
-            "end": "2012-04-23T18:25:43.511Z"
+            "id": 1,
+            "name": "Домашно 1",
+            "description": "Кратко описание",
+            "assignment_type": "H",
+            "start": "2015-08-18T16:20:43.848111Z",
+            "end": "2015-08-25T23:59:00Z",
+            "target": "ALL"
         }
 
 ## Delete existing course assignment [DELETE]
@@ -204,65 +232,36 @@ instant review where is possible.
 + Response 200 (application/json)
 
         [{
-            {
-            "id": 123,
-            "author": 42,
-            "date": "2012-04-23T18:25:43.511Z",
-            "pullRequest": 1234,
-            "grade": 100,
-            "description": "Teache me master, how to create an pull request",
-            "files" : [
-                {
+            "id": 1,
+            "author": 1,
+            "description": "",
+            "pull_request": null,
+            "files": [{
                     "id": 1,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                },
-                {
+                    "file": "./desktop_qMOtgi9.ini",
+                    "sha": "",
+                    "uploaded_on": "2015-08-18T16:48:16.023964Z"
+                },{
                     "id": 2,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                }
-            ]
+                    "file": "./desktop_fhG6F8f.ini",
+                    "sha": "",
+                    "uploaded_on": "2015-08-18T16:48:49.624563Z"
+                },{
+                    "id": 3,
+                    "file": "./desktop.ini",
+                    "sha": "",
+                    "uploaded_on": "2015-08-18T16:57:59.134614Z"
+                }],
+            "grade": 0,
+            "submitted_on": "2015-08-18T16:21:15.973773Z"
         },{
-            {
-            "id": 123,
-            "author": 42,
-            "date": "2012-04-23T18:25:43.511Z",
-            "pullRequest": 1234,
+            "id": 2,
+            "author": 1,
+            "description": "Направих беля, ама все пак да ми я оцените!",
+            "pull_request": null,
+            "files": [],
             "grade": 100,
-            "description": "Teache me master, how to create an pull request",
-            "files" : [
-                {
-                    "id": 1,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                },
-                {
-                    "id": 2,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                }
-            ]
-        },{
-            {
-            "id": 123,
-            "author": 42,
-            "date": "2012-04-23T18:25:43.511Z",
-            "pullRequest": 1234,
-            "grade": 100,
-            "description": "Teache me master, how to create an pull request",
-            "files" : [
-                {
-                    "id": 1,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                },
-                {
-                    "id": 2,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                }
-            ]
+            "submitted_on": "2015-08-18T21:43:05.291630Z"
         }]
 
 ## Create a new submission for this assignment [POST]
@@ -276,13 +275,13 @@ instant review where is possible.
 + Response 201 (application/json)
 
         {
-            "id": 123,
-            "author": 42,
-            "date": "2012-04-23T18:25:43.511Z",
-            "pullRequest": 1234,
-            "grade": 0,
-            "description": "Teache me master, how to create an pull request",
-            "files" : []
+            "id": 2,
+            "author": 1,
+            "description": "Направих беля, ама все пак да ми я оцените!",
+            "pull_request": null,
+            "files": [],
+            "grade": 100,
+            "submitted_on": "2015-08-18T21:43:05.291630Z"
         }
 
 # Assignment submission [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}]
@@ -295,24 +294,28 @@ instant review where is possible.
 + Response 200 (application/json)
 
         {
-            "id": 123,
-            "author": 42,
-            "date": "2012-04-23T18:25:43.511Z",
-            "pullRequest": 1234,
-            "grade": 100,
-            "description": "Teache me master, how to create an pull request",
-            "files" : [
-                {
+            "id": 1,
+            "author": 1,
+            "description": "",
+            "pull_request": null,
+            "files": [{
                     "id": 1,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                },
-                {
+                    "file": "./desktop_qMOtgi9.ini",
+                    "sha": "",
+                    "uploaded_on": "2015-08-18T16:48:16.023964Z"
+                },{
                     "id": 2,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                }
-            ]
+                    "file": "./desktop_fhG6F8f.ini",
+                    "sha": "",
+                    "uploaded_on": "2015-08-18T16:48:49.624563Z"
+                },{
+                    "id": 3,
+                    "file": "./desktop.ini",
+                    "sha": "",
+                    "uploaded_on": "2015-08-18T16:57:59.134614Z"
+                }],
+            "grade": 0,
+            "submitted_on": "2015-08-18T16:21:15.973773Z"
         }
 
 ## Update submission grade or description [PUT]
@@ -323,37 +326,32 @@ instant review where is possible.
 + Response 200 (application/json)
 
         {
-            "id": 123,
-            "author": 42,
-            "date": "2012-04-23T18:25:43.511Z",
-            "pullRequest": 1234,
-            "grade": 100,
-            "description": "Teache me master, how to create an pull request",
-            "files" : [
-                {
+            "id": 1,
+            "author": 1,
+            "description": "",
+            "pull_request": null,
+            "files": [{
                     "id": 1,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                },
-                {
+                    "file": "./desktop_qMOtgi9.ini",
+                    "sha": "",
+                    "uploaded_on": "2015-08-18T16:48:16.023964Z"
+                },{
                     "id": 2,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                }
-            ]
+                    "file": "./desktop_fhG6F8f.ini",
+                    "sha": "",
+                    "uploaded_on": "2015-08-18T16:48:49.624563Z"
+                },{
+                    "id": 3,
+                    "file": "./desktop.ini",
+                    "sha": "",
+                    "uploaded_on": "2015-08-18T16:57:59.134614Z"
+                }],
+            "grade": 0,
+            "submitted_on": "2015-08-18T16:21:15.973773Z"
         }
 
 ## Delete existing assignment submission [DELETE]
 + Response 204
-
-# Submission status [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/status]
-## Get submission status [GET]
-+ Response 200 (application/json)
-
-        {
-            "id": 1,
-            "status": "FINISHED|INPROGRESS|ERROR"
-        }
 
 # Submission files [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/files]
 ## Get all files [GET]

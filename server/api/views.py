@@ -24,6 +24,9 @@ from api.models import AssignmentSubmission
 from api.serializers import SubmissionFileSerializer
 from api.models import SubmissionFile
 
+from api.serializers import SubmissionReviewSerializer
+from api.models import SubmissionReview
+
 
 class MemberViewSet(viewsets.ModelViewSet):
     queryset = Member.objects.all().order_by('-id')
@@ -108,6 +111,29 @@ class AssignmentSubmissionViewSet(viewsets.ModelViewSet):
     def create(self, request, course_pk=None, assignment_pk=None):
         context = {'request': request, 'course_pk': course_pk, 'assignment_pk': assignment_pk}
         serializer = AssignmentSubmissionSerializer(context=context, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class SubmissionReviewViewSet(viewsets.ModelViewSet):
+    serializer_class = SubmissionReviewSerializer
+
+    def list(self, request, pk=None, course_pk=None, assignment_pk=None, submission_pk=None):
+        queryset = SubmissionReview.objects.filter(submission=submission_pk)
+        serializer = SubmissionReviewSerializer(queryset, many=True)
+        return response.Response(serializer.data)
+
+    def retrieve(self, request, pk=None, course_pk=None, assignment_pk=None, submission_pk=None):
+        queryset = SubmissionReview.objects.filter(pk=pk, submission=submission_pk)
+        submission = get_object_or_404(queryset, pk=pk)
+        serializer = SubmissionReviewSerializer(submission)
+        return response.Response(serializer.data)
+
+    def create(self, request, pk=None, course_pk=None, assignment_pk=None, submission_pk=None):
+        context = {'request': request, 'course_pk': course_pk, 'assignment_pk': assignment_pk, 'submission_pk': submission_pk}
+        serializer = SubmissionReviewSerializer(context=context, data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)

@@ -7,6 +7,7 @@ from api.views import CourseViewSet
 from api.views import MembershipViewSet
 from api.views import CourseAssignmentViewSet
 from api.views import AssignmentSubmissionViewSet
+from api.views import SubmissionReviewViewSet
 from api.views import SubmissionFileUploadViewSet
 
 
@@ -22,7 +23,8 @@ assignments_router = routers.NestedSimpleRouter(courses_router, r'assignments', 
 assignments_router.register(r'submissions', AssignmentSubmissionViewSet, base_name='submission')
 
 submission_router = routers.NestedSimpleRouter(assignments_router, r'submissions', lookup='submission')
-submission_router.register(r'upload', SubmissionFileUploadViewSet, base_name='upload')
+submission_router.register(r'reviews', SubmissionReviewViewSet, base_name='reviews')
+submission_router.register(r'files', SubmissionFileUploadViewSet, base_name='files')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

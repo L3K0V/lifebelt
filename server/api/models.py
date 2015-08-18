@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
 
 ADMIN = 'A'
@@ -66,7 +67,7 @@ class CourseAssignment(models.Model):
     name = models.CharField(max_length=48)
     description = models.TextField()
     assignment_type = models.CharField(max_length=1, choices=ASSIGNMENT_TYPE, default=HOMEWORK)
-    start = models.DateTimeField(auto_now_add=True)
+    start = models.DateTimeField(default=timezone.now)
     end = models.DateTimeField()
     target = models.CharField(max_length=3, choices=ASSIGNMENT_TARGET, default=ALL)
 
@@ -84,16 +85,16 @@ class AssignmentSubmission(models.Model):
 
 
 class SubmissionReview(models.Model):
-    submission = models.ForeignKey(AssignmentSubmission)
+    submission = models.ForeignKey(AssignmentSubmission, related_name='reviews')
     author = models.ForeignKey(Member)
 
     description = models.TextField()
-    points = models.PositiveSmallIntegerField()
+    points = models.PositiveSmallIntegerField(default=0)
     reviewed_on = models.DateTimeField(auto_now_add=True)
 
 
 class SubmissionFile(models.Model):
-    submission = models.ForeignKey(AssignmentSubmission)
+    submission = models.ForeignKey(AssignmentSubmission, related_name='files')
 
     file = models.FileField()
     sha = models.CharField(max_length=1024)
