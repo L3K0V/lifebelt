@@ -11,6 +11,7 @@ from api.models import CourseAssignment
 from api.models import AssignmentSubmission
 from api.models import SubmissionReview
 from api.models import SubmissionFile
+from api.models import ReviewComment
 
 
 class MemberSerializer(serializers.HyperlinkedModelSerializer):
@@ -159,3 +160,18 @@ class AssignmentSubmissionSerializer(serializers.ModelSerializer):
             submission = AssignmentSubmission.objects.create(assignment=assignment, author=author, **validated_data)
 
             return submission
+
+
+class ReviewCommentSerializer(serializers.ModelSerializer):
+    review = SubmissionReviewSerializer(read_only=True)
+    author = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = ReviewComment
+        fields = ('id', 'author', 'comment', 'commentted_on', 'review')
+
+    def create(self, validated_data):
+        review = SubmissionReview.objects.get(pk=self.context.get('review_pk'))
+        author = Member.objects.get(pk=1)
+
+        comment = ReviewComment.objects.create(review=review, author=author, **validated_data)

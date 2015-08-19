@@ -101,8 +101,12 @@ class SubmissionFile(models.Model):
     uploaded_on = models.DateTimeField(auto_now_add=True)
 
 
-class ReviewComment():
-    pass
+class ReviewComment(models.Model):
+    review = models.ForeignKey(SubmissionReview, related_name='comments')
+    author = models.ForeignKey(Member)
+
+    comment = models.TextField()
+    commentted_on = models.DateTimeField(auto_now_add=True)
 
 
 class CourseAnnouncement():
