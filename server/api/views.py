@@ -38,6 +38,7 @@ class MemberViewSet(viewsets.ModelViewSet):
 
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
+    queryset = Course.objects.all().order_by('-id')
 
     def list(self, request,):
         queryset = Course.objects.filter()
@@ -52,6 +53,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 
 class MembershipViewSet(viewsets.ModelViewSet):
+    queryset = Membership.objects.all().order_by('-id')
 
     def list(self, request, course_pk=None):
         queryset = Membership.objects.filter(course=course_pk)
@@ -99,6 +101,7 @@ class CourseAssignmentViewSet(viewsets.ModelViewSet):
 
 class AssignmentSubmissionViewSet(viewsets.ModelViewSet):
     serializer_class = AssignmentSubmissionSerializer
+    queryset = AssignmentSubmission.objects.all().order_by('-id')
 
     def list(self, request, course_pk=None, assignment_pk=None):
         queryset = AssignmentSubmission.objects.filter(assignment__course=course_pk, assignment=assignment_pk)
@@ -122,6 +125,7 @@ class AssignmentSubmissionViewSet(viewsets.ModelViewSet):
 
 class SubmissionReviewViewSet(viewsets.ModelViewSet):
     serializer_class = SubmissionReviewSerializer
+    queryset = SubmissionReview.objects.all().order_by('-id')
 
     def list(self, request, pk=None, course_pk=None, assignment_pk=None, submission_pk=None):
         queryset = SubmissionReview.objects.filter(submission=submission_pk)
@@ -145,6 +149,7 @@ class SubmissionReviewViewSet(viewsets.ModelViewSet):
 
 class SubmissionFileUploadViewSet(viewsets.ModelViewSet):
     serializer_class = SubmissionFileSerializer
+    queryset = SubmissionFile.objects.all().order_by('-id')
     parser_classes = (MultiPartParser, FormParser,)
 
     def list(self, request, pk=None, course_pk=None, assignment_pk=None, submission_pk=None):
@@ -169,9 +174,10 @@ class SubmissionFileUploadViewSet(viewsets.ModelViewSet):
 
 class ReviewCommentViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewCommentSerializer
+    queryset = ReviewComment.objects.all().order_by('-id')
 
     def list(self, request, pk=None, course_pk=None, assignment_pk=None, submission_pk=None, review_pk=None):
-        queryset = ReviewComment.objects.filter(review=submission_pk)
+        queryset = ReviewComment.objects.filter(review=review_pk)
         serializer = ReviewCommentSerializer(queryset, many=True)
         return response.Response(serializer.data)
 
@@ -182,7 +188,7 @@ class ReviewCommentViewSet(viewsets.ModelViewSet):
         return response.Response(serializer.data)
 
     def create(self, request, pk=None, course_pk=None, assignment_pk=None, submission_pk=None, review_pk=None):
-        context = {'request': request, 'course_pk': course_pk, 'assignment_pk': assignment_pk, 'submission_pk': submission_pk}
+        context = {'request': request, 'course_pk': course_pk, 'assignment_pk': assignment_pk, 'submission_pk': submission_pk, 'review_pk': review_pk}
         serializer = ReviewCommentSerializer(context=context, data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)

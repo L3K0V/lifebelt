@@ -14,7 +14,7 @@ MEMBER_ROLE = (
 
 
 class Member(models.Model):
-    user = models.OneToOneField(User, related_name="member", on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name="member")
     role = models.CharField(max_length=1, choices=MEMBER_ROLE, default=STUDENT)
     github = models.CharField(max_length=48, blank=True)
     github_token = models.CharField(max_length=256, blank=True)
@@ -71,7 +71,7 @@ class CourseAssignment(models.Model):
     end = models.DateTimeField()
     target = models.CharField(max_length=3, choices=ASSIGNMENT_TARGET, default=ALL)
 
-    course = models.ForeignKey(Course, related_name='assignments', on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, related_name='assignments')
 
 
 class AssignmentSubmission(models.Model):

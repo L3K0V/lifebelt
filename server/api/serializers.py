@@ -125,13 +125,30 @@ class SubmissionFileSerializer(serializers.HyperlinkedModelSerializer):
         return upload
 
 
-class SubmissionReviewSerializer(serializers.HyperlinkedModelSerializer):
-
+class ReviewCommentSerializer(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
+        model = ReviewComment
+        fields = ('id', 'author', 'comment', 'commentted_on')
+
+    def create(self, validated_data):
+        review = SubmissionReview.objects.get(pk=self.context.get('review_pk'))
+        author = Member.objects.get(pk=1)
+
+        comment = ReviewComment.objects.create(review=review, author=author, **validated_data)
+
+        return comment
+
+
+class SubmissionReviewSerializer(serializers.HyperlinkedModelSerializer):
+
+    author = serializers.PrimaryKeyRelatedField(read_only=True)
+    comments = ReviewCommentSerializer(many=True, read_only=True)
+
+    class Meta:
         model = SubmissionReview
-        fields = ('id', 'author', 'description', 'points', 'reviewed_on')
+        fields = ('id', 'author', 'description', 'points', 'reviewed_on', 'comments')
 
     def create(self, validated_data):
         submission = AssignmentSubmission.objects.get(pk=self.context.get('submission_pk'))
@@ -145,7 +162,7 @@ class SubmissionReviewSerializer(serializers.HyperlinkedModelSerializer):
 class AssignmentSubmissionSerializer(serializers.ModelSerializer):
         files = SubmissionFileSerializer(many=True, read_only=True)
         reviews = SubmissionReviewSerializer(many=True, read_only=True)
-        grade = serializers.IntegerField(min_value=0, max_value=100)
+        grade = serializers.IntegerField(min_value=0, max_value=100, default=0, required=False)
 
         author = serializers.PrimaryKeyRelatedField(read_only=True)
 
@@ -160,18 +177,3 @@ class AssignmentSubmissionSerializer(serializers.ModelSerializer):
             submission = AssignmentSubmission.objects.create(assignment=assignment, author=author, **validated_data)
 
             return submission
-
-
-class ReviewCommentSerializer(serializers.ModelSerializer):
-    review = SubmissionReviewSerializer(read_only=True)
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
-
-    class Meta:
-        model = ReviewComment
-        fields = ('id', 'author', 'comment', 'commentted_on', 'review')
-
-    def create(self, validated_data):
-        review = SubmissionReview.objects.get(pk=self.context.get('review_pk'))
-        author = Member.objects.get(pk=1)
-
-        comment = ReviewComment.objects.create(review=review, author=author, **validated_data)
