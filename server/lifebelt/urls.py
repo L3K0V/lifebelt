@@ -1,4 +1,6 @@
-from django.conf.urls import include, url
+from django.conf.urls import include, url, patterns
+from django.conf import settings
+from django.conf.urls.static import static
 
 from rest_framework_nested import routers
 
@@ -37,3 +39,7 @@ urlpatterns = [
     url(r'^', include(submission_router.urls)),
     url(r'^', include(review_router.urls))
 ]
+
+if settings.DEBUG:
+    urlpatterns += patterns('django.views.static',
+                            (r'files/(?P<path>.*)', 'serve', {'document_root': settings.MEDIA_ROOT}),)

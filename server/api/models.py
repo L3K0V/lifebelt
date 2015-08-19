@@ -94,9 +94,16 @@ class SubmissionReview(models.Model):
 
 
 class SubmissionFile(models.Model):
+
+    def generate_filename(self, filename):
+        course_id = self.submission.assignment.course.id
+        assignemnt_id = self.submission.assignment.id
+        submission_id = self.submission.id
+        return 'course/{}/assignemnt/{}/submission/{}/{}'.format(course_id, assignemnt_id, submission_id, filename)
+
     submission = models.ForeignKey(AssignmentSubmission, related_name='files')
 
-    file = models.FileField()
+    file = models.FileField(upload_to=generate_filename)
     sha = models.CharField(max_length=1024)
     uploaded_on = models.DateTimeField(auto_now_add=True)
 
