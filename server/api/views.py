@@ -12,7 +12,7 @@ from api.models import Member
 from api.serializers import CourseSerializer
 from api.models import Course
 
-from api.serializers import MembershipSerializer, MembershipCreateSerializer
+from api.serializers import MembershipSerializer
 from api.models import Membership
 
 from api.serializers import CourseAssignmentSerializer
@@ -27,8 +27,11 @@ from api.models import SubmissionFile
 from api.serializers import SubmissionReviewSerializer
 from api.models import SubmissionReview
 
-from api.serializers import ReviewCommentSerializer
-from api.models import ReviewComment
+from api.serializers import CourseAnnouncementSerializer
+from api.models import CourseAnnouncement
+
+from api.serializers import AnnouncementCommentSerializer
+from api.models import AnnouncementComment
 
 
 class MemberViewSet(viewsets.ModelViewSet):
@@ -54,6 +57,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 class MembershipViewSet(viewsets.ModelViewSet):
     queryset = Membership.objects.all().order_by('-id')
+    serializer_class = MembershipSerializer
 
     def list(self, request, course_pk=None):
         queryset = Membership.objects.filter(course=course_pk)
@@ -65,14 +69,6 @@ class MembershipViewSet(viewsets.ModelViewSet):
         membership = get_object_or_404(queryset, pk=pk)
         serializer = MembershipSerializer(membership, context={'request': request})
         return response.Response(serializer.data)
-
-    def get_serializer_class(self):
-        if self.action == 'create':
-            return MembershipCreateSerializer
-        if self.action == 'list' or self.action == 'retrieve':
-            return MembershipSerializer
-
-        return MembershipCreateSerializer
 
 
 class CourseAssignmentViewSet(viewsets.ModelViewSet):
@@ -105,13 +101,13 @@ class AssignmentSubmissionViewSet(viewsets.ModelViewSet):
 
     def list(self, request, course_pk=None, assignment_pk=None):
         queryset = AssignmentSubmission.objects.filter(assignment__course=course_pk, assignment=assignment_pk)
-        serializer = AssignmentSubmissionSerializer(queryset, many=True)
+        serializer = AssignmentSubmissionSerializer(queryset, many=True, context={'request': request})
         return response.Response(serializer.data)
 
     def retrieve(self, request, pk=None, course_pk=None, assignment_pk=None):
         queryset = AssignmentSubmission.objects.filter(pk=pk, assignment__course=course_pk, assignment=assignment_pk)
         submission = get_object_or_404(queryset, pk=pk)
-        serializer = AssignmentSubmissionSerializer(submission)
+        serializer = AssignmentSubmissionSerializer(submission, context={'request': request})
         return response.Response(serializer.data)
 
     def create(self, request, course_pk=None, assignment_pk=None):
@@ -172,24 +168,48 @@ class SubmissionFileUploadViewSet(viewsets.ModelViewSet):
         return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class ReviewCommentViewSet(viewsets.ModelViewSet):
-    serializer_class = ReviewCommentSerializer
-    queryset = ReviewComment.objects.all().order_by('-id')
+class CourseAnnouncementViewSet(viewsets.ModelViewSet):
+    serializer_class = CourseAnnouncementSerializer
+    queryset = CourseAnnouncement.objects.all().order_by('-id')
 
-    def list(self, request, pk=None, course_pk=None, assignment_pk=None, submission_pk=None, review_pk=None):
-        queryset = ReviewComment.objects.filter(review=review_pk)
-        serializer = ReviewCommentSerializer(queryset, many=True)
+    def list(self, request, pk=None, course_pk=None):
+        queryset = CourseAnnouncement.objects.filter(course=course_pk)
+        serializer = CourseAnnouncementSerializer(queryset, many=True)
         return response.Response(serializer.data)
 
-    def retrieve(self, request, pk=None, course_pk=None, assignment_pk=None, submission_pk=None, review_pk=None):
-        queryset = ReviewComment.objects.filter(pk=pk, review=review_pk)
-        review = get_object_or_404(queryset, pk=pk)
-        serializer = ReviewCommentSerializer(review)
+    def retrieve(self, request, pk=None, course_pk=None):
+        queryset = CourseAnnouncement.objects.filter(pk=pk, course=course_pk)
+        announcement = get_object_or_404(queryset, pk=pk)
+        serializer = CourseAnnouncementSerializer(announcement)
         return response.Response(serializer.data)
 
-    def create(self, request, pk=None, course_pk=None, assignment_pk=None, submission_pk=None, review_pk=None):
-        context = {'request': request, 'course_pk': course_pk, 'assignment_pk': assignment_pk, 'submission_pk': submission_pk, 'review_pk': review_pk}
-        serializer = ReviewCommentSerializer(context=context, data=request.data)
+    def create(self, request, pk=None, course_pk=None):
+        context = {'request': request, 'course_pk': course_pk}
+        serializer = CourseAnnouncementSerializer(context=context, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class AnnouncementCommentViewSet(viewsets.ModelViewSet):
+    serializer_class = AnnouncementCommentSerializer
+    queryset = AnnouncementComment.objects.all().order_by('-id')
+
+    def list(self, request, pk=None, course_pk=None, announcement_pk=None):
+        queryset = AnnouncementComment.objects.filter(announcement=announcement_pk)
+        serializer = AnnouncementCommentSerializer(queryset, many=True)
+        return response.Response(serializer.data)
+
+    def retrieve(self, request, pk=None, course_pk=None, announcement_pk=None):
+        queryset = AnnouncementComment.objects.filter(pk=pk, announcement=announcement_pk)
+        comment = get_object_or_404(queryset, pk=pk)
+        serializer = AnnouncementCommentSerializer(comment)
+        return response.Response(serializer.data)
+
+    def create(self, request, pk=None, course_pk=None):
+        context = {'request': request, 'course_pk': course_pk, 'announcement_pk': announcement_pk}
+        serializer = AnnouncementCommentSerializer(context=context, data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)

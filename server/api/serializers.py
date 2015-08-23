@@ -11,7 +11,8 @@ from api.models import CourseAssignment
 from api.models import AssignmentSubmission
 from api.models import SubmissionReview
 from api.models import SubmissionFile
-from api.models import ReviewComment
+from api.models import CourseAnnouncement
+from api.models import AnnouncementComment
 
 
 class MemberSerializer(serializers.HyperlinkedModelSerializer):
@@ -88,9 +89,9 @@ class MembershipCreateSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'course_id', 'member_id', 'role')
 
 
-class MembershipSerializer(serializers.HyperlinkedModelSerializer):
-    course = CourseSerializer(read_only=True)
-    member = MemberSerializer(read_only=True)
+class MembershipSerializer(serializers.ModelSerializer):
+    # course = CourseSerializer(read_only=True)
+    # member = MemberSerializer(read_only=True)
 
     class Meta:
         model = Membership
@@ -100,7 +101,7 @@ class MembershipSerializer(serializers.HyperlinkedModelSerializer):
 class CourseAssignmentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = CourseAssignment
-        fields = ('id', 'name', 'description', 'assignment_type', 'start', 'end', 'target')
+        fields = ('id', 'name', 'description', 'assignment_type', 'start', 'end', 'target', 'date_created', 'date_modified')
 
     def create(self, validated_data):
         course = Course.objects.get(pk=self.context.get('course_pk'))
@@ -113,8 +114,8 @@ class CourseAssignmentSerializer(serializers.HyperlinkedModelSerializer):
 class SubmissionFileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SubmissionFile
-        read_only_fields = ('id', 'uploaded_on')
-        fields = ('id', 'file', 'sha', 'uploaded_on')
+        read_only_fields = ('id', 'date_created', 'date_modified')
+        fields = ('id', 'file', 'sha', 'date_created', 'date_modified')
 
     def create(self, validated_data):
         submission = AssignmentSubmission.objects.get(pk=self.context.get('submission_pk'))
@@ -125,30 +126,13 @@ class SubmissionFileSerializer(serializers.HyperlinkedModelSerializer):
         return upload
 
 
-class ReviewCommentSerializer(serializers.ModelSerializer):
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
-
-    class Meta:
-        model = ReviewComment
-        fields = ('id', 'author', 'comment', 'commentted_on')
-
-    def create(self, validated_data):
-        review = SubmissionReview.objects.get(pk=self.context.get('review_pk'))
-        author = Member.objects.get(pk=1)
-
-        comment = ReviewComment.objects.create(review=review, author=author, **validated_data)
-
-        return comment
-
-
 class SubmissionReviewSerializer(serializers.HyperlinkedModelSerializer):
 
     author = serializers.PrimaryKeyRelatedField(read_only=True)
-    comments = ReviewCommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = SubmissionReview
-        fields = ('id', 'author', 'description', 'points', 'reviewed_on', 'comments')
+        fields = ('id', 'author', 'description', 'points', 'date_created', 'date_modified')
 
     def create(self, validated_data):
         submission = AssignmentSubmission.objects.get(pk=self.context.get('submission_pk'))
@@ -159,7 +143,7 @@ class SubmissionReviewSerializer(serializers.HyperlinkedModelSerializer):
         return review
 
 
-class AssignmentSubmissionSerializer(serializers.ModelSerializer):
+class AssignmentSubmissionSerializer(serializers.HyperlinkedModelSerializer):
         files = SubmissionFileSerializer(many=True, read_only=True)
         reviews = SubmissionReviewSerializer(many=True, read_only=True)
         grade = serializers.IntegerField(min_value=0, max_value=100, default=0, required=False)
@@ -168,7 +152,7 @@ class AssignmentSubmissionSerializer(serializers.ModelSerializer):
 
         class Meta:
             model = AssignmentSubmission
-            fields = ('id', 'author', 'description', 'pull_request', 'files', 'reviews', 'grade', 'submitted_on')
+            fields = ('id', 'author', 'description', 'pull_request', 'files', 'reviews', 'grade', 'date_created', 'date_modified')
 
         def create(self, validated_data):
             assignment = CourseAssignment.objects.get(pk=self.context.get('assignment_pk'))
@@ -177,3 +161,35 @@ class AssignmentSubmissionSerializer(serializers.ModelSerializer):
             submission = AssignmentSubmission.objects.create(assignment=assignment, author=author, **validated_data)
 
             return submission
+
+
+class CourseAnnouncementSerializer(serializers.ModelSerializer):
+    author = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = CourseAnnouncement
+        fields = ('id', 'author', 'announcement', 'date_created', 'date_modified')
+
+    def create(self, validated_data):
+        course = Course.objects.get(pk=self.context.get('course_pk'))
+        author = Member.objects.get(pk=1)
+
+        announcement = CourseAnnouncement.objects.create(author=author, course=course, **validated_data)
+
+        return announcement
+
+
+class AnnouncementCommentSerializer(serializers.ModelSerializer):
+    author = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = CourseAnnouncement
+        fields = ('id', 'author', 'comment', 'date_created', 'date_modified')
+
+    def create(self, validated_data):
+        announcement = AnnouncementComment.objects.get(pk=self.context.get('announcement_pk'))
+        author = Member.objects.get(pk=1)
+
+        comment = AnnouncementComment.objects.create(author=author, announcement=announcement, **validated_data)
+
+        return comment

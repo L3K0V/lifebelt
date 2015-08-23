@@ -13,6 +13,14 @@ MEMBER_ROLE = (
 )
 
 
+class DateModel(models.Model):
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
 class Member(models.Model):
     user = models.OneToOneField(User, related_name="member")
     role = models.CharField(max_length=1, choices=MEMBER_ROLE, default=STUDENT)
@@ -20,17 +28,20 @@ class Member(models.Model):
     github_token = models.CharField(max_length=256, blank=True)
     avatar_url = models.CharField(max_length=256, blank=True)
 
+    def __str__(self):
+        return '{} {} ({})'.format(self.user.first_name, self.user.last_name, self.user.email)
 
-class Course(models.Model):
+
+class Course(DateModel):
     initials = models.CharField(max_length=16, blank=False)
     full_name = models.CharField(max_length=48, blank=False)
     description = models.TextField()
     year = models.PositiveSmallIntegerField()
 
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_modified = models.DateTimeField(auto_now=True)
-
     members = models.ManyToManyField(Member, through='Membership', through_fields=('course', 'member'), related_name='courses')
+
+    def __str__(self):
+        return '{} ({})'.format(self.full_name, self.year)
 
 
 class Membership(models.Model):
@@ -39,7 +50,7 @@ class Membership(models.Model):
     role = models.CharField(max_length=1, choices=MEMBER_ROLE, default=STUDENT)
 
 
-class CourseAssignment(models.Model):
+class CourseAssignment(DateModel):
     A = 'A'
     B = 'B'
     V = 'V'
@@ -73,27 +84,28 @@ class CourseAssignment(models.Model):
 
     course = models.ForeignKey(Course, related_name='assignments')
 
+    def __str__(self):
+        return self.name
 
-class AssignmentSubmission(models.Model):
+
+class AssignmentSubmission(DateModel):
     assignment = models.ForeignKey(CourseAssignment)
     author = models.ForeignKey(Member)
 
-    submitted_on = models.DateTimeField(auto_now_add=True)
     pull_request = models.PositiveSmallIntegerField(blank=True, null=True)
     grade = models.PositiveSmallIntegerField(default=0)
     description = models.CharField(max_length=256, blank=True)
 
 
-class SubmissionReview(models.Model):
+class SubmissionReview(DateModel):
     submission = models.ForeignKey(AssignmentSubmission, related_name='reviews')
     author = models.ForeignKey(Member)
 
     description = models.TextField()
     points = models.PositiveSmallIntegerField(default=0)
-    reviewed_on = models.DateTimeField(auto_now_add=True)
 
 
-class SubmissionFile(models.Model):
+class SubmissionFile(DateModel):
 
     def generate_filename(self, filename):
         course_id = self.submission.assignment.course.id
@@ -105,20 +117,15 @@ class SubmissionFile(models.Model):
 
     file = models.FileField(upload_to=generate_filename)
     sha = models.CharField(max_length=1024)
-    uploaded_on = models.DateTimeField(auto_now_add=True)
 
 
-class ReviewComment(models.Model):
-    review = models.ForeignKey(SubmissionReview, related_name='comments')
+class CourseAnnouncement(DateModel):
     author = models.ForeignKey(Member)
-
-    comment = models.TextField()
-    commentted_on = models.DateTimeField(auto_now_add=True)
-
-
-class CourseAnnouncement():
-    pass
+    course = models.ForeignKey(Course, related_name='announcements')
+    announcement = models.TextField()
 
 
-class AnnouncementComment():
-    pass
+class AnnouncementComment(DateModel):
+    author = models.ForeignKey(Member)
+    announcement = models.ForeignKey(CourseAnnouncement)
+    comment = models.CharField(max_length=256)
