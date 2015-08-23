@@ -83,7 +83,7 @@ instant review whenever is possible.
             "date_modified": "2015-08-18T16:20:11.850632Z"
         }
 
-# Course [/courses/{course_id}]
+# Course [/courses/{course_id}/]
 + Parameters
     + course_id: 42 (required, number) - Desired course id
 
@@ -148,7 +148,9 @@ instant review whenever is possible.
             "assignment_type": "H",
             "start": "2015-08-18T16:20:43.848111Z",
             "end": "2015-08-25T23:59:00Z",
-            "target": "ALL"
+            "target": "ALL",
+            "date_created": "2015-08-23T16:43:42.078203Z",
+            "date_modified": "2015-08-23T16:43:42.078257Z"
         },{
             "id": 2,
             "name": "Домашно 2",
@@ -156,7 +158,9 @@ instant review whenever is possible.
             "assignment_type": "H",
             "start": "2015-08-18T21:00:49.737016Z",
             "end": "2015-08-19T23:59:00Z",
-            "target": "A"
+            "target": "A",
+            "date_created": "2015-08-23T16:43:42.078203Z",
+            "date_modified": "2015-08-23T16:43:42.078257Z"
         }]
 
 ## Create new course assignment [POST]
@@ -177,7 +181,9 @@ instant review whenever is possible.
             "assignment_type": "H",
             "start": "2015-08-18T16:20:43.848111Z",
             "end": "2015-08-25T23:59:00Z",
-            "target": "ALL"
+            "target": "ALL",
+            "date_created": "2015-08-23T16:43:42.078203Z",
+            "date_modified": "2015-08-23T16:43:42.078257Z"
         }
 
 # Assignment [/courses/{course_id}/assignments/{ass_id}]
@@ -195,7 +201,9 @@ instant review whenever is possible.
             "assignment_type": "H",
             "start": "2015-08-18T16:20:43.848111Z",
             "end": "2015-08-25T23:59:00Z",
-            "target": "ALL"
+            "target": "ALL",
+            "date_created": "2015-08-23T16:43:42.078203Z",
+            "date_modified": "2015-08-23T16:43:42.078257Z"
         }
 
 ## Update existing course assignment [PUT]
@@ -216,7 +224,9 @@ instant review whenever is possible.
             "assignment_type": "H",
             "start": "2015-08-18T16:20:43.848111Z",
             "end": "2015-08-25T23:59:00Z",
-            "target": "ALL"
+            "target": "ALL",
+            "date_created": "2015-08-23T16:43:42.078203Z",
+            "date_modified": "2015-08-23T16:43:42.078257Z"
         }
 
 ## Delete existing course assignment [DELETE]
@@ -232,36 +242,45 @@ instant review whenever is possible.
 + Response 200 (application/json)
 
         [{
-            "id": 1,
-            "author": 1,
-            "description": "",
-            "pull_request": null,
-            "files": [{
-                    "id": 1,
-                    "file": "./desktop_qMOtgi9.ini",
-                    "sha": "",
-                    "uploaded_on": "2015-08-18T16:48:16.023964Z"
-                },{
-                    "id": 2,
-                    "file": "./desktop_fhG6F8f.ini",
-                    "sha": "",
-                    "uploaded_on": "2015-08-18T16:48:49.624563Z"
-                },{
-                    "id": 3,
-                    "file": "./desktop.ini",
-                    "sha": "",
-                    "uploaded_on": "2015-08-18T16:57:59.134614Z"
-                }],
-            "grade": 0,
-            "submitted_on": "2015-08-18T16:21:15.973773Z"
+          "id": 1,
+          "author": 1,
+          "description": "Работещо",
+          "pull_request": 123,
+          "files": [{
+                "id": 1,
+                "file": "http://127.0.0.1:8000/files/course/1/assignemnt/1/submission/1/song_AfXaM33.txt",
+                "sha": "",
+                "date_created": "2015-08-23T16:44:30.448160Z",
+                "date_modified": "2015-08-23T16:44:30.448280Z"
+          }],
+          "reviews": [{
+                "id": 1,
+                "author": 1,
+                "description": "Много добре",
+                "points": 99,
+                "date_created": "2015-08-23T19:05:18.940503Z",
+                "date_modified": "2015-08-23T19:05:18.941512Z"
+        }],
+          "grade": 0,
+          "date_created": "2015-08-23T16:44:13.716807Z",
+          "date_modified": "2015-08-23T16:44:13.716916Z"
         },{
-            "id": 2,
-            "author": 1,
-            "description": "Направих беля, ама все пак да ми я оцените!",
-            "pull_request": null,
-            "files": [],
-            "grade": 100,
-            "submitted_on": "2015-08-18T21:43:05.291630Z"
+          "id": 2,
+          "author": 1,
+          "description": "Празно...",
+          "pull_request": 999,
+          "files": [],
+          "reviews": [{
+                "id": 2,
+                "author": 1,
+                "description": "Компилира се ама не работи като хората",
+                "points": 20,
+                "date_created": "2015-08-23T19:06:21.582496Z",
+                "date_modified": "2015-08-23T19:06:21.582596Z"
+          }],
+          "grade": 25,
+          "date_created": "2015-08-23T19:05:58.102726Z",
+          "date_modified": "2015-08-23T19:05:58.102771Z"
         }]
 
 ## Create a new submission for this assignment [POST]
@@ -270,18 +289,27 @@ instant review whenever is possible.
     + pullRequest: 1234 (optional, number) - For GitHub hook
     + grade: 100 (optional, number) - Submission grade, in POST maybe is unuseful
     + description: `Some note to the teacher` (optional, string)
-    + files: `` (optional, array)
+    + files (optional, array)
 
 + Response 201 (application/json)
 
         {
-            "id": 2,
-            "author": 1,
-            "description": "Направих беля, ама все пак да ми я оцените!",
-            "pull_request": null,
-            "files": [],
-            "grade": 100,
-            "submitted_on": "2015-08-18T21:43:05.291630Z"
+          "id": 2,
+          "author": 1,
+          "description": "Празно...",
+          "pull_request": 999,
+          "files": [],
+          "reviews": [{
+                "id": 2,
+                "author": 1,
+                "description": "Компилира се ама не работи като хората",
+                "points": 20,
+                "date_created": "2015-08-23T19:06:21.582496Z",
+                "date_modified": "2015-08-23T19:06:21.582596Z"
+          }],
+          "grade": 25,
+          "date_created": "2015-08-23T19:05:58.102726Z",
+          "date_modified": "2015-08-23T19:05:58.102771Z"
         }
 
 # Assignment submission [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}]
@@ -294,28 +322,24 @@ instant review whenever is possible.
 + Response 200 (application/json)
 
         {
-            "id": 1,
-            "author": 1,
-            "description": "",
-            "pull_request": null,
-            "files": [{
-                    "id": 1,
-                    "file": "./desktop_qMOtgi9.ini",
-                    "sha": "",
-                    "uploaded_on": "2015-08-18T16:48:16.023964Z"
-                },{
-                    "id": 2,
-                    "file": "./desktop_fhG6F8f.ini",
-                    "sha": "",
-                    "uploaded_on": "2015-08-18T16:48:49.624563Z"
-                },{
-                    "id": 3,
-                    "file": "./desktop.ini",
-                    "sha": "",
-                    "uploaded_on": "2015-08-18T16:57:59.134614Z"
-                }],
-            "grade": 0,
-            "submitted_on": "2015-08-18T16:21:15.973773Z"
+          "id": 1,
+          "author": 1,
+          "description": "Работещо",
+          "pull_request": 123,
+          "files": [{
+                "id": 1,
+                "file": "http://127.0.0.1:8000/files/course/1/assignemnt/1/submission/1/song_AfXaM33.txt",
+                "sha": "",
+                "date_created": "2015-08-23T16:44:30.448160Z",
+                "date_modified": "2015-08-23T16:44:30.448280Z"
+          }],
+          "reviews": [{
+                "id": 1,
+                "author": 1,
+                "description": "Много добре",
+                "points": 99,
+                "date_created": "2015-08-23T19:05:18.940503Z",
+                "date_modified": "2015-08-23T19:05:18.941512Z"
         }
 
 ## Update submission grade or description [PUT]
@@ -326,28 +350,24 @@ instant review whenever is possible.
 + Response 200 (application/json)
 
         {
-            "id": 1,
-            "author": 1,
-            "description": "",
-            "pull_request": null,
-            "files": [{
-                    "id": 1,
-                    "file": "./desktop_qMOtgi9.ini",
-                    "sha": "",
-                    "uploaded_on": "2015-08-18T16:48:16.023964Z"
-                },{
-                    "id": 2,
-                    "file": "./desktop_fhG6F8f.ini",
-                    "sha": "",
-                    "uploaded_on": "2015-08-18T16:48:49.624563Z"
-                },{
-                    "id": 3,
-                    "file": "./desktop.ini",
-                    "sha": "",
-                    "uploaded_on": "2015-08-18T16:57:59.134614Z"
-                }],
-            "grade": 0,
-            "submitted_on": "2015-08-18T16:21:15.973773Z"
+          "id": 1,
+          "author": 1,
+          "description": "Работещо",
+          "pull_request": 123,
+          "files": [{
+                "id": 1,
+                "file": "http://127.0.0.1:8000/files/course/1/assignemnt/1/submission/1/song_AfXaM33.txt",
+                "sha": "",
+                "date_created": "2015-08-23T16:44:30.448160Z",
+                "date_modified": "2015-08-23T16:44:30.448280Z"
+          }],
+          "reviews": [{
+                "id": 1,
+                "author": 1,
+                "description": "Много добре",
+                "points": 99,
+                "date_created": "2015-08-23T19:05:18.940503Z",
+                "date_modified": "2015-08-23T19:05:18.941512Z"
         }
 
 ## Delete existing assignment submission [DELETE]
@@ -374,19 +394,22 @@ instant review whenever is possible.
             "author": 123,
             "description": "бот връща gcc status, учителя пише коментар",
             "points": 10,
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T19:05:18.940503Z",
+            "date_modified": "2015-08-23T19:05:18.941512Z"
         },{
             "id": 42,
             "author": 124,
             "description": "бот връща gcc status, учителя пише коментар",
             "points": 10,
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T19:05:18.940503Z",
+            "date_modified": "2015-08-23T19:05:18.941512Z"
         },{
             "id": 42,
             "author": 125,
             "description": "бот връща gcc status, учителя пише коментар",
             "points": 10,
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T19:05:18.940503Z",
+            "date_modified": "2015-08-23T19:05:18.941512Z"
         }]
 
 ## Create a new submission review [POST]
@@ -402,7 +425,8 @@ instant review whenever is possible.
             "author": 123,
             "description": "бот връща gcc status, учителя пише коментар",
             "points": 10,
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T19:05:18.940503Z",
+            "date_modified": "2015-08-23T19:05:18.941512Z"
         }
 
 # Submission review [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/reviews/{review_id}]
@@ -419,7 +443,8 @@ instant review whenever is possible.
             "author": 123,
             "description": "бот връща gcc status, учителя пише коментар",
             "points": 10,
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T19:05:18.940503Z",
+            "date_modified": "2015-08-23T19:05:18.941512Z"
         }
 
 ## Update existing submission review [PUT]
@@ -434,7 +459,8 @@ instant review whenever is possible.
             "author": 123,
             "description": "бот връща gcc status, учителя пише коментар",
             "points": 10,
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T19:05:18.940503Z",
+            "date_modified": "2015-08-23T19:05:18.941512Z"
         }
 
 ## Delete existing submission review [DELETE]
@@ -450,20 +476,25 @@ instant review whenever is possible.
 + Response 200
 
         [{
-            "id": 12,
-            "author": 32,
-            "announce": "Announcement text",
-            "date": "2012-04-23T18:25:43.511Z"
-        },{
-            "id": 12,
-            "author": 32,
-            "announce": "Announcement text",
-            "date": "2012-04-23T18:25:43.511Z"
-        },{
-            "id": 12,
-            "author": 32,
-            "announce": "Announcement text",
-            "date": "2012-04-23T18:25:43.511Z"
+            "id": 1,
+            "author": 1,
+            "announcement": "Hello MOTO!",
+            "comments": [],
+            "date_created": "2015-08-23T18:19:19.875183Z",
+            "date_modified": "2015-08-23T18:19:19.875258Z"
+            },{
+            "id": 2,
+            "author": 1,
+            "announcement": "Утре няма да имаме часове",
+            "comments": [{
+                    "id": 1,
+                    "author": 1,
+                    "comment": "Еееее, ама защо бе?",
+                    "date_created": "2015-08-23T18:22:20.812873Z",
+                    "date_modified": "2015-08-23T18:22:20.812913Z"
+            }],
+            "date_created": "2015-08-23T18:19:30.045454Z",
+            "date_modified": "2015-08-23T18:19:30.045540Z"
         }]
 
 ## Create a new course announcement [POST]
@@ -474,10 +505,18 @@ instant review whenever is possible.
 + Response 201
 
         {
-            "id": 12,
-            "author": 32,
-            "announcement": "Announcement text",
-            "date": "2012-04-23T18:25:43.511Z"
+            "id": 2,
+            "author": 1,
+            "announcement": "Утре няма да имаме часове",
+            "comments": [{
+                    "id": 1,
+                    "author": 1,
+                    "comment": "Еееее, ама защо бе?",
+                    "date_created": "2015-08-23T18:22:20.812873Z",
+                    "date_modified": "2015-08-23T18:22:20.812913Z"
+            }],
+            "date_created": "2015-08-23T18:19:30.045454Z",
+            "date_modified": "2015-08-23T18:19:30.045540Z"
         }
 
 # Announcement [/courses/{course_id}/announcements/{announce_id}]
@@ -489,10 +528,18 @@ instant review whenever is possible.
 + Response 200
 
         {
-            "id": 12,
-            "author": 32,
-            "announcement": "Announcement text",
-            "date": "2012-04-23T18:25:43.511Z"
+            "id": 2,
+            "author": 1,
+            "announcement": "Утре няма да имаме часове",
+            "comments": [{
+                    "id": 1,
+                    "author": 1,
+                    "comment": "Еееее, ама защо бе?",
+                    "date_created": "2015-08-23T18:22:20.812873Z",
+                    "date_modified": "2015-08-23T18:22:20.812913Z"
+            }],
+            "date_created": "2015-08-23T18:19:30.045454Z",
+            "date_modified": "2015-08-23T18:19:30.045540Z"
         }
 
 ## Update existing course announcement [PUT]
@@ -503,10 +550,18 @@ instant review whenever is possible.
 + Response 200
 
         {
-            "id": 12,
-            "author": 32,
-            "announcement": "Announcement text",
-            "date": "2012-04-23T18:25:43.511Z"
+            "id": 2,
+            "author": 1,
+            "announcement": "Утре няма да имаме часове",
+            "comments": [{
+                    "id": 1,
+                    "author": 1,
+                    "comment": "Еееее, ама защо бе?",
+                    "date_created": "2015-08-23T18:22:20.812873Z",
+                    "date_modified": "2015-08-23T18:22:20.812913Z"
+            }],
+            "date_created": "2015-08-23T18:19:30.045454Z",
+            "date_modified": "2015-08-23T18:19:30.045540Z"
         }
 
 ## Delete existing course announcement [DELETE]
@@ -524,21 +579,24 @@ instant review whenever is possible.
             "id": 1,
             "author": 42,
             "comment": "Comment itself",
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T18:22:20.812873Z",
+            "date_modified": "2015-08-23T18:22:20.812913Z"
         },{
             "id": 1,
             "author": 42,
             "comment": "Comment itself",
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T18:22:20.812873Z",
+            "date_modified": "2015-08-23T18:22:20.812913Z"
         },{
             "id": 1,
             "author": 42,
             "comment": "Comment itself",
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T18:22:20.812873Z",
+            "date_modified": "2015-08-23T18:22:20.812913Z"
         }]
 
 ## Create new anouncement comment [POST]
-+ Attriutes
++ Attributes
     + author: 42 (required, number) - Author's id
     + comment: `comment text` (required, string)
 
@@ -548,7 +606,8 @@ instant review whenever is possible.
             "id": 1,
             "author": 42,
             "comment": "Comment itself",
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T18:22:20.812873Z",
+            "date_modified": "2015-08-23T18:22:20.812913Z"
         }
 
 # Announcement comment [/courses/{course_id}/announcements/{announce_id}/comments/{comment_id}]
@@ -564,7 +623,8 @@ instant review whenever is possible.
             "id": 1,
             "author": 42,
             "comment": "Comment itself",
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T18:22:20.812873Z",
+            "date_modified": "2015-08-23T18:22:20.812913Z"
         }
 
 ## Update existing comment [PUT]
@@ -577,7 +637,8 @@ instant review whenever is possible.
             "id": 1,
             "author": 42,
             "comment": "Comment itself",
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T18:22:20.812873Z",
+            "date_modified": "2015-08-23T18:22:20.812913Z"
         }
 
 ## Delete existing comment [DELETE]
@@ -639,7 +700,7 @@ instant review whenever is possible.
     + fullname: `Asen Lekov` (required, string)
     + github: `L3K0V` (required, string) - Github username for this user
     + email: `asenlekoff@gmail.com` (required, string) - User's email
-    + details: `` (optional, object) - Student's details
+    + details (optional, object) - Student's details
 
 + Response 201
 
@@ -686,7 +747,7 @@ instant review whenever is possible.
     + fullname: `Asen Lekov` (optional, string)
     + github: `L3K0V` (optional, string) - Github username for this user
     + email: `asenlekoff@gmail.com` (optional, string) - User's email
-    + details: `` (optional, object) - Student's details
+    + details (optional, object) - Student's details
 
 + Response 200 (application/json)
 
@@ -761,7 +822,7 @@ instant review whenever is possible.
     + fullname: `Asen Lekov` (required, string)
     + github: `L3K0V` (required, string) - Github username for this user
     + email: `asenlekoff@gmail.com` (required, string) - User's email
-    + details: `` (optional, object) - Student's details
+    + details (optional, object) - Student's details
 
 + Response 201 (application/json)
 
