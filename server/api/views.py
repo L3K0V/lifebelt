@@ -207,7 +207,7 @@ class AnnouncementCommentViewSet(viewsets.ModelViewSet):
         serializer = AnnouncementCommentSerializer(comment)
         return response.Response(serializer.data)
 
-    def create(self, request, pk=None, course_pk=None):
+    def create(self, request, pk=None, course_pk=None, announcement_pk=None):
         context = {'request': request, 'course_pk': course_pk, 'announcement_pk': announcement_pk}
         serializer = AnnouncementCommentSerializer(context=context, data=request.data)
         serializer.is_valid(raise_exception=True)

@@ -163,12 +163,30 @@ class AssignmentSubmissionSerializer(serializers.HyperlinkedModelSerializer):
             return submission
 
 
-class CourseAnnouncementSerializer(serializers.ModelSerializer):
+class AnnouncementCommentSerializer(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
+    comment = serializers.CharField()
 
     class Meta:
         model = CourseAnnouncement
-        fields = ('id', 'author', 'announcement', 'date_created', 'date_modified')
+        fields = ('id', 'author', 'comment', 'date_created', 'date_modified')
+
+    def create(self, validated_data):
+        announcement = CourseAnnouncement.objects.get(pk=self.context.get('announcement_pk'))
+        author = Member.objects.get(pk=1)
+
+        comment = AnnouncementComment.objects.create(author=author, announcement=announcement, **validated_data)
+
+        return comment
+
+
+class CourseAnnouncementSerializer(serializers.ModelSerializer):
+    author = serializers.PrimaryKeyRelatedField(read_only=True)
+    comments = AnnouncementCommentSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = CourseAnnouncement
+        fields = ('id', 'author', 'announcement', 'comments', 'date_created', 'date_modified')
 
     def create(self, validated_data):
         course = Course.objects.get(pk=self.context.get('course_pk'))
@@ -177,19 +195,3 @@ class CourseAnnouncementSerializer(serializers.ModelSerializer):
         announcement = CourseAnnouncement.objects.create(author=author, course=course, **validated_data)
 
         return announcement
-
-
-class AnnouncementCommentSerializer(serializers.ModelSerializer):
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
-
-    class Meta:
-        model = CourseAnnouncement
-        fields = ('id', 'author', 'comment', 'date_created', 'date_modified')
-
-    def create(self, validated_data):
-        announcement = AnnouncementComment.objects.get(pk=self.context.get('announcement_pk'))
-        author = Member.objects.get(pk=1)
-
-        comment = AnnouncementComment.objects.create(author=author, announcement=announcement, **validated_data)
-
-        return comment

@@ -127,5 +127,5 @@ class CourseAnnouncement(DateModel):
 
 class AnnouncementComment(DateModel):
     author = models.ForeignKey(Member)
-    announcement = models.ForeignKey(CourseAnnouncement)
+    announcement = models.ForeignKey(CourseAnnouncement, related_name='comments')
     comment = models.CharField(max_length=256)
