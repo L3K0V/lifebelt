@@ -4,55 +4,86 @@ HOST: http://lifebelt.apiblueprint.org/
 # lifebelt
 
 Lifebelt is teachers's lifebelt to simplify
-publish, share and review homeworks and exams. Also helps students,
-giving them easy way to follow and be inform about new assignments, receiving
-instant review where is possible.
+publish, share and review homework and exam assignments. Also helps students,
+giving them easy way to follow and be inform about new tasks, receiving
+instant review whenever is possible.
 
 # Group Courses
 
-# Courses [/courses]
+# Courses [/courses/]
 
 ## Get all courses [GET]
 + Response 200 (application/json)
 
         [{
-            "id": 123,
+            "id": 1,
             "initials": "PO",
-            "fullname": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "year": 2016
+            "full_name": "Програмно Осигуряване",
+            "description": "Кратко описание",
+            "year": 2016,
+            "members": [
+                "http://127.0.0.1:8000/members/1/",
+                "http://127.0.0.1:8000/members/2/",
+                "http://127.0.0.1:8000/members/5/"
+            ],
+            "date_created": "2015-08-18T16:20:11.850570Z",
+            "date_modified": "2015-08-18T16:20:11.850632Z"
         },{
-            "id": 124,
-            "initials": "TP",
-            "fullname": "Технология на Програмирането",
-            "description": "Запознаване с технологията на и при програмирането",
-            "year": 2016
+            "id": 2,
+            "initials": "PO",
+            "full_name": "Програмно Осигуряване",
+            "description": "Кратко описание",
+            "year": 2016,
+            "members": [
+                "http://127.0.0.1:8000/members/1/",
+                "http://127.0.0.1:8000/members/2/",
+                "http://127.0.0.1:8000/members/5/"
+            ],
+            "date_created": "2015-08-18T16:20:11.850570Z",
+            "date_modified": "2015-08-18T16:20:11.850632Z"
         },{
-            "id": 125,
-            "initials": "OS",
-            "fullname": "Операционни Системи",
-            "description": "Описание за предмета 'Операционни Системи' ",
-            "year": 2016
+            "id": 3,
+            "initials": "PO",
+            "full_name": "Програмно Осигуряване",
+            "description": "Кратко описание",
+            "year": 2016,
+            "members": [
+                "http://127.0.0.1:8000/members/1/",
+                "http://127.0.0.1:8000/members/2/",
+                "http://127.0.0.1:8000/members/5/"
+            ],
+            "date_created": "2015-08-18T16:20:11.850570Z",
+            "date_modified": "2015-08-18T16:20:11.850632Z"
         }]
 
 ## Create a new course [POST]
 + Attributes (object)
     + initials: PO (required, string) - Course initials
-    + fullname: Програмно осигуряване (required, string) - Fully qualified name
-    + description: Some course description... (optional, string) - Long text with course description. Can be markdown formated or urls.
+    + full_name: Програмно осигуряване (required, string) - Fully qualified name
+    + description: Some course description... (optional, string) - Long text with course description. Can be markdown formatted or urls.
     + year: 2016 (required, number) - Course active year
+    + members (array[member]) - A collection of members precipitating in this course.
+    + date_created (date) - Course creation date
+    + date_modified (date) - Date of last modification
 
 + Response 201 (application/json)
 
         {
-            "id": 123,
+            "id": 3,
             "initials": "PO",
-            "fullname": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "year": 2016
+            "full_name": "Програмно Осигуряване",
+            "description": "Кратко описание",
+            "year": 2016,
+            "members": [
+                "http://127.0.0.1:8000/members/1/",
+                "http://127.0.0.1:8000/members/2/",
+                "http://127.0.0.1:8000/members/5/"
+            ],
+            "date_created": "2015-08-18T16:20:11.850570Z",
+            "date_modified": "2015-08-18T16:20:11.850632Z"
         }
 
-# Course [/courses/{course_id}]
+# Course [/courses/{course_id}/]
 + Parameters
     + course_id: 42 (required, number) - Desired course id
 
@@ -60,28 +91,42 @@ instant review where is possible.
 + Response 200 (application/json)
 
         {
-            "id": 123,
+            "id": 3,
             "initials": "PO",
-            "fullname": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "year": 2016
+            "full_name": "Програмно Осигуряване",
+            "description": "Кратко описание",
+            "year": 2016,
+            "members": [
+                "http://127.0.0.1:8000/members/1/",
+                "http://127.0.0.1:8000/members/2/",
+                "http://127.0.0.1:8000/members/5/"
+            ],
+            "date_created": "2015-08-18T16:20:11.850570Z",
+            "date_modified": "2015-08-18T16:20:11.850632Z"
         }
 
 ## Edit existing course with given id [PUT]
 + Attributes
     + initials: PO (optional, string) - Course initials
-    + fullname: Програмно осигуряване (optional, string) - Fully qualified name
-    + description: Some course description... (optional, string) - Long text with course description. Can be markdown formated or urls.
+    + full_name: Програмно осигуряване (optional, string) - Fully qualified name
+    + description: Some course description... (optional, string) - Long text with course description. Can be markdown formatted or urls.
     + year: 2016 (optional, number) - Course active year
 
 + Response 200 (application/json)
 
         {
-            "id": 123,
+            "id": 3,
             "initials": "PO",
-            "fullname": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "year": 2016
+            "full_name": "Програмно Осигуряване",
+            "description": "Кратко описание",
+            "year": 2016,
+            "members": [
+                "http://127.0.0.1:8000/members/1/",
+                "http://127.0.0.1:8000/members/2/",
+                "http://127.0.0.1:8000/members/5/"
+            ],
+            "date_created": "2015-08-18T16:20:11.850570Z",
+            "date_modified": "2015-08-18T16:20:11.850632Z"
         }
 
 ## Delete existing course by id [DELETE]
@@ -97,51 +142,48 @@ instant review where is possible.
 + Response 200 (application/json)
 
         [{
-            "id": 123,
-            "name": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "type": "exam",
-            "start": "2012-04-23T18:25:43.511Z",
-            "end": "2012-04-23T18:25:43.511Z"
+            "id": 1,
+            "name": "Домашно 1",
+            "description": "Кратко описание",
+            "assignment_type": "H",
+            "start": "2015-08-18T16:20:43.848111Z",
+            "end": "2015-08-25T23:59:00Z",
+            "target": "ALL",
+            "date_created": "2015-08-23T16:43:42.078203Z",
+            "date_modified": "2015-08-23T16:43:42.078257Z"
         },{
-            "id": 124,
-            "name": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "type": "homework",
-            "start": "2012-04-23T18:25:43.511Z",
-            "end": "2012-04-23T18:25:43.511Z"
-        },{
-            "id": 125,
-            "name": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "type": "exam",
-            "start": "2012-04-23T18:25:43.511Z",
-            "end": "2012-04-23T18:25:43.511Z"
+            "id": 2,
+            "name": "Домашно 2",
+            "description": "Яко текст",
+            "assignment_type": "H",
+            "start": "2015-08-18T21:00:49.737016Z",
+            "end": "2015-08-19T23:59:00Z",
+            "target": "A",
+            "date_created": "2015-08-23T16:43:42.078203Z",
+            "date_modified": "2015-08-23T16:43:42.078257Z"
         }]
 
 ## Create new course assignment [POST]
 + Attributes (object)
     + name: `Homework 1` (required, string) - Assignment name
     + description: `Short assignment description of assignemnt` (required, string)
-    + type: `homework` (required, string) - Homework or exam
-    + targets: `["A", "B", "ALL"]` (required, array[string]) - String list of targets
+    + assignment_type: `H` (required, string) - Homework or Exam or Practice
+    + targets: `A` (required, string) - Assignment target
     + start: `2012-04-23T18:25:43.511Z` (required, string) - Timestamp
     + end: `2012-04-23T18:25:43.511Z` (required, string) - Timestamp
 
 + Response 201 (application/json)
 
         {
-            "id": 123,
-            "name": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "type": "homework",
-            "targets": [
-                "A",
-                "B",
-                "ALL"
-            ],
-            "start": "2012-04-23T18:25:43.511Z",
-            "end": "2012-04-23T18:25:43.511Z"
+            "id": 1,
+            "name": "Домашно 1",
+            "description": "Кратко описание",
+            "assignment_type": "H",
+            "start": "2015-08-18T16:20:43.848111Z",
+            "end": "2015-08-25T23:59:00Z",
+            "target": "ALL",
+            "date_created": "2015-08-23T16:43:42.078203Z",
+            "date_modified": "2015-08-23T16:43:42.078257Z"
         }
 
 # Assignment [/courses/{course_id}/assignments/{ass_id}]
@@ -153,42 +195,38 @@ instant review where is possible.
 + Response 200 (application/json)
 
         {
-            "id": 123,
-            "name": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "type": "homework",
-            "targets": [
-                "A",
-                "B",
-                "ALL"
-            ],
-            "start": "2012-04-23T18:25:43.511Z",
-            "end": "2012-04-23T18:25:43.511Z"
+            "id": 1,
+            "name": "Домашно 1",
+            "description": "Кратко описание",
+            "assignment_type": "H",
+            "start": "2015-08-18T16:20:43.848111Z",
+            "end": "2015-08-25T23:59:00Z",
+            "target": "ALL",
+            "date_created": "2015-08-23T16:43:42.078203Z",
+            "date_modified": "2015-08-23T16:43:42.078257Z"
         }
 
 ## Update existing course assignment [PUT]
 + Attributes
-    + name: `Homework 1` (optional, string) - New assignment name
-    + description: `New short assignment description of assignemnt` (optional, string)
-    + type: `homework` (optional, string) - Change assignment type
-    + targets: `["A", "B", "ALL"]` (optional, array[string]) - String list of targets
-    + start: `2012-04-23T18:25:43.511Z` (optional, string) - Timestamp
-    + end: `2012-04-23T18:25:43.511Z` (optional, string) - Timestamp
+    + name: `Homework 1` (required, string) - Assignment name
+    + description: `Short assignment description of assignemnt` (required, string)
+    + assignment_type: `H` (required, string) - Homework or Exam or Practice
+    + targets: `A` (required, string) - Assignment target
+    + start: `2012-04-23T18:25:43.511Z` (required, string) - Timestamp
+    + end: `2012-04-23T18:25:43.511Z` (required, string) - Timestamp
 
 + Response 200 (application/json)
 
         {
-            "id": 123,
-            "name": "Програмно осигуряване",
-            "description": "Запознаване със структури от данни и езикът 'С'",
-            "type": "homework",
-            "targets": [
-                "A",
-                "B",
-                "ALL"
-            ],
-            "start": "2012-04-23T18:25:43.511Z",
-            "end": "2012-04-23T18:25:43.511Z"
+            "id": 1,
+            "name": "Домашно 1",
+            "description": "Кратко описание",
+            "assignment_type": "H",
+            "start": "2015-08-18T16:20:43.848111Z",
+            "end": "2015-08-25T23:59:00Z",
+            "target": "ALL",
+            "date_created": "2015-08-23T16:43:42.078203Z",
+            "date_modified": "2015-08-23T16:43:42.078257Z"
         }
 
 ## Delete existing course assignment [DELETE]
@@ -204,65 +242,45 @@ instant review where is possible.
 + Response 200 (application/json)
 
         [{
-            {
-            "id": 123,
-            "author": 42,
-            "date": "2012-04-23T18:25:43.511Z",
-            "pullRequest": 1234,
-            "grade": 100,
-            "description": "Teache me master, how to create an pull request",
-            "files" : [
-                {
-                    "id": 1,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                },
-                {
-                    "id": 2,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                }
-            ]
+          "id": 1,
+          "author": 1,
+          "description": "Работещо",
+          "pull_request": 123,
+          "files": [{
+                "id": 1,
+                "file": "http://127.0.0.1:8000/files/course/1/assignemnt/1/submission/1/song_AfXaM33.txt",
+                "sha": "",
+                "date_created": "2015-08-23T16:44:30.448160Z",
+                "date_modified": "2015-08-23T16:44:30.448280Z"
+          }],
+          "reviews": [{
+                "id": 1,
+                "author": 1,
+                "description": "Много добре",
+                "points": 99,
+                "date_created": "2015-08-23T19:05:18.940503Z",
+                "date_modified": "2015-08-23T19:05:18.941512Z"
+        }],
+          "grade": 0,
+          "date_created": "2015-08-23T16:44:13.716807Z",
+          "date_modified": "2015-08-23T16:44:13.716916Z"
         },{
-            {
-            "id": 123,
-            "author": 42,
-            "date": "2012-04-23T18:25:43.511Z",
-            "pullRequest": 1234,
-            "grade": 100,
-            "description": "Teache me master, how to create an pull request",
-            "files" : [
-                {
-                    "id": 1,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                },
-                {
-                    "id": 2,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                }
-            ]
-        },{
-            {
-            "id": 123,
-            "author": 42,
-            "date": "2012-04-23T18:25:43.511Z",
-            "pullRequest": 1234,
-            "grade": 100,
-            "description": "Teache me master, how to create an pull request",
-            "files" : [
-                {
-                    "id": 1,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                },
-                {
-                    "id": 2,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                }
-            ]
+          "id": 2,
+          "author": 1,
+          "description": "Празно...",
+          "pull_request": 999,
+          "files": [],
+          "reviews": [{
+                "id": 2,
+                "author": 1,
+                "description": "Компилира се ама не работи като хората",
+                "points": 20,
+                "date_created": "2015-08-23T19:06:21.582496Z",
+                "date_modified": "2015-08-23T19:06:21.582596Z"
+          }],
+          "grade": 25,
+          "date_created": "2015-08-23T19:05:58.102726Z",
+          "date_modified": "2015-08-23T19:05:58.102771Z"
         }]
 
 ## Create a new submission for this assignment [POST]
@@ -271,18 +289,27 @@ instant review where is possible.
     + pullRequest: 1234 (optional, number) - For GitHub hook
     + grade: 100 (optional, number) - Submission grade, in POST maybe is unuseful
     + description: `Some note to the teacher` (optional, string)
-    + files: `` (optional, array)
+    + files (optional, array)
 
 + Response 201 (application/json)
 
         {
-            "id": 123,
-            "author": 42,
-            "date": "2012-04-23T18:25:43.511Z",
-            "pullRequest": 1234,
-            "grade": 0,
-            "description": "Teache me master, how to create an pull request",
-            "files" : []
+          "id": 2,
+          "author": 1,
+          "description": "Празно...",
+          "pull_request": 999,
+          "files": [],
+          "reviews": [{
+                "id": 2,
+                "author": 1,
+                "description": "Компилира се ама не работи като хората",
+                "points": 20,
+                "date_created": "2015-08-23T19:06:21.582496Z",
+                "date_modified": "2015-08-23T19:06:21.582596Z"
+          }],
+          "grade": 25,
+          "date_created": "2015-08-23T19:05:58.102726Z",
+          "date_modified": "2015-08-23T19:05:58.102771Z"
         }
 
 # Assignment submission [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}]
@@ -295,24 +322,24 @@ instant review where is possible.
 + Response 200 (application/json)
 
         {
-            "id": 123,
-            "author": 42,
-            "date": "2012-04-23T18:25:43.511Z",
-            "pullRequest": 1234,
-            "grade": 100,
-            "description": "Teache me master, how to create an pull request",
-            "files" : [
-                {
-                    "id": 1,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                },
-                {
-                    "id": 2,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                }
-            ]
+          "id": 1,
+          "author": 1,
+          "description": "Работещо",
+          "pull_request": 123,
+          "files": [{
+                "id": 1,
+                "file": "http://127.0.0.1:8000/files/course/1/assignemnt/1/submission/1/song_AfXaM33.txt",
+                "sha": "",
+                "date_created": "2015-08-23T16:44:30.448160Z",
+                "date_modified": "2015-08-23T16:44:30.448280Z"
+          }],
+          "reviews": [{
+                "id": 1,
+                "author": 1,
+                "description": "Много добре",
+                "points": 99,
+                "date_created": "2015-08-23T19:05:18.940503Z",
+                "date_modified": "2015-08-23T19:05:18.941512Z"
         }
 
 ## Update submission grade or description [PUT]
@@ -323,37 +350,28 @@ instant review where is possible.
 + Response 200 (application/json)
 
         {
-            "id": 123,
-            "author": 42,
-            "date": "2012-04-23T18:25:43.511Z",
-            "pullRequest": 1234,
-            "grade": 100,
-            "description": "Teache me master, how to create an pull request",
-            "files" : [
-                {
-                    "id": 1,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                },
-                {
-                    "id": 2,
-                    "filename": "url to uploaded raw file",
-                    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
-                }
-            ]
+          "id": 1,
+          "author": 1,
+          "description": "Работещо",
+          "pull_request": 123,
+          "files": [{
+                "id": 1,
+                "file": "http://127.0.0.1:8000/files/course/1/assignemnt/1/submission/1/song_AfXaM33.txt",
+                "sha": "",
+                "date_created": "2015-08-23T16:44:30.448160Z",
+                "date_modified": "2015-08-23T16:44:30.448280Z"
+          }],
+          "reviews": [{
+                "id": 1,
+                "author": 1,
+                "description": "Много добре",
+                "points": 99,
+                "date_created": "2015-08-23T19:05:18.940503Z",
+                "date_modified": "2015-08-23T19:05:18.941512Z"
         }
 
 ## Delete existing assignment submission [DELETE]
 + Response 204
-
-# Submission status [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/status]
-## Get submission status [GET]
-+ Response 200 (application/json)
-
-        {
-            "id": 1,
-            "status": "FINISHED|INPROGRESS|ERROR"
-        }
 
 # Submission files [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/files]
 ## Get all files [GET]
@@ -376,19 +394,22 @@ instant review where is possible.
             "author": 123,
             "description": "бот връща gcc status, учителя пише коментар",
             "points": 10,
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T19:05:18.940503Z",
+            "date_modified": "2015-08-23T19:05:18.941512Z"
         },{
             "id": 42,
             "author": 124,
             "description": "бот връща gcc status, учителя пише коментар",
             "points": 10,
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T19:05:18.940503Z",
+            "date_modified": "2015-08-23T19:05:18.941512Z"
         },{
             "id": 42,
             "author": 125,
             "description": "бот връща gcc status, учителя пише коментар",
             "points": 10,
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T19:05:18.940503Z",
+            "date_modified": "2015-08-23T19:05:18.941512Z"
         }]
 
 ## Create a new submission review [POST]
@@ -404,7 +425,8 @@ instant review where is possible.
             "author": 123,
             "description": "бот връща gcc status, учителя пише коментар",
             "points": 10,
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T19:05:18.940503Z",
+            "date_modified": "2015-08-23T19:05:18.941512Z"
         }
 
 # Submission review [/courses/{course_id}/assignments/{ass_id}/submissions/{sub_id}/reviews/{review_id}]
@@ -421,7 +443,8 @@ instant review where is possible.
             "author": 123,
             "description": "бот връща gcc status, учителя пише коментар",
             "points": 10,
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T19:05:18.940503Z",
+            "date_modified": "2015-08-23T19:05:18.941512Z"
         }
 
 ## Update existing submission review [PUT]
@@ -436,7 +459,8 @@ instant review where is possible.
             "author": 123,
             "description": "бот връща gcc status, учителя пише коментар",
             "points": 10,
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T19:05:18.940503Z",
+            "date_modified": "2015-08-23T19:05:18.941512Z"
         }
 
 ## Delete existing submission review [DELETE]
@@ -452,20 +476,25 @@ instant review where is possible.
 + Response 200
 
         [{
-            "id": 12,
-            "author": 32,
-            "announce": "Announcement text",
-            "date": "2012-04-23T18:25:43.511Z"
-        },{
-            "id": 12,
-            "author": 32,
-            "announce": "Announcement text",
-            "date": "2012-04-23T18:25:43.511Z"
-        },{
-            "id": 12,
-            "author": 32,
-            "announce": "Announcement text",
-            "date": "2012-04-23T18:25:43.511Z"
+            "id": 1,
+            "author": 1,
+            "announcement": "Hello MOTO!",
+            "comments": [],
+            "date_created": "2015-08-23T18:19:19.875183Z",
+            "date_modified": "2015-08-23T18:19:19.875258Z"
+            },{
+            "id": 2,
+            "author": 1,
+            "announcement": "Утре няма да имаме часове",
+            "comments": [{
+                    "id": 1,
+                    "author": 1,
+                    "comment": "Еееее, ама защо бе?",
+                    "date_created": "2015-08-23T18:22:20.812873Z",
+                    "date_modified": "2015-08-23T18:22:20.812913Z"
+            }],
+            "date_created": "2015-08-23T18:19:30.045454Z",
+            "date_modified": "2015-08-23T18:19:30.045540Z"
         }]
 
 ## Create a new course announcement [POST]
@@ -476,10 +505,18 @@ instant review where is possible.
 + Response 201
 
         {
-            "id": 12,
-            "author": 32,
-            "announcement": "Announcement text",
-            "date": "2012-04-23T18:25:43.511Z"
+            "id": 2,
+            "author": 1,
+            "announcement": "Утре няма да имаме часове",
+            "comments": [{
+                    "id": 1,
+                    "author": 1,
+                    "comment": "Еееее, ама защо бе?",
+                    "date_created": "2015-08-23T18:22:20.812873Z",
+                    "date_modified": "2015-08-23T18:22:20.812913Z"
+            }],
+            "date_created": "2015-08-23T18:19:30.045454Z",
+            "date_modified": "2015-08-23T18:19:30.045540Z"
         }
 
 # Announcement [/courses/{course_id}/announcements/{announce_id}]
@@ -491,10 +528,18 @@ instant review where is possible.
 + Response 200
 
         {
-            "id": 12,
-            "author": 32,
-            "announcement": "Announcement text",
-            "date": "2012-04-23T18:25:43.511Z"
+            "id": 2,
+            "author": 1,
+            "announcement": "Утре няма да имаме часове",
+            "comments": [{
+                    "id": 1,
+                    "author": 1,
+                    "comment": "Еееее, ама защо бе?",
+                    "date_created": "2015-08-23T18:22:20.812873Z",
+                    "date_modified": "2015-08-23T18:22:20.812913Z"
+            }],
+            "date_created": "2015-08-23T18:19:30.045454Z",
+            "date_modified": "2015-08-23T18:19:30.045540Z"
         }
 
 ## Update existing course announcement [PUT]
@@ -505,10 +550,18 @@ instant review where is possible.
 + Response 200
 
         {
-            "id": 12,
-            "author": 32,
-            "announcement": "Announcement text",
-            "date": "2012-04-23T18:25:43.511Z"
+            "id": 2,
+            "author": 1,
+            "announcement": "Утре няма да имаме часове",
+            "comments": [{
+                    "id": 1,
+                    "author": 1,
+                    "comment": "Еееее, ама защо бе?",
+                    "date_created": "2015-08-23T18:22:20.812873Z",
+                    "date_modified": "2015-08-23T18:22:20.812913Z"
+            }],
+            "date_created": "2015-08-23T18:19:30.045454Z",
+            "date_modified": "2015-08-23T18:19:30.045540Z"
         }
 
 ## Delete existing course announcement [DELETE]
@@ -526,21 +579,24 @@ instant review where is possible.
             "id": 1,
             "author": 42,
             "comment": "Comment itself",
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T18:22:20.812873Z",
+            "date_modified": "2015-08-23T18:22:20.812913Z"
         },{
             "id": 1,
             "author": 42,
             "comment": "Comment itself",
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T18:22:20.812873Z",
+            "date_modified": "2015-08-23T18:22:20.812913Z"
         },{
             "id": 1,
             "author": 42,
             "comment": "Comment itself",
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T18:22:20.812873Z",
+            "date_modified": "2015-08-23T18:22:20.812913Z"
         }]
 
 ## Create new anouncement comment [POST]
-+ Attriutes
++ Attributes
     + author: 42 (required, number) - Author's id
     + comment: `comment text` (required, string)
 
@@ -550,7 +606,8 @@ instant review where is possible.
             "id": 1,
             "author": 42,
             "comment": "Comment itself",
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T18:22:20.812873Z",
+            "date_modified": "2015-08-23T18:22:20.812913Z"
         }
 
 # Announcement comment [/courses/{course_id}/announcements/{announce_id}/comments/{comment_id}]
@@ -566,7 +623,8 @@ instant review where is possible.
             "id": 1,
             "author": 42,
             "comment": "Comment itself",
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T18:22:20.812873Z",
+            "date_modified": "2015-08-23T18:22:20.812913Z"
         }
 
 ## Update existing comment [PUT]
@@ -579,7 +637,8 @@ instant review where is possible.
             "id": 1,
             "author": 42,
             "comment": "Comment itself",
-            "date": "2012-04-23T18:25:43.511Z"
+            "date_created": "2015-08-23T18:22:20.812873Z",
+            "date_modified": "2015-08-23T18:22:20.812913Z"
         }
 
 ## Delete existing comment [DELETE]
@@ -641,7 +700,7 @@ instant review where is possible.
     + fullname: `Asen Lekov` (required, string)
     + github: `L3K0V` (required, string) - Github username for this user
     + email: `asenlekoff@gmail.com` (required, string) - User's email
-    + details: `` (optional, object) - Student's details
+    + details (optional, object) - Student's details
 
 + Response 201
 
@@ -688,7 +747,7 @@ instant review where is possible.
     + fullname: `Asen Lekov` (optional, string)
     + github: `L3K0V` (optional, string) - Github username for this user
     + email: `asenlekoff@gmail.com` (optional, string) - User's email
-    + details: `` (optional, object) - Student's details
+    + details (optional, object) - Student's details
 
 + Response 200 (application/json)
 
@@ -763,7 +822,7 @@ instant review where is possible.
     + fullname: `Asen Lekov` (required, string)
     + github: `L3K0V` (required, string) - Github username for this user
     + email: `asenlekoff@gmail.com` (required, string) - User's email
-    + details: `` (optional, object) - Student's details
+    + details (optional, object) - Student's details
 
 + Response 201 (application/json)
 
