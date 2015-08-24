@@ -9,8 +9,7 @@ angular.module("lifebeltApp").config(function($stateProvider) {
 				controller: "HomeDrawerCtrl as homeDrawerCtrl"
 			},
 			"header": {
-				templateUrl: "scripts/home/header.html",
-				controller: "HomeHeaderCtrl as homeHeaderCtrl"
+				templateUrl: "scripts/home/header.html"
 			},
 			"content": {
 				templateUrl: "scripts/home/content.html"

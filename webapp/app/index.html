@@ -31,7 +31,7 @@
 	}
 	</style>
 </head>
-<body layout="row" data-ng-app="lifebeltApp">
+<body layout="row" data-ng-app="lifebeltApp" data-ng-controller="DrawerCtrl">
 	<!--[if lte IE 8]>
 	  <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 	<![endif]-->
@@ -77,14 +77,21 @@
 	<!-- fileblock:js scripts -->
 	<script src="scripts/app.js"></script>
 	<script src="scripts/home/homeConfig.js"></script>
-	<script src="scripts/home/homeHeaderCtrl.js"></script>
 	<script src="scripts/home/homeDrawerCtrl.js"></script>
 	<script src="scripts/courses/coursesConfig.js"></script>
-	<script src="scripts/courses/coursesDrawerCtrl.js"></script>
 	<script src="scripts/courses/coursesHeaderCtrl.js"></script>
 	<script src="scripts/courses/coursesContentCtrl.js"></script>
 	<script src="scripts/user/loginService.js"></script>
 	<script src="scripts/courses/coursesService.js"></script>
+	<script src="scripts/loggedin/loggedinDrawerCtrl.js"></script>
+	<script src="scripts/loggedin/loggedinConfig.js"></script>
+	<script src="scripts/courses/open/courseOpenHeaderCtrl.js"></script>
+	<script src="scripts/home/linkCtrl.js"></script>
+	<script src="scripts/courses/open/courseOpenContentCtrl.js"></script>
+	<script src="scripts/home/drawerCtrl.js"></script>
+	<script src="scripts/assignments/assignmentsListCtrl.js"></script>
+	<script src="scripts/assignments/assignmentsService.js"></script>
+	<script src="scripts/assignments/timeLeftFilter.js"></script>
 	<!-- endfileblock -->
 	<!-- endbuild -->
 </body>

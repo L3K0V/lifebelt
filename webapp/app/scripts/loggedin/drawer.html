@@ -1,0 +1,24 @@
+<md-toolbar data-ng-show="loggedinDrawerCtrl.user"class="md-whiteframe-z1">
+	<div class="md-toolbar-tools">
+		<span flex></span>
+	</div>
+	<div class="md-toolbar-tools">
+		<img class="user-avatar" data-ng-src="{{ loggedinDrawerCtrl.user.avatar_url }}" alt="{{ loggedinDrawerCtrl.user.fullname }}"/>&nbsp;&nbsp;&nbsp;<h5>{{ loggedinDrawerCtrl.user.fullname }}</h5>
+	</div>
+</md-toolbar>
+<md-list>
+	<md-list-item class="md-ink-ripple">
+		<md-button class="md-no-style">Logout</md-button>
+	</md-list-item>
+	<md-list-item class="md-ink-ripple">
+		<md-button class="md-no-style">Home</md-button>
+	</md-list-item>
+	<md-list-item class="md-ink-ripple">
+		<md-button class="md-no-style" data-ui-sref="home.loggedin.courses">Courses</md-button>
+	</md-list-item>
+	</md-list-item>
+		<md-list-item class="md-ink-ripple">
+		<md-button class="md-no-style">Assignments</md-button>
+	</md-list-item>
+
+</md-list>

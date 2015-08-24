@@ -8,7 +8,7 @@ angular.module("lifebeltApp").controller("HomeDrawerCtrl", function($state) {
 			// TODO
 			// $auth.authenticate("github");
 
-			$state.go("home.courses");
+			$state.go("home.loggedin.courses");
 		};
 	}
 

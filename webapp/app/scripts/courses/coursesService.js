@@ -9,6 +9,9 @@ angular.module("lifebeltApp").service("CoursesService", function(Restangular) {
 		service.getCourses = function() {
 			return coursesEndpoint.getList();
 		};
+		service.getCourse = function(courseId) {
+			return coursesEndpoint.one(courseId).get();
+		};
 	}
 
 	attachMethods();

@@ -1,4 +1,4 @@
-angular.module("lifebeltApp").controller("CoursesDrawerCtrl", function(LoginService) {
+angular.module("lifebeltApp").controller("LoggedinDrawerCtrl", function(LoginService) {
 	"use strict";
 
 	var controller = this;
