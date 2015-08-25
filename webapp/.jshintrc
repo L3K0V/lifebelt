@@ -1,18 +1,24 @@
 {
-  "quotmark": "double",
-  "bitwise": true,
+  "node": true,
   "browser": true,
+  "esnext": true,
+  "bitwise": true,
+  "camelcase": true,
   "curly": true,
   "eqeqeq": true,
-  "esnext": true,
+  "immed": true,
+  "indent": 2,
   "latedef": true,
   "noarg": true,
-  "node": true,
-  "strict": true,
+  "quotmark": "single",
   "undef": true,
   "unused": true,
   "globals": {
-    "angular": false,
-    "componentHandler": false
+    "wrap": true,
+    "unwrap": true,
+    "Polymer": true,
+    "Platform": true,
+    "page": true,
+    "app": true
   }
 }

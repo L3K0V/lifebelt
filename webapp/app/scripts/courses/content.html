@@ -1,9 +1,0 @@
-<md-card data-ng-repeat="course in coursesContentCtrl.courses">
-	<md-card-content>
-		<h2>{{ course.fullname }}</h2>
-		<p>{{ course.description }}</p>
-	</md-card-content>
-	<div class="md-actions" layout="row" layout-align="end center">
-		<md-button class="md-raised md-primary" data-ui-sref="home.loggedin.courses.open({courseId: course.id})">Go to course</md-button>
-	</div>
-</md-card>
