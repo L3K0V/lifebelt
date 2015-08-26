@@ -18,7 +18,7 @@ instant review whenever is possible.
         [{
             "id": 1,
             "initials": "PO",
-            "full_name": "Програмно Осигуряване",
+            "fullname": "Програмно Осигуряване",
             "description": "Кратко описание",
             "year": 2016,
             "members": [
@@ -31,7 +31,7 @@ instant review whenever is possible.
         },{
             "id": 2,
             "initials": "PO",
-            "full_name": "Програмно Осигуряване",
+            "fullname": "Програмно Осигуряване",
             "description": "Кратко описание",
             "year": 2016,
             "members": [
@@ -44,7 +44,7 @@ instant review whenever is possible.
         },{
             "id": 3,
             "initials": "PO",
-            "full_name": "Програмно Осигуряване",
+            "fullname": "Програмно Осигуряване",
             "description": "Кратко описание",
             "year": 2016,
             "members": [
@@ -62,16 +62,16 @@ instant review whenever is possible.
     + full_name: Програмно осигуряване (required, string) - Fully qualified name
     + description: Some course description... (optional, string) - Long text with course description. Can be markdown formatted or urls.
     + year: 2016 (required, number) - Course active year
-    + members (array[member]) - A collection of members precipitating in this course.
-    + date_created (date) - Course creation date
-    + date_modified (date) - Date of last modification
+    + members (array[object]) - A collection of members precipitating in this course.
+    + date_created (string) - Course creation date
+    + date_modified (string) - Date of last modification
 
 + Response 201 (application/json)
 
         {
             "id": 3,
             "initials": "PO",
-            "full_name": "Програмно Осигуряване",
+            "fullname": "Програмно Осигуряване",
             "description": "Кратко описание",
             "year": 2016,
             "members": [
@@ -93,7 +93,7 @@ instant review whenever is possible.
         {
             "id": 3,
             "initials": "PO",
-            "full_name": "Програмно Осигуряване",
+            "fullname": "Програмно Осигуряване",
             "description": "Кратко описание",
             "year": 2016,
             "members": [
@@ -117,7 +117,7 @@ instant review whenever is possible.
         {
             "id": 3,
             "initials": "PO",
-            "full_name": "Програмно Осигуряване",
+            "fullname": "Програмно Осигуряване",
             "description": "Кратко описание",
             "year": 2016,
             "members": [
