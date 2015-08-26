@@ -10,36 +10,48 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="lifebelt-course-list">
+<dom-module id="lifebelt-course-grid">
   <style>
   :host {
+    @apply(--layout-flex);
+    @apply(--layout-center);
     @apply(--layout-vertical);
-     display: block;
-     height: 100%
-   }
+  }
+
+  [grid-content] {
+    @apply(--layout-horizontal);
+    @apply(--layout-wrap);
+  }
 
   lifebelt-course {
+    @apply(--layout-vertical);
+    @apply(--center-justified);
     margin: 16px;
+    max-width: 300px;
   }
   </style>
-  <template is="dom-bind">
+  <template is="dom-binding">
     <iron-ajax auto url="http://private-451ee-lifebelt.apiary-mock.com/courses" handle-as="json" last-response="{{courses}}"></iron-ajax>
-    <template is="dom-repeat" items="{{courses}}">
-      <a href="/course/{{item.id}}"></a>
-      <lifebelt-course course={{item}}></lifebelt-course>
-    </template>
+    <div grid-content>
+      <template is="dom-repeat" items="{{courses}}">
+        <a href="/course/{{item.id}}"></a>
+        <div grid-item>
+          <lifebelt-course course={{item}} header="https://placehold.it/350x150"></lifebelt-course>
+        </div>
+      </template>
+    </div>
   </template>
   <script>
     (function() {
       'use strict';
 
       Polymer({
-        is: 'lifebelt-course-list',
+        is: 'lifebelt-course-grid',
 
         properties: {
           foo: {
             type: String,
-            value: 'lifebelt-course-list',
+            value: 'lifebelt-course-grid',
             notify: true
           }
         }

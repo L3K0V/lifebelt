@@ -18,14 +18,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-bottom: 16px;
       }
     </style>
-    <paper-card heading="{{computeFullName(course.fullname, course.year)}}" animated-shadow>
-      <paper-ripple></paper-ripple>
+    <paper-card heading="{{computeFullName(course.fullname, course.year)}}" animated-shadow on-click="handleClick" class="pink" image$="{{header}}">
+      <paper-ripple fit></paper-ripple>
       <div class="card-content">
         <span>{{course.description}}</span>
       </div>
       <div class="card-actions">
-        <paper-icon-button id="course" icon="class" alt="class" on-click="handleClick"></paper-icon-button>
-
         <paper-icon-button id="assignment" icon="assignment" alt="assignment"></paper-icon-button>
         <paper-badge class="red" for="assignment" label="2"></paper-badge>
       </div>
@@ -43,7 +41,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           course: {
             type: Object
           },
-
+          header: {
+            type: String,
+            value: null
+          }
         },
         handleClick: function() {
           page('/courses/12')

@@ -56,6 +56,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 </head>
 
 <body unresolved class="fullbleed layout vertical">
+
+  
+
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
 
@@ -108,6 +111,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div class="bottom bottom-container center horizontal layout">
             <div class="bottom-title paper-font-subhead">TUES Course Management</div>
           </div>
+
         </paper-toolbar>
 
         <!-- Main Content -->
@@ -125,30 +129,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <p>Copyright (c) 2015 The Polymer Authors. All rights reserved.</p>
                 <p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p>
                 <ul>
-                  <li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</li>
-                  <li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-                  </li>
-                  <li>Neither the name of Google Inc. nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.</li>
+                <li>Redistributions of source code must retain the above copyright
+                notice, this list of conditions and the following disclaimer.</li>
+                <li>Redistributions in binary form must reproduce the above
+                copyright notice, this list of conditions and the following disclaimer
+                in the documentation and/or other materials provided with the
+                distribution.</li>
+                <li>Neither the name of Google Inc. nor the names of its
+                contributors may be used to endorse or promote products derived from
+                this software without specific prior written permission.</li>
                 </ul>
-                <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-                  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-                  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-                  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+                <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
               </paper-material>
 
             </section>
 
             <section data-route="courses">
-              <iron-icon icon="today"></iron-icon><span class="paper-font-subhead">This year</span>
-              <lifebelt-course-grid></lifebelt-course-grid>
-              <iron-icon icon="history"></iron-icon><span class="paper-font-subhead">Past</span>
-              <lifebelt-course-list></lifebelt-course-list>
+              <paper-tabs selected="0">
+                <lifebelt-course-list></lifebelt-course-list>
             </section>
 
             <section data-route="course-details">
               <paper-material elevation="1">
                 <h2 class="page-title">
-                  Click on course
+                Click on course
                 </h2>
                 <div>This is some course information</div>
               </paper-material>
@@ -157,11 +161,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <section data-route="user-info">
               <paper-material elevation="1">
                 <h2 class="paper-font-display2">
-                  User:
-                  <span>{{params.name}}</span>
+                User:<span>{{params.name}}</span>
                 </h2>
-                <div>This is
-                  <span>{{params.name}}</span>'s section</div>
+                <div>This is <span>{{params.name}}</span>'s section</div>
               </paper-material>
             </section>
 
