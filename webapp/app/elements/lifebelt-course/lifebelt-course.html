@@ -24,7 +24,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <span>{{course.description}}</span>
       </div>
       <div class="card-actions">
-        <paper-icon-button id="course" icon="class" alt="class"></paper-icon-button>
+        <paper-icon-button id="course" icon="class" alt="class" on-click="handleClick"></paper-icon-button>
 
         <paper-icon-button id="assignment" icon="assignment" alt="assignment"></paper-icon-button>
         <paper-badge class="red" for="assignment" label="2"></paper-badge>
@@ -44,6 +44,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             type: Object
           },
 
+        },
+        handleClick: function() {
+          page('/courses/12')
         },
         computeFullName: function(name, year) {
           return name + ' (' + year + ')';
