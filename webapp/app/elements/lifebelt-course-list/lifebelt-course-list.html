@@ -23,7 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   }
   </style>
   <template is="dom-bind">
-    <iron-ajax auto url="http://private-451ee-lifebelt.apiary-mock.com/courses" handle-as="json" last-response="{{courses}}"></iron-ajax>
+    <iron-ajax auto url="http://private-451ee-lifebelt.apiary-mock.com/courses/" handle-as="json" last-response="{{courses}}"></iron-ajax>
     <template is="dom-repeat" items="{{courses}}">
       <a href="/course/{{item.id}}"></a>
       <lifebelt-course course={{item}}></lifebelt-course>

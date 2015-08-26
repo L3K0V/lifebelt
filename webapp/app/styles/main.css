@@ -8,7 +8,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 */
 
 body {
-  background: #fafafa;
+  background-color: #fafafa;
+  color: #444;
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color: #333;
+}
+
+#drawerToolbar {
+  font-size: inherit;
+  color: white;
+}
+
+#drawerToolbar iron-image {
+  background-blend-mode: multiply;
+  background-repeat: no-repeat;
+  background-color: #999;
+  background-size: cover;
+}
+
+#drawerToolbar img.profile {
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 20px;
+}
+
+#coverimage {
+  height: 192px;
+  top: 0;
 }

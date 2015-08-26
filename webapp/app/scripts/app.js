@@ -47,7 +47,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     // Move/translate middleContainer
     Polymer.Base.transform('translate3d(0,' + yRatio * 100 + '%,0)', middleContainer);
-
+    
     // Scale bottomContainer and bottom sub title to nothing and back
     Polymer.Base.transform('scale(' + scaleBottom + ') translateZ(0)', bottomContainer);
 

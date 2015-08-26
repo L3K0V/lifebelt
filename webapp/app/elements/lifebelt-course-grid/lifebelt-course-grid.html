@@ -31,12 +31,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   }
   </style>
   <template is="dom-binding">
-    <iron-ajax auto url="http://private-451ee-lifebelt.apiary-mock.com/courses" handle-as="json" last-response="{{courses}}"></iron-ajax>
+    <iron-ajax auto url="http://private-451ee-lifebelt.apiary-mock.com/courses/" handle-as="json" last-response="{{courses}}"></iron-ajax>
     <div grid-content>
       <template is="dom-repeat" items="{{courses}}">
         <a href="/course/{{item.id}}"></a>
         <div grid-item>
-          <lifebelt-course course={{item}} header="https://placehold.it/350x150"></lifebelt-course>
+          <lifebelt-course course={{item}} header="http://lorempixel.com/600/400"></lifebelt-course>
         </div>
       </template>
     </div>

@@ -47,7 +47,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <!-- endbuild-->
 
   <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
-  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
   <!-- endbuild -->
 
   <!-- will be replaced with elements/elements.vulcanized.html -->
@@ -64,8 +64,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <paper-scroll-header-panel drawer fixed>
 
         <!-- Drawer Toolbar -->
-        <paper-toolbar id="drawerToolbar">
-          <span class="paper-font-title">Menu</span>
+        <paper-toolbar id="drawerToolbar" class="tall">
+          <iron-image id="coverimage" placeholder="images/default.jpg" src="#" sizing="cover" preload fade class="fit"></iron-image>
+          <img class="middle profile" src="http://lorempixel.com/600/400">
+          <div class="bottom layout vertical">
+            <span>Asen Lekov</span>
+            <span>asenlekoff@gmail.com</span>
+          </div>
         </paper-toolbar>
 
         <!-- Drawer Content -->
@@ -99,6 +104,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <paper-icon-button icon="refresh"></paper-icon-button>
           <paper-icon-button icon="search"></paper-icon-button>
 
+
+
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
             <div class="app-name">Lifebelt</div>
@@ -112,6 +119,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Main Content -->
         <div class="content">
+
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">
@@ -139,19 +147,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </section>
 
             <section data-route="courses">
-              <iron-icon icon="today"></iron-icon><span class="paper-font-subhead">This year</span>
+              <iron-icon icon="today"></iron-icon>
+              <span class="paper-font-subhead">This year</span>
               <lifebelt-course-grid></lifebelt-course-grid>
-              <iron-icon icon="history"></iron-icon><span class="paper-font-subhead">Past</span>
+              <iron-icon icon="history"></iron-icon>
+              <span class="paper-font-subhead">Past</span>
               <lifebelt-course-list></lifebelt-course-list>
             </section>
 
             <section data-route="course-details">
-              <paper-material elevation="1">
-                <h2 class="page-title">
-                  Click on course
-                </h2>
-                <div>This is some course information</div>
-              </paper-material>
+              <lifebelt-course-details course={{params.id}}></lifebelt-course-details>
             </section>
 
             <section data-route="user-info">
