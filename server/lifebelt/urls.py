@@ -16,6 +16,7 @@ from api.views import SubmissionFileUploadViewSet
 from api.views import CourseAnnouncementViewSet
 from api.views import AnnouncementCommentViewSet
 from api.views import ObtainExpiringAuthToken
+from api.views import InvalidateAuthToken
 
 router = DefaultRouter()
 router.register(r'members', MemberViewSet)
@@ -42,7 +43,8 @@ urlpatterns = [
     url(r'^', include(announcements_router.urls)),
     url(r'^', include(assignments_router.urls)),
     url(r'^', include(submission_router.urls)),
-    url(r'^auth/', ObtainExpiringAuthToken.as_view())
+    url(r'^auth/$', ObtainExpiringAuthToken.as_view()),
+    url(r'^auth/invalidate/$', InvalidateAuthToken.as_view()),
 ]
 
 if settings.DEBUG:

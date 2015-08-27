@@ -50,6 +50,9 @@ from rest_framework.authtoken.models import Token
 
 from lifebelt.settings import LIFEBELT_AUTH_TOKEN_AGE
 
+from django.contrib.auth import authenticate, login, logout
+
+
 class MemberViewSet(viewsets.ModelViewSet):
     queryset = Member.objects.all().order_by('-id')
     serializer_class = MemberSerializer
@@ -235,7 +238,7 @@ class AnnouncementCommentViewSet(viewsets.ModelViewSet):
 class ObtainExpiringAuthToken(ObtainAuthToken):
     def post(self, request):
         serializer = AuthCustomTokenSerializer(context={'request': request}, data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             user = serializer.validated_data['user']
             token, created = Token.objects.get_or_create(user=user)
 
@@ -246,8 +249,22 @@ class ObtainExpiringAuthToken(ObtainAuthToken):
                 token.created = timezone.now()
                 token.save()
 
+                login(request, user)
+
             # return Response({'token': token.key})
             response_data = {'token': token.key}
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
         return HttpResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class InvalidateAuthToken(APIView):
+    def post(self, request):
+        if request.user.is_authenticated():
+            token = Token.objects.get(user=request.user)
+            token.delete()
+
+            logout(request)
+            return HttpResponse('', status=status.HTTP_204_NO_CONTENT)
+
+        return HttpResponse('', status=status.HTTP_400_BAD_REQUEST)
