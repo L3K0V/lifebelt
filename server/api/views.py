@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404
 
+from rest_framework.views import APIView
+
 from rest_framework import viewsets
 from rest_framework import response
 from rest_framework import status
@@ -32,6 +34,10 @@ from api.models import CourseAnnouncement
 
 from api.serializers import AnnouncementCommentSerializer
 from api.models import AnnouncementComment
+
+from api.serializers import AuthCustomTokenSerializer
+
+from rest_framework.authtoken.models import Token
 
 
 class MemberViewSet(viewsets.ModelViewSet):
@@ -214,3 +220,23 @@ class AnnouncementCommentViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class ObtainAuthToken(APIView):
+
+    permission_classes = ()
+
+    def post(self, request):
+        context = {'request': request}
+        serializer = AuthCustomTokenSerializer(context=context, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+
+        print(token)
+
+        content = {
+            'token': token.key,
+        }
+
+        return response.Response(content)

@@ -3,6 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from rest_framework.routers import DefaultRouter
+
 from rest_framework_nested import routers
 
 from api.views import MemberViewSet
@@ -14,6 +15,7 @@ from api.views import SubmissionReviewViewSet
 from api.views import SubmissionFileUploadViewSet
 from api.views import CourseAnnouncementViewSet
 from api.views import AnnouncementCommentViewSet
+from api.views import ObtainAuthToken
 
 router = DefaultRouter()
 router.register(r'members', MemberViewSet)
@@ -39,9 +41,12 @@ urlpatterns = [
     url(r'^', include(courses_router.urls)),
     url(r'^', include(announcements_router.urls)),
     url(r'^', include(assignments_router.urls)),
-    url(r'^', include(submission_router.urls))
+    url(r'^', include(submission_router.urls)),
+    url(r'^auth/', ObtainAuthToken.as_view())
 ]
 
 if settings.DEBUG:
     urlpatterns += patterns('django.views.static',
                             (r'files/(?P<path>.*)', 'serve', {'document_root': settings.MEDIA_ROOT}),)
+
+    urlpatterns += [url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')), ]

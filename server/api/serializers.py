@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 
-from rest_framework import serializers
+from django.shortcuts import get_object_or_404
+
+from rest_framework import serializers, exceptions
 
 import hashlib
 
@@ -195,3 +198,52 @@ class CourseAnnouncementSerializer(serializers.ModelSerializer):
         announcement = CourseAnnouncement.objects.create(author=author, course=course, **validated_data)
 
         return announcement
+
+
+class AuthCustomTokenSerializer(serializers.Serializer):
+    email = serializers.CharField()
+    code = serializers.CharField()
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+        code = attrs.get('code')
+
+        user = None
+
+        if email and code:
+            user_query = get_object_or_404(Member, user__email=email,)
+
+            if code != '42':
+                msg = 'This smells...'
+                raise exceptions.ValidationError(msg)
+
+            user = user_query
+        else:
+            msg = ('You must provide a valid email and a special code to authenticate')
+            raise exceptions.ValidationError(msg)
+
+        # if email_or_username and password:
+        #     # Check if user sent email
+        #     if validateEmail(email_or_username):
+        #         user_request = get_object_or_404(
+        #             User,
+        #             email=email_or_username,
+        #         )
+        #
+        #         email_or_username = user_request.username
+        #
+        #     user = authenticate(username=email_or_username, password=password)
+        #
+        #     if user:
+        #         if not user.is_active:
+        #             msg = _('User account is disabled.')
+        #             raise exceptions.ValidationError(msg)
+        #     else:
+        #         msg = _('Unable to log in with provided credentials.')
+        #         raise exceptions.ValidationError(msg)
+        # else:
+        #     msg = _('Must include "email or username" and "password"')
+        #     raise exceptions.ValidationError(msg)
+
+        attrs['user'] = user.user
+        return attrs
