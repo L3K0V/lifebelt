@@ -1,4 +1,10 @@
+import json
+import datetime
+
+from django.utils import timezone
 from django.shortcuts import get_object_or_404
+
+from django.http import HttpResponse
 
 from rest_framework.views import APIView
 
@@ -7,6 +13,9 @@ from rest_framework import response
 from rest_framework import status
 
 from rest_framework.parsers import FormParser, MultiPartParser
+
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 
 from api.serializers import MemberSerializer
 from api.models import Member
@@ -39,6 +48,7 @@ from api.serializers import AuthCustomTokenSerializer
 
 from rest_framework.authtoken.models import Token
 
+from lifebelt.settings import LIFEBELT_AUTH_TOKEN_AGE
 
 class MemberViewSet(viewsets.ModelViewSet):
     queryset = Member.objects.all().order_by('-id')
@@ -222,21 +232,22 @@ class AnnouncementCommentViewSet(viewsets.ModelViewSet):
         return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class ObtainAuthToken(APIView):
-
-    permission_classes = ()
-
+class ObtainExpiringAuthToken(ObtainAuthToken):
     def post(self, request):
-        context = {'request': request}
-        serializer = AuthCustomTokenSerializer(context=context, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
+        serializer = AuthCustomTokenSerializer(context={'request': request}, data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            token, created = Token.objects.get_or_create(user=user)
 
-        print(token)
+            utc_now = timezone.now()
+            if not created and token.created < utc_now - LIFEBELT_AUTH_TOKEN_AGE:
+                token.delete()
+                token = Token.objects.create(user=user)
+                token.created = timezone.now()
+                token.save()
 
-        content = {
-            'token': token.key,
-        }
+            # return Response({'token': token.key})
+            response_data = {'token': token.key}
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
 
-        return response.Response(content)
+        return HttpResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
