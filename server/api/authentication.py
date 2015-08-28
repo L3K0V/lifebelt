@@ -1,12 +1,12 @@
-from django.utils import timezone
 from django.conf import settings
+from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from rest_framework import exceptions
 from rest_framework.authentication import TokenAuthentication
 
-from lifebelt.settings import LIFEBELT_AUTH_TOKEN_AGE
+SESSION_AGE = getattr(settings, 'LIFEBELT_AUTH_TOKEN_AGE', None)
 
 
 class ExpiringTokenAuthentication(TokenAuthentication):
@@ -21,7 +21,7 @@ class ExpiringTokenAuthentication(TokenAuthentication):
 
         utc_now = timezone.now()
 
-        if token.created < utc_now - LIFEBELT_AUTH_TOKEN_AGE:
+        if token.created < utc_now - SESSION_AGE:
             raise exceptions.AuthenticationFailed('Token has expired')
 
         return (token.user, token)

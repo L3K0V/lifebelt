@@ -1,11 +1,8 @@
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
 
 from django.shortcuts import get_object_or_404
 
 from rest_framework import serializers, exceptions
-
-import hashlib
 
 from api.models import Member
 from api.models import Course
@@ -222,28 +219,7 @@ class AuthCustomTokenSerializer(serializers.Serializer):
             msg = ('You must provide a valid email and a special code to authenticate')
             raise exceptions.ValidationError(msg)
 
-        # if email_or_username and password:
-        #     # Check if user sent email
-        #     if validateEmail(email_or_username):
-        #         user_request = get_object_or_404(
-        #             User,
-        #             email=email_or_username,
-        #         )
-        #
-        #         email_or_username = user_request.username
-        #
-        #     user = authenticate(username=email_or_username, password=password)
-        #
-        #     if user:
-        #         if not user.is_active:
-        #             msg = _('User account is disabled.')
-        #             raise exceptions.ValidationError(msg)
-        #     else:
-        #         msg = _('Unable to log in with provided credentials.')
-        #         raise exceptions.ValidationError(msg)
-        # else:
-        #     msg = _('Must include "email or username" and "password"')
-        #     raise exceptions.ValidationError(msg)
+        # TODO: Connect to GitHub and get auth token then compare maybe emails for security?!
 
         attrs['user'] = user.user
         return attrs
