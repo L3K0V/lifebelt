@@ -53,6 +53,7 @@ from api.models import AnnouncementComment
 from api.serializers import AuthCustomTokenSerializer
 
 SESSION_AGE = getattr(settings, 'LIFEBELT_AUTH_TOKEN_AGE', None)
+CSV_FORMAT = getattr(settings, 'CVS_MEMBERS_IMPORT_FORMAT', None)
 
 
 class CSRFProtectedModelViewSet(viewsets.ModelViewSet):
@@ -305,7 +306,6 @@ class InvalidateAuthToken(APIView):
 
 
 class CourseMembersImportViewSet(viewsets.ViewSet):
-
     @method_decorator(ensure_csrf_cookie)
     def create(self, request, course_pk=None):
 
@@ -319,17 +319,10 @@ class CourseMembersImportViewSet(viewsets.ViewSet):
             for row in reader:
                 print(row['Име'])
 
-                user = User.objects.create(first_name=row['Име'], last_name=row['Фамилия'], email=row['Имейл'], username=row['Имейл'])
-                member = Member.objects.create(user=user, github=row['Github'])
-
-            # for line in members:
-            #     print(line)
-
-        # my_file = request.FILES['file_field_name']
-        # filename = '/tmp/myfile'
-        # with open(filename, 'wb+') as temp_file:
-        #     for chunk in my_file.chunks():
-        #         temp_file.write(chunk)
-
-        print(course_pk)
+                user = User.objects.create(first_name=row[CSV_FORMAT['first_name']],
+                                           last_name=row[CSV_FORMAT['last_name']],
+                                           email=row[CSV_FORMAT['email']],
+                                           username=row[CSV_FORMAT['email']])
+                member = Member.objects.create(user=user, github=row[CSV_FORMAT['github']])
+                membership = Membership.objects.create(member=member, course=course, role='S')
         return HttpResponse('', status=status.HTTP_204_NO_CONTENT)
