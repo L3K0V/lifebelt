@@ -276,7 +276,6 @@ class ObtainExpiringAuthToken(ObtainAuthToken):
 
                 login(request, user)
 
-            # return Response({'token': token.key})
             request.session.set_test_cookie()
             response_data = {'token': token.key}
             return HttpResponse(json.dumps(response_data), content_type="application/json")

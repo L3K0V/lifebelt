@@ -23,6 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'v%i=ab1%grj55wlgx@ge9dhc5saxq643-iby%&97&p=p8%bsp6'
 
+LIFEBELT_GITHUB_CLIENT_ID = os.environ['LIFEBELT_GITHUB_CLIENT_ID']
+LIFEBELT_GITHUB_CLIENT_SECRET = os.environ['LIFEBELT_GITHUB_CLIENT_SECRET']
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
