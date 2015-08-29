@@ -3,6 +3,7 @@ import json
 import datetime
 from io import StringIO
 
+from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponse
 from django.utils import timezone
@@ -317,12 +318,14 @@ class CourseMembersImportViewSet(viewsets.ViewSet):
             csvf = StringIO(members.read().decode())
             reader = csv.DictReader(csvf, delimiter=',')
             for row in reader:
-                print(row['Име'])
-
+                password = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(8))
                 user = User.objects.create(first_name=row[CSV_FORMAT['first_name']],
                                            last_name=row[CSV_FORMAT['last_name']],
                                            email=row[CSV_FORMAT['email']],
-                                           username=row[CSV_FORMAT['email']])
+                                           username=row[CSV_FORMAT['email']], password=password)
                 member = Member.objects.create(user=user, github=row[CSV_FORMAT['github']])
                 membership = Membership.objects.create(member=member, course=course, role='S')
+
+                send_mail('Записване за {} {}'.format(course.full_name, course.year), 'Твоята парола за достъп е: {}'.format(password), 'alekov@elsys-bg.org', [row[CSV_FORMAT['email']]], fail_silently=False)
+
         return HttpResponse('', status=status.HTTP_204_NO_CONTENT)
