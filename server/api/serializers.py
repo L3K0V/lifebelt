@@ -206,12 +206,10 @@ class CourseAnnouncementSerializer(serializers.ModelSerializer):
 
 
 class AuthCustomTokenSerializer(serializers.Serializer):
-    email = serializers.CharField()
     code = serializers.CharField()
     state = serializers.CharField()
 
     def validate(self, attrs):
-        email = attrs.get('email')
         code = attrs.get('code')
         state = attrs.get('state')
 
@@ -221,9 +219,7 @@ class AuthCustomTokenSerializer(serializers.Serializer):
             msg = 'Lifebelt not configurated properly. Please contact administrators'
             raise exceptions.ValidationError(msg)
 
-        if email and code and state:
-            user_query = get_object_or_404(Member, user__email=email,)
-
+        if code and state:
             headers = {'Accept': 'application/json'}
             data = {"client_id": CLIENT_ID, "client_secret": CLIENT_SECRET, "code": code, "state": state}
             url = 'https://github.com/login/oauth/access_token'
@@ -244,14 +240,15 @@ class AuthCustomTokenSerializer(serializers.Serializer):
 
             print(gh.me().as_json())
 
-            user = Member.objects.get(github=gh.me().as_json()['html_url'])
+            user = Member.objects.get(github=gh.me().as_dict().get('login'))
 
             if not user:
                 msg = 'User with this GitHub name is not found'
                 raise exceptions.ValidationError(msg)
 
-            user.update(avatar_url=gh.me().as_json()['avatar_url'])
-            user.update(github_token=token)
+            user.avatar_url = gh.me().as_dict().get('avatar_url')
+            user.github_token = token
+            user.save()
         else:
             msg = ('You must provide a valid email and a special code to authenticate')
             raise exceptions.ValidationError(msg)
