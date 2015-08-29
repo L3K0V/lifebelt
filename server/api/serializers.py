@@ -1,8 +1,11 @@
+import requests
+
+from django.conf import settings
 from django.contrib.auth.models import User
 
-from rest_framework import serializers
+from django.shortcuts import get_object_or_404
 
-import hashlib
+from rest_framework import serializers, exceptions
 
 from api.models import Member
 from api.models import Course
@@ -13,6 +16,11 @@ from api.models import SubmissionReview
 from api.models import SubmissionFile
 from api.models import CourseAnnouncement
 from api.models import AnnouncementComment
+
+from github3 import GitHub
+
+CLIENT_ID = getattr(settings, 'LIFEBELT_GITHUB_CLIENT_ID', None)
+CLIENT_SECRET = getattr(settings, 'LIFEBELT_GITHUB_CLIENT_SECRET', None)
 
 
 class MemberSerializer(serializers.HyperlinkedModelSerializer):
@@ -195,3 +203,55 @@ class CourseAnnouncementSerializer(serializers.ModelSerializer):
         announcement = CourseAnnouncement.objects.create(author=author, course=course, **validated_data)
 
         return announcement
+
+
+class AuthCustomTokenSerializer(serializers.Serializer):
+    code = serializers.CharField()
+    state = serializers.CharField()
+
+    def validate(self, attrs):
+        code = attrs.get('code')
+        state = attrs.get('state')
+
+        user = None
+
+        if not CLIENT_ID or not CLIENT_SECRET:
+            msg = 'Lifebelt not configurated properly. Please contact administrators'
+            raise exceptions.ValidationError(msg)
+
+        if code and state:
+            headers = {'Accept': 'application/json'}
+            data = {"client_id": CLIENT_ID, "client_secret": CLIENT_SECRET, "code": code, "state": state}
+            url = 'https://github.com/login/oauth/access_token'
+
+            r = requests.post(url=url, headers=headers, data=data)
+
+            if 'access_token' not in r.json():
+                msg = 'This smells...'
+
+                if 'error' in r.json():
+                    msg = r.json()['error']
+
+                raise exceptions.ValidationError(msg)
+
+            token = r.json()['access_token']
+
+            gh = GitHub(token=token)
+
+            print(gh.me().as_json())
+
+            user = Member.objects.get(github=gh.me().as_dict().get('login'))
+
+            if not user:
+                msg = 'User with this GitHub name is not found'
+                raise exceptions.ValidationError(msg)
+
+            user.avatar_url = gh.me().as_dict().get('avatar_url')
+            user.github_token = token
+            user.save()
+        else:
+            msg = ('You must provide a valid email and a special code to authenticate')
+            raise exceptions.ValidationError(msg)
+
+        attrs['user'] = user.user
+        return attrs
