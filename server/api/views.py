@@ -1,5 +1,7 @@
+import csv
 import json
 import datetime
+from io import StringIO
 
 from django.conf import settings
 from django.http import HttpResponse
@@ -22,6 +24,7 @@ from rest_framework.authtoken.models import Token
 
 from api.serializers import MemberSerializer
 from api.models import Member
+from django.contrib.auth.models import User
 
 from api.serializers import CourseSerializer
 from api.models import Course
@@ -299,3 +302,34 @@ class InvalidateAuthToken(APIView):
             return HttpResponse('', status=status.HTTP_204_NO_CONTENT)
 
         return HttpResponse('', status=status.HTTP_400_BAD_REQUEST)
+
+
+class CourseMembersImportViewSet(viewsets.ViewSet):
+
+    @method_decorator(ensure_csrf_cookie)
+    def create(self, request, course_pk=None):
+
+        course = Course.objects.get(pk=course_pk)
+
+        members = request.FILES['members']
+
+        if members:
+            csvf = StringIO(members.read().decode())
+            reader = csv.DictReader(csvf, delimiter=',')
+            for row in reader:
+                print(row['Име'])
+
+                user = User.objects.create(first_name=row['Име'], last_name=row['Фамилия'], email=row['Имейл'], username=row['Имейл'])
+                member = Member.objects.create(user=user, github=row['Github'])
+
+            # for line in members:
+            #     print(line)
+
+        # my_file = request.FILES['file_field_name']
+        # filename = '/tmp/myfile'
+        # with open(filename, 'wb+') as temp_file:
+        #     for chunk in my_file.chunks():
+        #         temp_file.write(chunk)
+
+        print(course_pk)
+        return HttpResponse('', status=status.HTTP_204_NO_CONTENT)

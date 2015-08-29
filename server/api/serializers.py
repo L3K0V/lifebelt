@@ -236,6 +236,7 @@ class AuthCustomTokenSerializer(serializers.Serializer):
 
             token = r.json()['access_token']
 
+            # https://github3py.readthedocs.org/en/master/
             gh = GitHub(token=token)
 
             print(gh.me().as_json())
