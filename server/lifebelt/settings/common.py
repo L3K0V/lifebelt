@@ -20,18 +20,22 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'v%i=ab1%grj55wlgx@ge9dhc5saxq643-iby%&97&p=p8%bsp6'
-
-LIFEBELT_GITHUB_CLIENT_ID = os.environ['LIFEBELT_GITHUB_CLIENT_ID']
-LIFEBELT_GITHUB_CLIENT_SECRET = os.environ['LIFEBELT_GITHUB_CLIENT_SECRET']
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
 LIFEBELT_AUTH_TOKEN_AGE = datetime.timedelta(days=7)
+
+CVS_MEMBERS_IMPORT_FORMAT = {
+    'first_name': 'Име',
+    'last_name': 'Фамилия',
+    'email': 'Имейл',
+    'github': 'Github',
+    'student_class': 'Паралелка',
+    'student_grade': 'Клас',
+    'student_number': 'Номер'
+}
 
 # Application definition
 
@@ -59,11 +63,15 @@ MIDDLEWARE_CLASSES = (
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'api.authentication.ExpiringTokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.ScopedRateThrottle',
     )
 }
 
@@ -86,7 +94,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'lifebelt.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
@@ -111,7 +118,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/

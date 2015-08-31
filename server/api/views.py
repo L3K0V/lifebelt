@@ -1,5 +1,7 @@
+import csv
 import json
 import datetime
+from io import StringIO
 
 from django.conf import settings
 from django.http import HttpResponse
@@ -22,6 +24,7 @@ from rest_framework.authtoken.models import Token
 
 from api.serializers import MemberSerializer
 from api.models import Member
+from django.contrib.auth.models import User
 
 from api.serializers import CourseSerializer
 from api.models import Course
@@ -49,7 +52,10 @@ from api.models import AnnouncementComment
 
 from api.serializers import AuthCustomTokenSerializer
 
+from api.email import send_enroll_email, send_forgot_pwd_email
+
 SESSION_AGE = getattr(settings, 'LIFEBELT_AUTH_TOKEN_AGE', None)
+CSV_FORMAT = getattr(settings, 'CVS_MEMBERS_IMPORT_FORMAT', None)
 
 
 class CSRFProtectedModelViewSet(viewsets.ModelViewSet):
@@ -289,7 +295,9 @@ class InvalidateAuthToken(APIView):
     def post(self, request):
         if request.user.is_authenticated():
             token = Token.objects.get(user=request.user)
-            token.delete()
+
+            if token:
+                token.delete()
 
             logout(request)
 
@@ -299,3 +307,53 @@ class InvalidateAuthToken(APIView):
             return HttpResponse('', status=status.HTTP_204_NO_CONTENT)
 
         return HttpResponse('', status=status.HTTP_400_BAD_REQUEST)
+
+
+class CourseMembersImportViewSet(viewsets.ViewSet):
+    @method_decorator(ensure_csrf_cookie)
+    def create(self, request, course_pk=None):
+
+        course = Course.objects.get(pk=course_pk)
+
+        members = request.FILES['members']
+
+        if members:
+            csvf = StringIO(members.read().decode())
+            reader = csv.DictReader(csvf, delimiter=',')
+            for row in reader:
+                password = User.objects.make_random_password()
+                user = User.objects.create_user(first_name=row[CSV_FORMAT['first_name']],
+                                                last_name=row[CSV_FORMAT['last_name']],
+                                                email=row[CSV_FORMAT['email']],
+                                                username=row[CSV_FORMAT['email']])
+                user.set_password(password)
+                user.save()
+                member = Member.objects.create(user=user,
+                                               github=row[CSV_FORMAT['github']],
+                                               student_class=row[CSV_FORMAT['student_class']],
+                                               student_grade=row[CSV_FORMAT['student_grade']],
+                                               student_number=row[CSV_FORMAT['student_number']])
+                membership = Membership.objects.create(member=member, course=course, role='S')
+
+                send_enroll_email(course, user, password)
+
+        return HttpResponse('', status=status.HTTP_204_NO_CONTENT)
+
+
+class RenewMemberPassword(APIView):
+    permission_classes = ()
+
+    def post(self, request):
+        email = request.data['email']
+
+        user = User.objects.get(username=email)
+
+        if user:
+            password = User.objects.make_random_password()
+
+            user.set_password(password)
+            user.save()
+
+            send_forgot_pwd_email(user, password)
+
+            return HttpResponse('', status=status.HTTP_204_NO_CONTENT)

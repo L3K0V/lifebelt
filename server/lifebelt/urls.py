@@ -17,6 +17,8 @@ from api.views import CourseAnnouncementViewSet
 from api.views import AnnouncementCommentViewSet
 from api.views import ObtainExpiringAuthToken
 from api.views import InvalidateAuthToken
+from api.views import RenewMemberPassword
+from api.views import CourseMembersImportViewSet
 
 router = DefaultRouter()
 router.register(r'members', MemberViewSet)
@@ -26,6 +28,7 @@ courses_router = routers.NestedSimpleRouter(router, r'courses', lookup='course')
 courses_router.register(r'memberships', MembershipViewSet, base_name='memberships')
 courses_router.register(r'announcements', CourseAnnouncementViewSet, base_name='announcements')
 courses_router.register(r'assignments', CourseAssignmentViewSet, base_name='assignments')
+courses_router.register(r'import', CourseMembersImportViewSet, base_name='import')
 
 assignments_router = routers.NestedSimpleRouter(courses_router, r'assignments', lookup='assignment')
 assignments_router.register(r'submissions', AssignmentSubmissionViewSet, base_name='submission')
@@ -45,6 +48,7 @@ urlpatterns = [
     url(r'^', include(submission_router.urls)),
     url(r'^auth/$', ObtainExpiringAuthToken.as_view()),
     url(r'^auth/invalidate/$', InvalidateAuthToken.as_view()),
+    url(r'^auth/forgot/$', RenewMemberPassword.as_view())
 ]
 
 if settings.DEBUG:
