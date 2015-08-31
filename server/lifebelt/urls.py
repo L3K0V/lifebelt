@@ -17,6 +17,7 @@ from api.views import CourseAnnouncementViewSet
 from api.views import AnnouncementCommentViewSet
 from api.views import ObtainExpiringAuthToken
 from api.views import InvalidateAuthToken
+from api.views import RenewMemberPassword
 from api.views import CourseMembersImportViewSet
 
 router = DefaultRouter()
@@ -47,6 +48,7 @@ urlpatterns = [
     url(r'^', include(submission_router.urls)),
     url(r'^auth/$', ObtainExpiringAuthToken.as_view()),
     url(r'^auth/invalidate/$', InvalidateAuthToken.as_view()),
+    url(r'^auth/forgot/$', RenewMemberPassword.as_view())
 ]
 
 if settings.DEBUG:

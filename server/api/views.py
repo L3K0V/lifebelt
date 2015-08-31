@@ -3,7 +3,6 @@ import json
 import datetime
 from io import StringIO
 
-from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponse
 from django.utils import timezone
@@ -52,6 +51,8 @@ from api.serializers import AnnouncementCommentSerializer
 from api.models import AnnouncementComment
 
 from api.serializers import AuthCustomTokenSerializer
+
+from api.email import send_enroll_email, send_forgot_pwd_email
 
 SESSION_AGE = getattr(settings, 'LIFEBELT_AUTH_TOKEN_AGE', None)
 CSV_FORMAT = getattr(settings, 'CVS_MEMBERS_IMPORT_FORMAT', None)
@@ -294,7 +295,9 @@ class InvalidateAuthToken(APIView):
     def post(self, request):
         if request.user.is_authenticated():
             token = Token.objects.get(user=request.user)
-            token.delete()
+
+            if token:
+                token.delete()
 
             logout(request)
 
@@ -328,6 +331,25 @@ class CourseMembersImportViewSet(viewsets.ViewSet):
                 member = Member.objects.create(user=user, github=row[CSV_FORMAT['github']])
                 membership = Membership.objects.create(member=member, course=course, role='S')
 
-                send_mail('Записване за {} {}'.format(course.full_name, course.year), 'Твоята парола за достъп е: {}'.format(password), 'alekov@elsys-bg.org', [row[CSV_FORMAT['email']]], fail_silently=False)
+                send_enroll_email(course, user, password)
 
         return HttpResponse('', status=status.HTTP_204_NO_CONTENT)
+
+
+class RenewMemberPassword(APIView):
+    permission_classes = ()
+
+    def post(self, request):
+        email = request.data['email']
+
+        user = User.objects.get(username=email)
+
+        if user:
+            password = User.objects.make_random_password()
+
+            user.set_password(password)
+            user.save()
+
+            send_forgot_pwd_email(user, password)
+
+            return HttpResponse('', status=status.HTTP_204_NO_CONTENT)
