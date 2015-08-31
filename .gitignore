@@ -63,3 +63,5 @@ docs/_build/
 target/
 
 server/config.py
+
+*.sqlite3

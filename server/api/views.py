@@ -318,11 +318,13 @@ class CourseMembersImportViewSet(viewsets.ViewSet):
             csvf = StringIO(members.read().decode())
             reader = csv.DictReader(csvf, delimiter=',')
             for row in reader:
-                password = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(8))
-                user = User.objects.create(first_name=row[CSV_FORMAT['first_name']],
-                                           last_name=row[CSV_FORMAT['last_name']],
-                                           email=row[CSV_FORMAT['email']],
-                                           username=row[CSV_FORMAT['email']], password=password)
+                password = User.objects.make_random_password()
+                user = User.objects.create_user(first_name=row[CSV_FORMAT['first_name']],
+                                                last_name=row[CSV_FORMAT['last_name']],
+                                                email=row[CSV_FORMAT['email']],
+                                                username=row[CSV_FORMAT['email']])
+                user.set_password(password)
+                user.save()
                 member = Member.objects.create(user=user, github=row[CSV_FORMAT['github']])
                 membership = Membership.objects.create(member=member, course=course, role='S')
 
