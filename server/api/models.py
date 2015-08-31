@@ -4,14 +4,19 @@ from django.contrib.auth.models import User
 
 from rest_framework.authtoken.models import Token
 
-ADMIN = 'A'
 STUDENT = 'S'
 TEACHER = 'T'
 
 MEMBER_ROLE = (
-    (ADMIN, 'Admin'),
     (STUDENT, 'Student'),
     (TEACHER, 'Teacher')
+)
+
+STUDENT_CLASSES = (
+    ('A', 'A'),
+    ('B', 'B'),
+    ('V', 'V'),
+    ('G', 'G')
 )
 
 
@@ -25,10 +30,13 @@ class DateModel(models.Model):
 
 class Member(models.Model):
     user = models.OneToOneField(User, related_name="member")
-    role = models.CharField(max_length=1, choices=MEMBER_ROLE, default=STUDENT)
     github = models.CharField(max_length=48, blank=True)
     github_token = models.CharField(max_length=256, blank=True)
     avatar_url = models.CharField(max_length=256, blank=True)
+
+    student_class = models.CharField(max_length=1, choices=STUDENT_CLASSES, blank=True, null=True)
+    student_grade = models.PositiveSmallIntegerField(blank=True, null=True)
+    student_number = models.PositiveSmallIntegerField(blank=True, null=True)
 
     def __str__(self):
         return '{} {} ({})'.format(self.user.first_name, self.user.last_name, self.user.email)

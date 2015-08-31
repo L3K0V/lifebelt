@@ -328,7 +328,11 @@ class CourseMembersImportViewSet(viewsets.ViewSet):
                                                 username=row[CSV_FORMAT['email']])
                 user.set_password(password)
                 user.save()
-                member = Member.objects.create(user=user, github=row[CSV_FORMAT['github']])
+                member = Member.objects.create(user=user,
+                                               github=row[CSV_FORMAT['github']],
+                                               student_class=row[CSV_FORMAT['student_class']],
+                                               student_grade=row[CSV_FORMAT['student_grade']],
+                                               student_number=row[CSV_FORMAT['student_number']])
                 membership = Membership.objects.create(member=member, course=course, role='S')
 
                 send_enroll_email(course, user, password)

@@ -31,7 +31,10 @@ CVS_MEMBERS_IMPORT_FORMAT = {
     'first_name': 'Име',
     'last_name': 'Фамилия',
     'email': 'Имейл',
-    'github': 'Github'
+    'github': 'Github',
+    'student_class': 'Паралелка',
+    'student_grade': 'Клас',
+    'student_number': 'Номер'
 }
 
 # Application definition
