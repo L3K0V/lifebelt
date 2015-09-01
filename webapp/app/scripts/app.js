@@ -15,7 +15,7 @@ angular.module("lifebeltApp", [
 	$urlRouterProvider.when("", "/");
 	$urlRouterProvider.otherwise("/404");
 
-	RestangularProvider.setBaseUrl("http://private-c4ed34-lifebelt.apiary-mock.com");
+	RestangularProvider.setBaseUrl("../api");
 
 	$mdThemingProvider.theme("default").primaryPalette("indigo").accentPalette("pink");
 

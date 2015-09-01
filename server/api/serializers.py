@@ -32,7 +32,7 @@ class MemberSerializer(serializers.HyperlinkedModelSerializer):
     courses = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='courses-detail'
+        view_name='api:courses-detail'
     )
 
     class Meta:
@@ -70,7 +70,7 @@ class CourseSerializer(serializers.HyperlinkedModelSerializer):
     members = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='member-detail'
+        view_name='api:member-detail'
     )
 
     class Meta:

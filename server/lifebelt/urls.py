@@ -1,8 +1,9 @@
 from django.conf.urls import include, url, patterns
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import SimpleRouter
 
 from rest_framework_nested import routers
 
@@ -20,7 +21,7 @@ from api.views import InvalidateAuthToken
 from api.views import RenewMemberPassword
 from api.views import CourseMembersImportViewSet
 
-router = DefaultRouter()
+router = SimpleRouter(trailing_slash=False)
 router.register(r'members', MemberViewSet)
 router.register(r'courses', CourseViewSet, base_name='courses')
 
@@ -41,11 +42,11 @@ submission_router.register(r'reviews', SubmissionReviewViewSet, base_name='revie
 submission_router.register(r'files', SubmissionFileUploadViewSet, base_name='file')
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
-    url(r'^', include(courses_router.urls)),
-    url(r'^', include(announcements_router.urls)),
-    url(r'^', include(assignments_router.urls)),
-    url(r'^', include(submission_router.urls)),
+    url(r'^api/', include(router.urls, namespace='api')),
+    url(r'^', include(courses_router.urls, namespace='api')),
+    url(r'^', include(announcements_router.urls, namespace='api')),
+    url(r'^', include(assignments_router.urls, namespace='api')),
+    url(r'^', include(submission_router.urls, namespace='api')),
     url(r'^auth/$', ObtainExpiringAuthToken.as_view()),
     url(r'^auth/invalidate/$', InvalidateAuthToken.as_view()),
     url(r'^auth/forgot/$', RenewMemberPassword.as_view())
@@ -54,5 +55,7 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    # urlpatterns += staticfiles_urlpatterns()
+    print(staticfiles_urlpatterns())
 
     urlpatterns += [url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')), ]
