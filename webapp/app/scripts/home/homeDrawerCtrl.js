@@ -1,14 +1,16 @@
-angular.module("lifebeltApp").controller("HomeDrawerCtrl", function($state) {
+angular.module("lifebeltApp").controller("HomeDrawerCtrl", function($state, $auth) {
 	"use strict";
 
 	var controller = this;
 
 	function attachMethods() {
 		controller.loginWithGithub = function() {
-			// TODO
-			// $auth.authenticate("github");
+			$auth.authenticate("github", {
+				state: "STATE"
+			}).then(function() {
+				console.log(arguments);
+			});
 
-			$state.go("home.loggedin.courses");
 		};
 	}
 
