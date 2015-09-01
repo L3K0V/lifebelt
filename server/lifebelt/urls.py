@@ -47,9 +47,9 @@ urlpatterns = [
     url(r'^', include(announcements_router.urls, namespace='api')),
     url(r'^', include(assignments_router.urls, namespace='api')),
     url(r'^', include(submission_router.urls, namespace='api')),
-    url(r'^auth/$', ObtainExpiringAuthToken.as_view()),
-    url(r'^auth/invalidate/$', InvalidateAuthToken.as_view()),
-    url(r'^auth/forgot/$', RenewMemberPassword.as_view())
+    url(r'^api/auth$', ObtainExpiringAuthToken.as_view()),
+    url(r'^api/auth/invalidate$', InvalidateAuthToken.as_view()),
+    url(r'^api/auth/forgot$', RenewMemberPassword.as_view())
 ]
 
 if settings.DEBUG:
