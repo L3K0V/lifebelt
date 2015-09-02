@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from rest_framework.routers import SimpleRouter
+from rest_framework.routers import DefaultRouter
 
 from rest_framework_nested import routers
 
@@ -20,8 +20,9 @@ from api.views import ObtainExpiringAuthToken
 from api.views import InvalidateAuthToken
 from api.views import RenewMemberPassword
 from api.views import CourseMembersImportViewSet
+from api.views import AuthenticatedMemberViewSet
 
-router = SimpleRouter(trailing_slash=False)
+router = DefaultRouter(trailing_slash=False)
 router.register(r'members', MemberViewSet)
 router.register(r'courses', CourseViewSet, base_name='courses')
 
@@ -47,15 +48,13 @@ urlpatterns = [
     url(r'^', include(announcements_router.urls, namespace='api')),
     url(r'^', include(assignments_router.urls, namespace='api')),
     url(r'^', include(submission_router.urls, namespace='api')),
-    url(r'^api/auth$', ObtainExpiringAuthToken.as_view()),
-    url(r'^api/auth/invalidate$', InvalidateAuthToken.as_view()),
-    url(r'^api/auth/forgot$', RenewMemberPassword.as_view())
+    url(r'^api/auth/login$', ObtainExpiringAuthToken.as_view()),
+    url(r'^api/auth/logout$', InvalidateAuthToken.as_view()),
+    url(r'^api/auth/reset-password$', RenewMemberPassword.as_view()),
+    url(r'^api/auth/me$', AuthenticatedMemberViewSet.as_view({'get': 'authenticated'}), name='authenticated')
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    # urlpatterns += staticfiles_urlpatterns()
-    print(staticfiles_urlpatterns())
-
     urlpatterns += [url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')), ]

@@ -15,8 +15,8 @@ from rest_framework import viewsets
 from rest_framework import response
 from rest_framework import status
 
+from rest_framework.decorators import detail_route
 from rest_framework.views import APIView
-
 from rest_framework.parsers import FormParser, MultiPartParser
 
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -287,6 +287,17 @@ class ObtainExpiringAuthToken(ObtainAuthToken):
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
         return HttpResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AuthenticatedMemberViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Member.objects.all().order_by('-id')
+    serializer_class = MemberSerializer
+
+    @detail_route(methods=['get'])
+    def authenticated(self, request, *args, **kwargs):
+        queryset = Member.objects.filter(user=request.user)
+        serializer = MemberSerializer(queryset, many=True, context={'request': request})
+        return response.Response(serializer.data)
 
 
 class InvalidateAuthToken(APIView):
