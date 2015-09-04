@@ -23,21 +23,16 @@ CLIENT_ID = getattr(settings, 'LIFEBELT_GITHUB_CLIENT_ID', None)
 CLIENT_SECRET = getattr(settings, 'LIFEBELT_GITHUB_CLIENT_SECRET', None)
 
 
-class MemberSerializer(serializers.HyperlinkedModelSerializer):
+class MemberSerializer(serializers.ModelSerializer):
 
     email = serializers.CharField(source='user.email')
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
 
-    courses = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='api:courses-detail'
-    )
-
     class Meta:
         model = Member
-        fields = ('id', 'first_name', 'last_name', 'email', 'courses', 'github', 'github_token', 'avatar_url', 'student_grade', 'student_class', 'student_number')
+        depth = 1
+        fields = ('id', 'first_name', 'last_name', 'email', 'github', 'avatar_url', 'student_grade', 'student_class', 'student_number')
 
     def update(self, instance, validated_data):
         user = instance.user
@@ -65,48 +60,22 @@ class MemberSerializer(serializers.HyperlinkedModelSerializer):
         return member
 
 
-class CourseSerializer(serializers.HyperlinkedModelSerializer):
-
-    members = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='api:member-detail'
-    )
-
-    class Meta:
-        model = Course
-        fields = ('id', 'initials', 'full_name', 'description', 'year', 'members', 'date_created', 'date_modified')
-
-
-class MembershipCreateSerializer(serializers.HyperlinkedModelSerializer):
-    course_id = serializers.IntegerField()
-    member_id = serializers.IntegerField()
-
-    def create(self, validated_data):
-
-        member = Member.objects.get(pk=validated_data.get('member_id'))
-        course = Course.objects.get(pk=validated_data.get('course_id'))
-        role = validated_data.get('role')
-
-        membership = Membership.objects.create(member=member, course=course, role=role)
-
-        return membership
-
-    class Meta:
-        model = Membership
-        fields = ('id', 'course_id', 'member_id', 'role')
-
-
 class MembershipSerializer(serializers.ModelSerializer):
-    # course = CourseSerializer(read_only=True)
-    # member = MemberSerializer(read_only=True)
-
     class Meta:
         model = Membership
         fields = ('id', 'course', 'member', 'role')
 
 
-class CourseAssignmentSerializer(serializers.HyperlinkedModelSerializer):
+class CourseSerializer(serializers.ModelSerializer):
+    members = MemberSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Course
+        depth = 2
+        fields = ('id', 'initials', 'full_name', 'description', 'year', 'members', 'date_created', 'date_modified')
+
+
+class CourseAssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseAssignment
         fields = ('id', 'name', 'description', 'assignment_type', 'start', 'end', 'target', 'date_created', 'date_modified')
@@ -120,6 +89,9 @@ class CourseAssignmentSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class SubmissionFileSerializer(serializers.HyperlinkedModelSerializer):
+    '''
+    Using HyperlinkedModelSerializer because we want to handle files as urls.
+    '''
     class Meta:
         model = SubmissionFile
         read_only_fields = ('id', 'date_created', 'date_modified')
@@ -134,7 +106,7 @@ class SubmissionFileSerializer(serializers.HyperlinkedModelSerializer):
         return upload
 
 
-class SubmissionReviewSerializer(serializers.HyperlinkedModelSerializer):
+class SubmissionReviewSerializer(serializers.ModelSerializer):
 
     author = serializers.PrimaryKeyRelatedField(read_only=True)
 
@@ -151,7 +123,7 @@ class SubmissionReviewSerializer(serializers.HyperlinkedModelSerializer):
         return review
 
 
-class AssignmentSubmissionSerializer(serializers.HyperlinkedModelSerializer):
+class AssignmentSubmissionSerializer(serializers.ModelSerializer):
         files = SubmissionFileSerializer(many=True, read_only=True)
         reviews = SubmissionReviewSerializer(many=True, read_only=True)
         grade = serializers.IntegerField(min_value=0, max_value=100, default=0, required=False)

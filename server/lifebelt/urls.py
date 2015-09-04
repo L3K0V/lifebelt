@@ -44,10 +44,10 @@ submission_router.register(r'files', SubmissionFileUploadViewSet, base_name='fil
 
 urlpatterns = [
     url(r'^api/', include(router.urls, namespace='api')),
-    url(r'^', include(courses_router.urls, namespace='api')),
-    url(r'^', include(announcements_router.urls, namespace='api')),
-    url(r'^', include(assignments_router.urls, namespace='api')),
-    url(r'^', include(submission_router.urls, namespace='api')),
+    url(r'^api/', include(courses_router.urls, namespace='api')),
+    url(r'^api/', include(announcements_router.urls, namespace='api')),
+    url(r'^api/', include(assignments_router.urls, namespace='api')),
+    url(r'^api/', include(submission_router.urls, namespace='api')),
     url(r'^api/auth/login$', ObtainExpiringAuthToken.as_view()),
     url(r'^api/auth/logout$', InvalidateAuthToken.as_view()),
     url(r'^api/auth/reset-password$', RenewMemberPassword.as_view()),
