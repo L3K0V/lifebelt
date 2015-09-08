@@ -1,0 +1,10 @@
+# Required!
+SECRET_KEY = ''
+
+# Highly recommended!
+LIFEBELT_GITHUB_CLIENT_ID = ''
+LIFEBELT_GITHUB_CLIENT_SECRET = ''
+
+# Highly recommended!
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
