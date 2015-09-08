@@ -47,7 +47,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'api'
+    'api.members',
+    'api.courses',
+    'api.assignments',
+    'api.announcements',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -65,7 +68,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'api.authentication.ExpiringTokenAuthentication',
+        'api.members.auth.ExpiringTokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
