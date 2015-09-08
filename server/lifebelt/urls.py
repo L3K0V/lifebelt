@@ -7,20 +7,20 @@ from rest_framework.routers import DefaultRouter
 
 from rest_framework_nested import routers
 
-from api.views import MemberViewSet
-from api.views import CourseViewSet
-from api.views import MembershipViewSet
-from api.views import CourseAssignmentViewSet
-from api.views import AssignmentSubmissionViewSet
-from api.views import SubmissionReviewViewSet
-from api.views import SubmissionFileUploadViewSet
-from api.views import CourseAnnouncementViewSet
-from api.views import AnnouncementCommentViewSet
-from api.views import ObtainExpiringAuthToken
-from api.views import InvalidateAuthToken
-from api.views import RenewMemberPassword
-from api.views import CourseMembersImportViewSet
-from api.views import AuthenticatedMemberViewSet
+from api.members.views import MemberViewSet
+from api.courses.views import CourseViewSet
+from api.members.views import MembershipViewSet
+from api.assignments.views import CourseAssignmentViewSet
+from api.assignments.views import AssignmentSubmissionViewSet
+from api.assignments.views import SubmissionReviewViewSet
+from api.assignments.views import SubmissionFileUploadViewSet
+from api.announcements.views import CourseAnnouncementViewSet
+from api.announcements.views import AnnouncementCommentViewSet
+from api.members.views import ObtainExpiringAuthToken
+from api.members.views import InvalidateAuthToken
+from api.members.views import RenewMemberPassword
+from api.courses.views import CourseMembersImportViewSet
+from api.members.views import AuthenticatedMemberViewSet
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'members', MemberViewSet)
