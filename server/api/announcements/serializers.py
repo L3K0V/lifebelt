@@ -17,7 +17,7 @@ class AnnouncementCommentSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         announcement = CourseAnnouncement.objects.get(pk=self.context.get('announcement_pk'))
-        author = Member.objects.get(pk=1)
+        author = Member.objects.get(user=self.context.get('request').user)
 
         comment = AnnouncementComment.objects.create(author=author, announcement=announcement, **validated_data)
 
@@ -34,7 +34,7 @@ class CourseAnnouncementSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         course = Course.objects.get(pk=self.context.get('course_pk'))
-        author = Member.objects.get(pk=1)
+        author = Member.objects.get(user=self.context.get('request').user)
 
         announcement = CourseAnnouncement.objects.create(author=author, course=course, **validated_data)
 

@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 
 from rest_framework import serializers, exceptions
 
+from api.courses.models import Course
+
 from api.members.models import Member
 from api.members.models import Membership
 
@@ -55,6 +57,14 @@ class MembershipSerializer(serializers.ModelSerializer):
     class Meta:
         model = Membership
         fields = ('id', 'course', 'member', 'role')
+        read_only_fields = ('id', 'course')
+
+    def create(self, validated_data):
+        course = Course.objects.get(pk=self.context.get('course_pk'))
+
+        membership = Membership.objects.create(course=course, **validated_data)
+
+        return membership
 
 
 class AuthCustomTokenSerializer(serializers.Serializer):

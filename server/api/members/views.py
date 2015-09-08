@@ -37,6 +37,15 @@ class MembershipViewSet(CSRFProtectedModelViewSet):
     queryset = Membership.objects.all().order_by('-id')
     serializer_class = MembershipSerializer
 
+    @method_decorator(ensure_csrf_cookie)
+    def create(self, request, course_pk=None):
+        context = {'request': request, 'course_pk': course_pk}
+        serializer = MembershipSerializer(context=context, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
     def list(self, request, course_pk=None):
         queryset = Membership.objects.filter(course=course_pk)
         serializer = MembershipSerializer(queryset, many=True, context={'request': request})
