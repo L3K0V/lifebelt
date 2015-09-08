@@ -2,21 +2,35 @@
 
 ## Configure and run
 
-1. Edit `lifebelt/settings/__init__.py`
+1. Make sure you have installed Python3
+2. Setup virtual environment and install `requirements.txt`
+  
+  ```
+  $ cd lifebelt/server
+  $ python3 virtualenv env
+  
+  $ source env/bin/activate
+  $ pip install requirements.txt
+  ```
 
-  Add all needed secret information like keys, passwords etc...
+3. Setup secrets
 
-2. Make migrations
+  Rename local_settings.py.sample to local_settings.py and edit it.
 
-  `python manage.py migrate`
+4. Make migrations
 
-3. Create superuser
+  ```
+  $ python manage.py makemigrations
+  $ python manage.py migrate
+  ```
 
-  `python manage.py createsuperuser` and follow the instructions
+5. Create superuser
 
-3. Run server
+  `$ python manage.py createsuperuser` and follow the instructions
 
-  `python manage.py runserver`
+6. Run server
+
+  `$ python manage.py runserver`
 
 And that's it! Now open your browser login and you have access to Lifebelt's Browsable API
 
