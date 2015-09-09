@@ -15,7 +15,7 @@
 
 3. Setup secrets
 
-  Rename local_settings.py.sample to local_settings.py and edit it.
+  Rename `local_settings.py.sample` to `local_settings.py` and edit it.
 
 4. Make migrations
 
