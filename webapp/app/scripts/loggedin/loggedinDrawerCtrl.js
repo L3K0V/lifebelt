@@ -4,7 +4,7 @@ angular.module("lifebeltApp").controller("LoggedinDrawerCtrl", function(LoginSer
 	var controller = this;
 
 	function initState() {
-		LoginService.login().then(function(user) {
+		LoginService.authenticate().then(function(user) {
 			controller.user = user;
 		});
 	}
