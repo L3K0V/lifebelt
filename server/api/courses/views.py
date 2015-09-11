@@ -48,6 +48,10 @@ class CourseViewSet(CSRFProtectedModelViewSet):
 
 
 class CourseMembersImportViewSet(viewsets.ViewSet):
+
+    # DjangoModelPermissions require this
+    queryset = Course.objects.none()
+
     @method_decorator(ensure_csrf_cookie)
     def create(self, request, course_pk=None):
         gh = GitHub()

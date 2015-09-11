@@ -78,6 +78,9 @@ class AuthenticatedMemberViewSet(viewsets.ReadOnlyModelViewSet):
 
 class ObtainExpiringAuthToken(ObtainAuthToken):
 
+    # DjangoModelPermissions require this
+    queryset = Member.objects.none()
+
     @method_decorator(ensure_csrf_cookie)
     def post(self, request):
         serializer = AuthCustomTokenSerializer(context={'request': request}, data=request.data)
@@ -102,6 +105,9 @@ class ObtainExpiringAuthToken(ObtainAuthToken):
 
 
 class InvalidateAuthToken(APIView):
+
+    # DjangoModelPermissions require this
+    queryset = Member.objects.none()
 
     @method_decorator(ensure_csrf_cookie)
     def post(self, request):
