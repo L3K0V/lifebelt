@@ -3,8 +3,8 @@ angular.module("lifebeltApp").service("LoginService", function(Restangular) {
 
 	var service = this;
 	function attachMethods() {
-		service.login = function(data) {
-			return Restangular.all("auth").post(data);
+		service.authenticate = function() {
+			return Restangular.one("auth").one("me").get();
 		};
 	}
 

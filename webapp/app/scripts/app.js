@@ -20,7 +20,7 @@ angular.module("lifebeltApp", [
 	$mdThemingProvider.theme("default").primaryPalette("indigo").accentPalette("pink");
 
 	$authProvider.github({
-		url: "/api/auth",
+		url: "/api/auth/login",
 		clientId: "ac711ac25e851a667a11",
 		redirectUri:  window.location.origin + "/static/index.html",
 		type: "2.0",
