@@ -103,7 +103,7 @@ class AuthCustomTokenSerializer(serializers.Serializer):
 
             print(gh.me().as_json())
 
-            user = Member.objects.get(github=gh.me().as_dict().get('login'))
+            user = Member.objects.get(github_id=gh.me().id)
 
             if not user:
                 msg = 'User with this GitHub name is not found'

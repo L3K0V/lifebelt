@@ -71,8 +71,8 @@ class AuthenticatedMemberViewSet(viewsets.ReadOnlyModelViewSet):
 
     @detail_route(methods=['get'])
     def authenticated(self, request, *args, **kwargs):
-        queryset = Member.objects.filter(user=request.user)
-        serializer = MemberSerializer(queryset, many=True, context={'request': request})
+        queryset = Member.objects.get(user=request.user)
+        serializer = MemberSerializer(queryset, many=False, context={'request': request})
         return response.Response(serializer.data)
 
 
