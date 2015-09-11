@@ -26,6 +26,8 @@ from api.courses.email import send_enroll_email
 
 from api.members.models import Member, Membership
 
+from github3 import GitHub
+
 CSV_FORMAT = getattr(settings, 'CVS_MEMBERS_IMPORT_FORMAT', None)
 
 
@@ -48,6 +50,7 @@ class CourseViewSet(CSRFProtectedModelViewSet):
 class CourseMembersImportViewSet(viewsets.ViewSet):
     @method_decorator(ensure_csrf_cookie)
     def create(self, request, course_pk=None):
+        gh = GitHub()
 
         course = Course.objects.get(pk=course_pk)
 
@@ -64,8 +67,12 @@ class CourseMembersImportViewSet(viewsets.ViewSet):
                                                 username=row[CSV_FORMAT['email']])
                 user.set_password(password)
                 user.save()
+
+                github_user = gh.user(row[CSV_FORMAT['github']])
+
                 member = Member.objects.create(user=user,
                                                github=row[CSV_FORMAT['github']],
+                                               github_id=github_user.id,
                                                student_class=row[CSV_FORMAT['student_class']],
                                                student_grade=row[CSV_FORMAT['student_grade']],
                                                student_number=row[CSV_FORMAT['student_number']])
