@@ -20,7 +20,7 @@ STUDENT_CLASSES = (
 class Member(models.Model):
     user = models.OneToOneField(User, related_name="member")
     github = models.CharField(max_length=48, blank=True)
-    github_id = models.BigIntegerField(blank=True)
+    # github_id = models.BigIntegerField(blank=True)
     github_token = models.CharField(max_length=256, blank=True)
     avatar_url = models.CharField(max_length=256, blank=True)
 
