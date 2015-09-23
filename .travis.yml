@@ -1,0 +1,18 @@
+language: python
+cache:
+  directories:
+    - $HOME/.pip-cache/
+python:
+  - "3.3"
+  - "3.4"
+  - "3.5"
+before_install: cd server
+install:
+  - pip install --upgrade pip
+  - pip install -r requirements.txt --cache-dir $HOME/.pip-cache
+  - pip install coveralls --cache-dir $HOME/.pip-cache
+script:
+  - python manage.py makemigrations
+  - coverage run --source='.' manage.py test
+after_success:
+  - coveralls

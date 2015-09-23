@@ -13,3 +13,7 @@ To take a closer look
 
 2. [Configure and run frontend](webapp/README.md)
   At this moment web application use mocked server provided by apiary and APIs are as much as we update api blueprint similar.
+
+## Status
+[![Build Status](https://travis-ci.org/L3K0V/lifebelt.svg?branch=master)](https://travis-ci.org/L3K0V/lifebelt)
+[![Coverage Status](https://coveralls.io/repos/L3K0V/lifebelt/badge.svg?branch=master&service=github)](https://coveralls.io/github/L3K0V/lifebelt?branch=master)
