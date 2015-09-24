@@ -4,3 +4,8 @@ django-guardian==1.3
 djangorestframework==3.2.3
 drf-nested-routers==0.10.0
 github3.py==1.0.0a2
+gunicorn==19.3.0
+dj-database-url==0.3.0
+django-postgrespool
+whitenoise
+cryptography
