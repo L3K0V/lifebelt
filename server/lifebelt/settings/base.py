@@ -28,6 +28,8 @@ ALLOWED_HOSTS = []
 
 LIFEBELT_AUTH_TOKEN_AGE = datetime.timedelta(days=7)
 
+ANONYMOUS_USER_ID = 0
+
 CVS_MEMBERS_IMPORT_FORMAT = {
     'first_name': 'Име',
     'last_name': 'Фамилия',
