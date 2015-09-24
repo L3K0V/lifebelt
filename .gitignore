@@ -68,3 +68,5 @@ server/config.py
 
 ### Vagrant ###
 .vagrant/
+
+server/lifebelt/settings/local.py
