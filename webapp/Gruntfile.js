@@ -24,7 +24,8 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require("./bower.json").appPath || "app",
-    dist: "dist"
+    dist: "dist",
+    tmp: ".tmp"
   };
 
   // Define the configuration for all the tasks
@@ -381,6 +382,12 @@ module.exports = function (grunt) {
         cwd: "<%= yeoman.app %>/styles",
         dest: ".tmp/styles/",
         src: "**/*.css"
+      },
+      concatScripts: {
+        expand: true,
+        cwd: "<%= yeoman.tmp %>/concat",
+        dest: "<%= yeoman.dist %>/",
+        src: "**/*.js"
       }
     },
 
@@ -467,6 +474,25 @@ module.exports = function (grunt) {
     "usemin",
     "htmlmin"
   ]);
+
+  grunt.registerTask("buildnotminified", [
+    "clean:dist",
+    "wiredep",
+    "useminPrepare",
+    "concurrent:dist",
+    "autoprefixer",
+    "ngtemplates",
+    "concat",
+    "ngAnnotate",
+    "copy:dist",
+    "cdnify",
+    "cssmin",
+    "copy:concatScripts", // "uglify",
+    "filerev",
+    "usemin",
+    "htmlmin"
+  ]);
+
 
   grunt.registerTask("default", [
     "newer:jshint",
