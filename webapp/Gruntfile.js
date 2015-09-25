@@ -239,12 +239,13 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on filerev and the useminPrepare configuration
     usemin: {
-      html: ["<%= yeoman.dist %>/scripts/**/*.html"],
+      html: ["<%= yeoman.dist %>/**/*.html"],
       css: ["<%= yeoman.dist %>/styles/**/*.css"],
       js: ["<%= yeoman.dist %>/scripts/**/*.js"],
       options: {
         assetsDirs: [
           "<%= yeoman.dist %>",
+          "<%= yeoman.dist %>/bower_components/**/",
           "<%= yeoman.dist %>/images",
           "<%= yeoman.dist %>/styles"
         ],
@@ -322,7 +323,7 @@ module.exports = function (grunt) {
     ngtemplates: {
       dist: {
         options: {
-          module: "lifebeltAppTemplates",
+          module: "lifebeltApp",
           htmlmin: "<%= htmlmin.dist.options %>",
           usemin: "scripts/scripts.js"
         },
@@ -364,6 +365,7 @@ module.exports = function (grunt) {
             "*.{ico,png,txt}",
             ".htaccess",
             "*.html",
+            // "bower_components/**/*",
             "images/**/*.{webp}",
             "styles/fonts/**/*.*"
           ]
