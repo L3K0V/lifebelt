@@ -1,16 +1,23 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 
+from django.http import HttpResponse
+
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework import viewsets
 from rest_framework import response
 from rest_framework import status
 
+from rest_framework.views import APIView
+
 from rest_framework.parsers import FormParser, MultiPartParser
 
 from api import CSRFProtectedModelViewSet
+
+from api.members.models import Member
 
 from api.assignments.serializers import CourseAssignmentSerializer
 from api.assignments.models import CourseAssignment
@@ -124,3 +131,25 @@ class SubmissionFileUploadViewSet(CSRFProtectedModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class AssignmentGitHubReceiveHook(APIView):
+
+    # DjangoModelPermissions require this
+    queryset = CourseAssignment.objects.none()
+    permission_classes = []
+
+    @method_decorator(csrf_exempt)
+    def post(self, request):
+        if ('pull_request' in request.data and 'action' in request.data and 'number' in request.data):
+            if (request.data['action'] == 'opened' or request.data['action'] == 'reopened'):
+                    member = Member.objects.get(github_id=request.data['pull_request']['user']['id'])
+                    assignment = CourseAssignment.objects.get(name=request.data['pull_request']['body'])
+
+                    # and assignment.course.repository == request.data['repo']['html_url']:
+                    if assignment:
+                        new_submission = AssignmentSubmission.objects.create(assignment=assignment, author=member, pull_request=request.data['number'], grade=0, description=request.data['pull_request']['body'])
+
+                    return HttpResponse('', status=status.HTTP_200_OK)
+
+        return HttpResponse('', status=status.HTTP_417_EXPECTATION_FAILED)

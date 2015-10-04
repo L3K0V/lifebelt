@@ -15,6 +15,7 @@ from api.assignments.views import CourseAssignmentViewSet
 from api.assignments.views import AssignmentSubmissionViewSet
 from api.assignments.views import SubmissionReviewViewSet
 from api.assignments.views import SubmissionFileUploadViewSet
+from api.assignments.views import AssignmentGitHubReceiveHook
 from api.announcements.views import CourseAnnouncementViewSet
 from api.announcements.views import AnnouncementCommentViewSet
 from api.members.views import ObtainExpiringAuthToken
@@ -52,7 +53,8 @@ urlpatterns = [
     url(r'^api/auth/login$', ObtainExpiringAuthToken.as_view()),
     url(r'^api/auth/logout$', InvalidateAuthToken.as_view()),
     url(r'^api/auth/reset-password$', RenewMemberPassword.as_view()),
-    url(r'^api/auth/me$', AuthenticatedMemberViewSet.as_view({'get': 'authenticated'}), name='authenticated')
+    url(r'^api/auth/me$', AuthenticatedMemberViewSet.as_view({'get': 'authenticated'}), name='authenticated'),
+    url(r'^github/assignment/receive$', AssignmentGitHubReceiveHook.as_view())
 ]
 
 if settings.DEBUG:
