@@ -10,4 +10,4 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         depth = 2
-        fields = ('id', 'initials', 'full_name', 'description', 'year', 'members', 'date_created', 'date_modified')
+        fields = ('id', 'initials', 'full_name', 'description', 'year', 'repository', 'members', 'date_created', 'date_modified')

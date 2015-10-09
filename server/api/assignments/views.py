@@ -151,7 +151,7 @@ class AssignmentGitHubReceiveHook(APIView):
                         new_submission = AssignmentSubmission.objects.create(
                             assignment=assignment,
                             author=member,
-                            pull_request=request.data['number'],
+                            pull_request=request.data['pull_request']['html_url'],
                             grade=0,
                             description=request.data['pull_request']['body'])
 

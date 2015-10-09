@@ -49,7 +49,7 @@ class AssignmentSubmission(models.Model):
     assignment = models.ForeignKey('CourseAssignment', related_name='submissions')
     author = models.ForeignKey('members.Member')
 
-    pull_request = models.PositiveSmallIntegerField(blank=True, null=True)
+    pull_request = models.URLField(blank=True, null=True)
     grade = models.PositiveSmallIntegerField(default=0)
     description = models.CharField(max_length=256, blank=True)
 
