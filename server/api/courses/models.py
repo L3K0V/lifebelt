@@ -4,8 +4,9 @@ from django.db import models
 class Course(models.Model):
     initials = models.CharField(max_length=16, blank=False)
     full_name = models.CharField(max_length=48, blank=False)
+    repository = models.URLField(blank=True)
     description = models.TextField()
-    year = models.PositiveSmallIntegerField()
+    year = models.PositiveSmallIntegerField(blank=False)
 
     members = models.ManyToManyField('members.Member', through='members.Membership', through_fields=('course', 'member'), related_name='courses')
 

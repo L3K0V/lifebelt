@@ -4,7 +4,7 @@ from django.db import models
 class CourseAnnouncement(models.Model):
     author = models.ForeignKey('members.Member')
     course = models.ForeignKey('courses.Course', related_name='announcements')
-    announcement = models.TextField()
+    announcement = models.TextField(blank=False)
 
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)

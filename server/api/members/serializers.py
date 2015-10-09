@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 from rest_framework import serializers, exceptions
+from rest_framework.validators import UniqueTogetherValidator
 
 from api.courses.models import Course
 
@@ -56,7 +57,7 @@ class MemberSerializer(serializers.ModelSerializer):
 class MembershipSerializer(serializers.ModelSerializer):
     class Meta:
         model = Membership
-        fields = ('id', 'course', 'member', 'role')
+        fields = ('id', 'member', 'role')
         read_only_fields = ('id', 'course')
 
     def create(self, validated_data):

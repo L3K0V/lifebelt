@@ -20,7 +20,7 @@ STUDENT_CLASSES = (
 class Member(models.Model):
     user = models.OneToOneField(User, related_name="member")
     github = models.CharField(max_length=48, blank=True)
-    github_id = models.BigIntegerField(blank=True)
+    github_id = models.PositiveIntegerField(blank=True, null=True)
     github_token = models.CharField(max_length=256, blank=True)
     avatar_url = models.CharField(max_length=256, blank=True)
 
@@ -36,3 +36,6 @@ class Membership(models.Model):
     course = models.ForeignKey('courses.Course', related_name='member')
     member = models.ForeignKey('Member', related_name='course')
     role = models.CharField(max_length=1, choices=MEMBER_ROLE, default=STUDENT)
+
+    class Meta:
+        unique_together = ('course', 'member',)

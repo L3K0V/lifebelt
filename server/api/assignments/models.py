@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.utils import timezone
 
@@ -33,6 +34,7 @@ class CourseAssignment(models.Model):
     start = models.DateTimeField(default=timezone.now)
     end = models.DateTimeField()
     target = models.CharField(max_length=3, choices=ASSIGNMENT_TARGET, default=ALL)
+    code = models.CharField(max_length=200, default=uuid.uuid4, editable=False)
 
     course = models.ForeignKey('courses.Course', related_name='assignments')
 
@@ -53,6 +55,9 @@ class AssignmentSubmission(models.Model):
 
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('assignment', 'pull_request',)
 
 
 class SubmissionReview(models.Model):

@@ -144,12 +144,20 @@ class AssignmentGitHubReceiveHook(APIView):
         if ('pull_request' in request.data and 'action' in request.data and 'number' in request.data):
             if (request.data['action'] == 'opened' or request.data['action'] == 'reopened'):
                     member = Member.objects.get(github_id=request.data['pull_request']['user']['id'])
-                    assignment = CourseAssignment.objects.get(name=request.data['pull_request']['body'])
 
-                    # and assignment.course.repository == request.data['repo']['html_url']:
+                    assignment = CourseAssignment.objects.get(code__in=request.data['pull_request']['body'].split())
+
                     if assignment:
-                        new_submission = AssignmentSubmission.objects.create(assignment=assignment, author=member, pull_request=request.data['number'], grade=0, description=request.data['pull_request']['body'])
+                        new_submission = AssignmentSubmission.objects.create(
+                            assignment=assignment,
+                            author=member,
+                            pull_request=request.data['number'],
+                            grade=0,
+                            description=request.data['pull_request']['body'])
 
-                    return HttpResponse('', status=status.HTTP_200_OK)
+                        if new_submission:
+                            return HttpResponse('', status=status.HTTP_200_OK)
+                        else:
+                            return HttpResponse('Submission cannot be created', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return HttpResponse('', status=status.HTTP_417_EXPECTATION_FAILED)
