@@ -13,7 +13,7 @@ class CourseAssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         depth = 1
         model = CourseAssignment
-        fields = ('id', 'name', 'description', 'assignment_type', 'submissions', 'start', 'end', 'target', 'date_created', 'date_modified')
+        fields = ('id', 'name', 'description', 'code', 'assignment_type', 'submissions', 'start', 'end', 'target', 'date_created', 'date_modified')
 
     def create(self, validated_data):
         course = Course.objects.get(pk=self.context.get('course_pk'))

@@ -31,6 +31,8 @@ from api.assignments.models import SubmissionFile
 from api.assignments.serializers import SubmissionReviewSerializer
 from api.assignments.models import SubmissionReview
 
+from api.assignments.tasks import review_submission
+
 
 class CourseAssignmentViewSet(CSRFProtectedModelViewSet):
     queryset = CourseAssignment.objects.all().order_by('-id')
@@ -156,8 +158,9 @@ class AssignmentGitHubReceiveHook(APIView):
                             description=request.data['pull_request']['body'])
 
                         if new_submission:
-                            return HttpResponse('', status=status.HTTP_200_OK)
+                            review_submission.delay(new_submission.pk)
+                            return HttpResponse('Submission created!', status=status.HTTP_200_OK)
                         else:
                             return HttpResponse('Submission cannot be created', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        return HttpResponse('', status=status.HTTP_417_EXPECTATION_FAILED)
+        return HttpResponse('Received but submission not created', status=status.HTTP_200_OK)
