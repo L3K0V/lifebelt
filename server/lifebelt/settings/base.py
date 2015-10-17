@@ -11,8 +11,18 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from __future__ import absolute_import
 import os
 import datetime
+import djcelery
+
+djcelery.setup_loader()
+
+BROKER_URL = 'django://'
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -49,6 +59,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djcelery',
+    'kombu.transport.django',
     'rest_framework',
     'rest_framework.authtoken',
     'api.members',
@@ -107,6 +119,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'USER': '',        # Not used with sqlite3.
+        'PASSWORD': '',    # Not used with sqlite3.
+        'HOST': '',        # Set to empty string for localhost.
+                           # Not used with sqlite3.
+        'PORT': '',        # Set to empty string for default.
+                           # Not used with sqlite3.
     }
 }
 
