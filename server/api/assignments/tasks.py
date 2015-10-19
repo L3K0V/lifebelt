@@ -18,6 +18,7 @@ def review_submission(submission_pk):
     gh = login(token=LIFEBELT_BOT)
 
     submission = AssignmentSubmission.objects.get(pk=submission_pk)
+    repo = gh.repository(submission.pull_request.split('/')[-2], submission.pull_request.split('/')[-1])
 
     author = Member.objects.get(github_id=gh.me().id)
 
@@ -27,5 +28,7 @@ def review_submission(submission_pk):
         review = SubmissionReview.objects.create(
             author=author, submission=submission, points=1, description=desc)
 
-        pr = gh.pull_request(submission.pull_request.split('/')[-1])
+        # TODO: actual git work! patch, compile, test
+
+        pr = repo.pull_request(submission.pull_request.split('/')[-1])
         pr.create_comment(desc)

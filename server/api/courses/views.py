@@ -26,6 +26,8 @@ from api.courses.email import send_enroll_email
 
 from api.members.models import Member, Membership
 
+from api.courses.tasks import clone_course_repo
+
 from github3 import GitHub
 
 CSV_FORMAT = getattr(settings, 'CVS_MEMBERS_IMPORT_FORMAT', None)
@@ -34,6 +36,11 @@ CSV_FORMAT = getattr(settings, 'CVS_MEMBERS_IMPORT_FORMAT', None)
 class CourseViewSet(CSRFProtectedModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all().order_by('-id')
+
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        if 'repository' in serializer.data and serializer.data['repository']:
+            clone_course_repo.delay(instance.id)
 
     def list(self, request,):
         queryset = Course.objects.filter()
