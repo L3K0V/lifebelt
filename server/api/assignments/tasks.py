@@ -10,7 +10,7 @@ from api.members.models import Member
 
 from github3 import login
 
-LIFEBELT_BOT = getattr(settings.local, 'LIFEBELT_BOT_TOKEN', None)
+LIFEBELT_BOT = getattr(settings, 'LIFEBELT_BOT_TOKEN', None)
 
 
 @shared_task
