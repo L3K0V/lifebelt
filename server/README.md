@@ -75,6 +75,7 @@
 6. Run server
 
   `$ python manage.py runserver`
+  `$ python manage.py celery -A lifebelt worker --loglevel=info`
 
 And that's it! Now open your browser login and you have access to Lifebelt's Browsable API
 

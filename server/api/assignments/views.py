@@ -186,7 +186,7 @@ class AssignmentGitHubReceiveHook(APIView):
                             description=request.data['pull_request']['body'])
 
                         if new_submission:
-                            review_submission.delay(new_submission.pk)
+                            review_submission.delay(submission_pk=new_submission.pk)
                             return HttpResponse('Submission created!', status=status.HTTP_200_OK)
                         else:
                             return HttpResponse('Submission cannot be created', status=status.HTTP_500_INTERNAL_SERVER_ERROR)

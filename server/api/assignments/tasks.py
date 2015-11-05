@@ -8,6 +8,7 @@ from api.assignments.models import AssignmentSubmission
 from api.assignments.models import SubmissionReview
 from api.members.models import Member
 
+from git import Repo
 from github3 import login
 
 LIFEBELT_BOT = getattr(settings, 'LIFEBELT_BOT_TOKEN', None)
@@ -16,18 +17,14 @@ LIFEBELT_BOT = getattr(settings, 'LIFEBELT_BOT_TOKEN', None)
 @shared_task
 def review_submission(submission_pk):
 
-    print(LIFEBELT_BOT)
-
     gh = login(token=LIFEBELT_BOT)
-
-    print(gh.me())
 
     submission = AssignmentSubmission.objects.get(pk=submission_pk)
     pull_request_number = submission.pull_request.split('/')[-1]
     repo = gh.repository(submission.pull_request.split('/')[-4], submission.pull_request.split('/')[-3])
     author = Member.objects.get(github_id=gh.me().id)
 
-    if True:
+    if author:
         desc = 'Compiled and running without problems!'
 
         review = SubmissionReview.objects.create(
@@ -38,21 +35,16 @@ def review_submission(submission_pk):
 
         # TODO: actual git work! patch, compile, test
 
-        repo = git.Repo(course_dir)
-        o = repo.remotes.origin
+        r = Repo(course_dir)
+        o = r.remotes.origin
         o.pull()
 
-        repo.checkout('HEAD', b='review#{}'.format(submission.id))
-        repo.git.am('-s', 'patch file.patch')
+        # r.git.checkout('HEAD', b='review#{}'.format(submission.id))
+        # r.git.am('-s', 'patch file.patch')
 
         # ... hw.py
 
-        repo.git.checkout(D='review#{}'.format(submission.id))
+        # r.git.checkout(D='review#{}'.format(submission.id))
 
         pr = repo.pull_request(pull_request_number)
-
-        with open('/tmp/{}'.format(), 'wb') as output:
-            output.write(bytearray(int(i, 16) for i in yoursequence))
-
-        patch_file = pr.patch()
         pr.create_comment(desc)

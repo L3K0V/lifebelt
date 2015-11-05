@@ -46,8 +46,17 @@ class MemberSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
 
+        gh = GitHub()
+
+        github_name = validated_data['github']
+
         user_data = validated_data.pop('user')
         user_data['username'] = user_data.get('email')
+
+        if github_name:
+            gh_id = gh.user(github_name).id
+            validated_data['github_id'] = gh_id
+
         user = User.objects.create(**user_data)
 
         member = Member.objects.create(user=user, **validated_data)
@@ -101,8 +110,6 @@ class AuthCustomTokenSerializer(serializers.Serializer):
 
             # https://github3py.readthedocs.org/en/master/
             gh = GitHub(token=token)
-
-            print(gh.me().as_json())
 
             user = Member.objects.get(github_id=gh.me().id)
 

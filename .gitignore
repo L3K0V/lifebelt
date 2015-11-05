@@ -70,3 +70,5 @@ server/config.py
 .vagrant/
 
 server/lifebelt/settings/local.py
+
+server/lifebelt/gitfiles/
