@@ -23,11 +23,8 @@ def review_submission(submission_pk):
     print(gh.me())
 
     submission = AssignmentSubmission.objects.get(pk=submission_pk)
-
-    print(submission.pull_request.split('/'))
-
+    pull_request_number = submission.pull_request.split('/')[-1]
     repo = gh.repository(submission.pull_request.split('/')[-4], submission.pull_request.split('/')[-3])
-
     author = Member.objects.get(github_id=gh.me().id)
 
     if True:
@@ -52,5 +49,10 @@ def review_submission(submission_pk):
 
         repo.git.checkout(D='review#{}'.format(submission.id))
 
-        pr = repo.pull_request(submission.pull_request.split('/')[-1])
+        pr = repo.pull_request(pull_request_number)
+
+        with open('/tmp/{}'.format(), 'wb') as output:
+            output.write(bytearray(int(i, 16) for i in yoursequence))
+
+        patch_file = pr.patch()
         pr.create_comment(desc)

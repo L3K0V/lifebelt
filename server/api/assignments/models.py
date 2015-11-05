@@ -45,6 +45,18 @@ class CourseAssignment(models.Model):
         return self.name
 
 
+class AssignmentTestCase(models.Model):
+    assignment = models.ForeignKey('CourseAssignment', related_name='testcases')
+
+    case_input = models.TextField(max_length=8096, blank=True)
+    case_output = models.TextField(max_length=8096, blank=True)
+
+    max_memory_usage = models.PositiveSmallIntegerField(default=0)
+    max_cpu_usage = models.PositiveSmallIntegerField(default=0)
+
+    flags = models.TextField(max_length=1024, blank=True)
+
+
 class AssignmentSubmission(models.Model):
     assignment = models.ForeignKey('CourseAssignment', related_name='submissions')
     author = models.ForeignKey('members.Member')

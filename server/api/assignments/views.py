@@ -31,6 +31,9 @@ from api.assignments.models import SubmissionFile
 from api.assignments.serializers import SubmissionReviewSerializer
 from api.assignments.models import SubmissionReview
 
+from api.assignments.serializers import AssignmentTestCaseSerializer
+from api.assignments.models import AssignmentTestCase
+
 from api.assignments.tasks import review_submission
 
 
@@ -78,6 +81,31 @@ class AssignmentSubmissionViewSet(CSRFProtectedModelViewSet):
     def create(self, request, course_pk=None, assignment_pk=None):
         context = {'request': request, 'course_pk': course_pk, 'assignment_pk': assignment_pk}
         serializer = AssignmentSubmissionSerializer(context=context, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class AssignmentTestCaseViewSet(CSRFProtectedModelViewSet):
+    serializer_class = AssignmentTestCaseSerializer
+    queryset = AssignmentTestCase.objects.all().order_by('-id')
+
+    def list(self, request, course_pk=None, assignment_pk=None):
+        queryset = AssignmentTestCase.objects.filter(assignment=assignment_pk)
+        serializer = AssignmentTestCaseSerializer(queryset, many=True, context={'request': request})
+        return response.Response(serializer.data)
+
+    def retrieve(self, request, pk=None, course_pk=None, assignment_pk=None):
+        queryset = AssignmentTestCase.objects.filter(pk=pk, assignment=assignment_pk)
+        submission = get_object_or_404(queryset, pk=pk)
+        serializer = AssignmentTestCaseSerializer(submission, context={'request': request})
+        return response.Response(serializer.data)
+
+    @method_decorator(ensure_csrf_cookie)
+    def create(self, request, course_pk=None, assignment_pk=None):
+        context = {'request': request, 'course_pk': course_pk, 'assignment_pk': assignment_pk}
+        serializer = AssignmentTestCaseSerializer(context=context, data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)

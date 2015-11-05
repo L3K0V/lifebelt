@@ -12,6 +12,7 @@ from api.members.views import MemberViewSet
 from api.courses.views import CourseViewSet
 from api.members.views import MembershipViewSet
 from api.assignments.views import CourseAssignmentViewSet
+from api.assignments.views import AssignmentTestCaseViewSet
 from api.assignments.views import AssignmentSubmissionViewSet
 from api.assignments.views import SubmissionReviewViewSet
 from api.assignments.views import SubmissionFileUploadViewSet
@@ -36,6 +37,7 @@ courses_router.register(r'import', CourseMembersImportViewSet, base_name='import
 
 assignments_router = routers.NestedSimpleRouter(courses_router, r'assignments', lookup='assignment', trailing_slash=False)
 assignments_router.register(r'submissions', AssignmentSubmissionViewSet, base_name='submission')
+assignments_router.register(r'testcases', AssignmentTestCaseViewSet, base_name='testcase')
 
 announcements_router = routers.NestedSimpleRouter(courses_router, r'announcements', lookup='announcement', trailing_slash=False)
 announcements_router.register(r'comments', AnnouncementCommentViewSet, base_name='comments')

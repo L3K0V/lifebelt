@@ -4,6 +4,7 @@ from api.members.models import Member
 from api.courses.models import Course
 
 from api.assignments.models import CourseAssignment
+from api.assignments.models import AssignmentTestCase
 from api.assignments.models import AssignmentSubmission
 from api.assignments.models import SubmissionReview
 from api.assignments.models import SubmissionFile
@@ -13,7 +14,7 @@ class CourseAssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         depth = 1
         model = CourseAssignment
-        fields = ('id', 'name', 'description', 'code', 'assignment_type', 'submissions', 'start', 'end', 'target', 'date_created', 'date_modified')
+        fields = ('id', 'name', 'description', 'code', 'assignment_type', 'testcases', 'submissions', 'start', 'end', 'target', 'date_created', 'date_modified')
 
     def create(self, validated_data):
         course = Course.objects.get(pk=self.context.get('course_pk'))
@@ -21,6 +22,23 @@ class CourseAssignmentSerializer(serializers.ModelSerializer):
         assignment = CourseAssignment.objects.create(course=course, **validated_data)
 
         return assignment
+
+
+class AssignmentTestCaseSerializer(serializers.ModelSerializer):
+    case_input = serializers.CharField(style={'base_template': 'textarea.html'}, trim_whitespace=False)
+    case_output = serializers.CharField(style={'base_template': 'textarea.html'}, trim_whitespace=False)
+
+    flags = serializers.CharField(style={'base_template': 'textarea.html'}, trim_whitespace=False)
+
+    class Meta:
+        model = AssignmentTestCase
+        fields = ('id', 'case_input', 'case_output', 'max_memory_usage', 'max_cpu_usage', 'flags')
+
+    def create(self, validated_data):
+        assignment = CourseAssignment.objects.get(pk=self.context.get('assignment_pk'))
+        test_case = AssignmentTestCase.objects.create(assignment=assignment, **validated_data)
+
+        return test_case
 
 
 class SubmissionFileSerializer(serializers.HyperlinkedModelSerializer):
