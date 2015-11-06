@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from __future__ import absolute_import
+
 import os
+
 import datetime
 import djcelery
 
@@ -26,14 +28,6 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_SEND_EVENTS = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-SECRET_KEY = '?5o;gAeZpe!u3ISOt7|)#Tx4GneshtodrugoJ2D8zI'
 
 ALLOWED_HOSTS = []
 
