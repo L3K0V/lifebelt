@@ -8,7 +8,9 @@ from api.assignments.models import AssignmentSubmission
 from api.assignments.models import SubmissionReview
 from api.members.models import Member
 
-from git import Repo
+import tempfile
+
+from git import Repo, GitCommandError
 from github3 import login
 
 LIFEBELT_BOT = getattr(settings, 'LIFEBELT_BOT_TOKEN', None)
@@ -39,12 +41,20 @@ def review_submission(submission_pk):
         o = r.remotes.origin
         o.pull()
 
-        # r.git.checkout('HEAD', b='review#{}'.format(submission.id))
-        # r.git.am('-s', 'patch file.patch')
-
-        # ... hw.py
-
-        # r.git.checkout(D='review#{}'.format(submission.id))
-
         pr = repo.pull_request(pull_request_number)
+
+        with tempfile.NamedTemporaryFile() as temp:
+            temp.write(pr.patch())
+            temp.flush()
+            print(temp)
+
+            try:
+
+                r.git.checkout('HEAD', b='review#{}'.format(submission.id))
+                r.git.am(temp.name)
+                r.git.branch(D='review#{}'.format(submission.id))
+
+            except GitCommandError:
+                pr.create_comment("Git error while preparing to review...")
+
         pr.create_comment(desc)
