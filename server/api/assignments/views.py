@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 
 from django.http import HttpResponse
@@ -7,7 +6,6 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_exempt
 
-from rest_framework import viewsets
 from rest_framework import response
 from rest_framework import status
 

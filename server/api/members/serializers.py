@@ -4,7 +4,6 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 from rest_framework import serializers, exceptions
-from rest_framework.validators import UniqueTogetherValidator
 
 from api.courses.models import Course
 

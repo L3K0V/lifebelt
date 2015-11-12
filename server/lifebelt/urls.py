@@ -1,10 +1,7 @@
 from django.contrib import admin
-from django.conf.urls import include, url, patterns
+from django.conf.urls import include, url
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
-from rest_framework.routers import DefaultRouter
 
 from rest_framework_nested import routers
 

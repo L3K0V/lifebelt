@@ -35,8 +35,6 @@ def review_submission(submission_pk):
         course = submission.assignment.course
         course_dir = '{}/{}/{}'.format(getattr(settings, 'GIT_ROOT', None), course.year, course.initials)
 
-        # TODO: actual git work! patch, compile, test
-
         r = Repo(course_dir)
         o = r.remotes.origin
         o.pull()
@@ -46,13 +44,15 @@ def review_submission(submission_pk):
         with tempfile.NamedTemporaryFile() as temp:
             temp.write(pr.patch())
             temp.flush()
-            print(temp)
-
             try:
 
                 r.git.checkout('HEAD', b='review#{}'.format(submission.id))
-                r.git.am(temp.name)
-                r.git.branch(D='review#{}'.format(submission.id))
+                r.git.apply('--ignore-space-change', '--ignore-whitespace', temp.name)
+                r.git.checkout('master')
+                r.git.checkout('.')
+                r.git.branch(D=' review#{}'.format(submission.id))
+
+                # if everything is okay - merge and pull
 
             except GitCommandError:
                 pr.create_comment("Git error while preparing to review...")

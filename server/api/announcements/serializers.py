@@ -1,4 +1,4 @@
-from rest_framework import serializers, exceptions
+from rest_framework import serializers
 
 from api.members.models import Member
 from api.courses.models import Course

@@ -7,7 +7,6 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 from django.http import HttpResponse
 
-from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 
 from django.contrib.auth import login, logout
